@@ -21,6 +21,9 @@ $Include "$SRCDIR\game\protobuf_include.vpc"
 // Mapbase stuff
 $Include "$SRCDIR\game\client\client_mapbase.vpc"	 [$MAPBASE]
 
+// Director's Cut
+$Include "$SRCDIR\game\client\client_directorscut.vpc"	 [$DIRECTORSCUT]
+
 $Configuration	"Debug"
 {
 	$General

@@ -277,18 +277,38 @@ public:
 					ToolWindow *tw = dynamic_cast< ToolWindow * >( sheet->GetParent() );
 					if ( tw )
 					{
+						// Director's Cut requires tabs to be draggable, so this is overidden to allow non-tool window tabs to be draggable
+#ifndef DIRECTORSCUT
 						IToolWindowFactory *factory = tw->GetToolWindowFactory();
 						if ( factory )
 						{
+#endif
 							bool hasContextMenu = sheet->PageHasContextMenu( page );
 							sheet->RemovePage( page );
+#ifndef DIRECTORSCUT
 							factory->InstanceToolWindow( tw->GetParent(), sheet->ShouldShowContextButtons(), page, title, hasContextMenu );
-
-							if ( sheet->GetNumPages() == 0 )
+#endif
+							if ( tw->GetParent() )
 							{
-								tw->MarkForDeletion();
+#ifdef DIRECTORSCUT
+								ToolWindow *toolWindowInstance = new ToolWindow( tw->GetParent(), sheet->ShouldShowContextButtons(), 0, page, title, hasContextMenu );
+								Assert( toolWindowInstance );
+								toolWindowInstance->SetScheme("DXScheme"); // Director's Cut scheme
+
+								int mouseX;
+								int mouseY;
+								vgui::input()->GetCursorPos( mouseX, mouseY );
+								tw->GetParent()->ScreenToLocal( mouseX, mouseY );
+								toolWindowInstance->SetBounds( mouseX, mouseY, tw->GetWide(), tw->GetTall() );
+#endif
+								if ( sheet->GetNumPages() == 0 )
+								{
+									tw->MarkForDeletion();
+								}
 							}
+#ifndef DIRECTORSCUT
 						}
+#endif
 					}
 				}
 			}
@@ -1548,9 +1568,12 @@ void PropertySheet::OnPanelDropped( CUtlVector< KeyValues * >& msglist )
 	ToolWindow *tw = dynamic_cast< ToolWindow * >( sheet->GetParent() );
 	if ( tw )
 	{
+		// Director's cut supports dragging tabs between sheets for non-tool windows
+#ifndef DIRECTORSCUT
 		IToolWindowFactory *factory = tw->GetToolWindowFactory();
 		if ( factory )
 		{
+#endif
 			bool showContext = sheet->PageHasContextMenu( page );
 			sheet->RemovePage( page );
 			if ( sheet->GetNumPages() == 0 )
@@ -1559,7 +1582,9 @@ void PropertySheet::OnPanelDropped( CUtlVector< KeyValues * >& msglist )
 			}
 
 			AddPage( page, title, NULL, showContext );
+#ifndef DIRECTORSCUT
 		}
+#endif
 	}
 }
 

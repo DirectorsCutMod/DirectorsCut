@@ -1,0 +1,33 @@
+//-----------------------------------------------------------------------------
+//	CLIENT_DIRECTORSCUT.VPC
+//
+//	Project Script
+//-----------------------------------------------------------------------------
+
+$Configuration
+{
+	$Compiler
+	{
+		$PreprocessorDefinitions		"$BASE;DIRECTORSCUT"
+	}
+}
+
+$Project
+{
+	$Folder	"Source Files"
+	{
+		$Folder	"DirectorsCut"
+		{
+			$File	"directorscut\directorscut.cpp"
+			$File	"directorscut\directorscut.h"
+			$File	"directorscut\dummyproxies.cpp"
+			$File	"directorscut\dummyproxies.h"
+			$Folder "VGUI"
+			{
+				$File	"directorscut\vgui\dxeditorpanel.cpp"
+				$File	"directorscut\vgui\dxeditorcontrols.cpp"
+				$File	"directorscut\vgui\dxeditorcontrols.h"
+			}
+		}
+	}
+}

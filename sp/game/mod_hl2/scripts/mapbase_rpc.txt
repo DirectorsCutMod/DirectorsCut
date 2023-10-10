@@ -1,0 +1,6 @@
+"MapbaseRPC"
+{
+	discord_appid "1011818709444214864"
+	discord_largeimage "directorscut"
+	discord_largeimage_text "Director's Cut"
+}
