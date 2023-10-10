@@ -1,7 +1,7 @@
 <p align="center">
   <img width=50% alt="Director's Cut logo" src="https://i.imgur.com/iHJVGEZ.png">
   <br><br>
-  <a title="Director's Cut on Discord" href="https://discord.gg/3X3teNecWs"><img alt="Director's Cut on Discord" src="https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white"/></a><a title="Director's Cut on X (Twitter)" href="https://twitter.com/SFMDirectorsCut"><img alt="Director's Cut on X (Twitter)" src="https://img.shields.io/badge/X%20%28Twitter%29-%23000000.svg?style=for-the-badge&logo=X&logoColor=white"/></a><a title="Director's Cut on X (Twitter)" href="https://twitter.com/SFMDirectorsCut"><img alt="Director's Cut on X (Twitter)" src="https://img.shields.io/badge/Valve%20Developer%20Wiki-%23262626.svg?style=for-the-badge&logo=wikipedia&logoColor=white"/></a>
+  <a title="Director's Cut on Discord" href="https://discord.gg/3X3teNecWs"><img alt="Director's Cut on Discord" src="https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white"/></a><a title="Director's Cut on X (Twitter)" href="https://twitter.com/SFMDirectorsCut"><img alt="Director's Cut on X (Twitter)" src="https://img.shields.io/badge/X%20%28Twitter%29-%23000000.svg?style=for-the-badge&logo=X&logoColor=white"/></a><a title="Director's Cut on Valve Developer Wiki" href="https://developer.valvesoftware.com/wiki/Director's_Cut"><img alt="Director's Cut on Valve Developer Wiki" src="https://img.shields.io/badge/Valve%20Developer%20Wiki-%23262626.svg?style=for-the-badge&logo=wikipedia&logoColor=white"/></a>
 </p>
 
 # Director's Cut
