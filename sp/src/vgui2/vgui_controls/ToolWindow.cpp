@@ -64,7 +64,9 @@ ToolWindow::ToolWindow(
 	m_pPropertySheet->ShowContextButtons( contextlabel );
 	m_pPropertySheet->AddPage( page, title, 0, contextMenu );
 	m_pPropertySheet->AddActionSignalTarget(this);
+#ifndef DIRECTORSCUT
 	m_pPropertySheet->SetSmallTabs( true );
+#endif
 	m_pPropertySheet->SetKBNavigationEnabled( false );
 
 	SetSmallCaption( true );

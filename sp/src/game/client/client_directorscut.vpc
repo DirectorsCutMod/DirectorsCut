@@ -25,8 +25,15 @@ $Project
 			$Folder "VGUI"
 			{
 				$File	"directorscut\vgui\dxeditorpanel.cpp"
-				$File	"directorscut\vgui\dxeditorcontrols.cpp"
-				$File	"directorscut\vgui\dxeditorcontrols.h"
+				$File	"directorscut\vgui\dxeditorpanel.h"
+				$File	"directorscut\vgui\dxeditorelementviewer.cpp"
+				$File	"directorscut\vgui\dxeditorelementviewer.h"
+				$File	"directorscut\vgui\dxeditorviewport.cpp"
+				$File	"directorscut\vgui\dxeditorviewport.h"
+				$File	"directorscut\vgui\dxeditoranimationseteditor.cpp"
+				$File	"directorscut\vgui\dxeditoranimationseteditor.h"
+				$File	"directorscut\vgui\dxeditortimeline.cpp"
+				$File	"directorscut\vgui\dxeditortimeline.h"
 			}
 		}
 	}

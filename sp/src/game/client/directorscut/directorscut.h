@@ -5,34 +5,18 @@
 // $NoKeywords: $
 //=================================================================================//
 
-#ifndef _DIRECTORSCUT_H_
-#define _DIRECTORSCUT_H_
+#ifndef DIRECTORSCUT_H
+#define DIRECTORSCUT_H
 
 #include "igamesystem.h"
-#include "physpropclientside.h"
-#include "mathlib/vector.h"
 
-class DirectorsCutSystem : public CAutoGameSystemPerFrame
+static class DXEditorHelper : public CAutoGameSystemPerFrame
 {
 public:
+	void LevelShutdownPostEntity();
+	void Update( float ft );
+	void LevelInitPostEntity();
 
-	DirectorsCutSystem() : CAutoGameSystemPerFrame("DirectorsCutSystem")
-	{
-	}
+} __g_dxEditorHelper;
 
-	virtual bool InitAllSystems()
-	{
-		return true;
-	}
-
-	virtual void PostInit();
-	virtual void Shutdown();
-	virtual void LevelInitPostEntity();
-	virtual void LevelShutdownPreEntity();
-	virtual void Update(float frametime);
-};
-
-// singleton
-DirectorsCutSystem& DirectorsCutGameSystem();
-
-#endif // _DIRECTORSCUT_H_
+#endif // DIRECTORSCUT_H

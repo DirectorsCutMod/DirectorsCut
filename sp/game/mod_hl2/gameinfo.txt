@@ -2,12 +2,13 @@
 {
 	// Base Parameters
 	game 		"Director's Cut"
+	title 		"Director's Cut"
 	type		singleplayer_only
 	supportsvr	0
 	GameData	"bin/halflife2.fgd"
 	icon		"resource/icon1"
 
-	// MapBase Parameters
+	// Mapbase Parameters
 	use_legacy_flashlight 0
 	mapbase_core 1
 

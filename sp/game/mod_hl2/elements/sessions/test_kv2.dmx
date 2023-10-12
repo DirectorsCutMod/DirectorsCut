@@ -1,0 +1,367 @@
+<!-- dmx encoding keyvalues2 1 format movieobjects 18 -->
+"DmElement"
+{
+	"id" "elementid" "d7409604-67e2-4d8c-be5f-1c0ea3728b17"
+	"name" "string" "session"
+	"activeClip" "element" "87e36d43-821e-4e33-9dfa-6088c95d9aeb"
+	"miscBin" "element_array" 
+	[
+	]
+	"cameraBin" "element_array" 
+	[
+	]
+	"clipBin" "element_array" 
+	[
+		"element" "87e36d43-821e-4e33-9dfa-6088c95d9aeb"
+	]
+	"settings" "DmElement"
+	{
+		"id" "elementid" "f09d179a-8382-4ae9-9a95-f6a3328bbe4e"
+		"name" "string" "sessionSettings"
+		"timeSelection" "DmeTimeSelection"
+		{
+			"id" "elementid" "6565f2c1-8404-4ea8-8057-f61568b01f19"
+			"name" "string" "timeSelection"
+			"enabled" "bool" "0"
+			"relative" "bool" "0"
+			"falloff_left" "time" "-214748.3647"
+			"falloff_right" "time" "214748.3647"
+			"hold_left" "time" "-214748.3647"
+			"hold_right" "time" "214748.3647"
+			"interpolator_left" "int" "6"
+			"interpolator_right" "int" "6"
+			"threshold" "float" "0.0005"
+			"resampleinterval" "time" "0.0100"
+			"recordingstate" "int" "0"
+		}
+		
+		"graphEditorState" "DmeGraphEditorState"
+		{
+			"id" "elementid" "dcc6a31d-6ef7-4d9d-9325-5169e4c19c3a"
+			"name" "string" "graphEditorState"
+			"displayGrid" "bool" "1"
+		}
+		
+		"proceduralPresets" "DmeProceduralPresetSettings"
+		{
+			"id" "elementid" "de87f6c2-5862-49a5-8a0c-6afb148f869a"
+			"name" "string" "proceduralPresets"
+			"jitterscale" "float" "1"
+			"smoothscale" "float" "1"
+			"jitterscale_vector" "float" "2.5"
+			"smoothscale_vector" "float" "2.5"
+			"jitteriterations" "int" "5"
+			"smoothiterations" "int" "5"
+			"staggerinterval" "time" "0.0833"
+		}
+		
+		"renderSettings" "DmElement"
+		{
+			"id" "elementid" "dcba4906-bbe7-444c-bfb0-5851475afa3f"
+			"name" "string" "renderSettings"
+			"frameRate" "float" "24"
+			"lightAverage" "int" "0"
+			"modelLod" "int" "0"
+			"engineCameraEffects" "bool" "0"
+			"ambientOcclusionMode" "int" "1"
+			"showAmbientOcclusion" "int" "0"
+			"drawGameRenderablesMask" "int" "216"
+			"drawToolRenderablesMask" "int" "15"
+			"toneMapScale" "float" "1"
+			"ProgressiveRefinement" "DmElement"
+			{
+				"id" "elementid" "99e9408c-c45b-45d8-bbc5-0b916eaeed9c"
+				"name" "string" "ProgressiveRefinementSettings"
+				"on" "bool" "1"
+				"useDepthOfField" "bool" "1"
+				"overrideDepthOfFieldQuality" "bool" "0"
+				"overrideDepthOfFieldQualityValue" "int" "1"
+				"useMotionBlur" "bool" "1"
+				"overrideMotionBlurQuality" "bool" "0"
+				"overrideMotionBlurQualityValue" "int" "1"
+				"useAntialiasing" "bool" "1"
+				"overrideShutterSpeed" "bool" "0"
+				"overrideShutterSpeedValue" "float" "0.020833334"
+			}
+			
+		}
+		
+		"posterSettings" "DmElement"
+		{
+			"id" "elementid" "1f3bfafc-aa6a-412f-b34e-9ccb925c16e6"
+			"name" "string" "posterSettings"
+			"width" "int" "1920"
+			"height" "int" "1080"
+			"DPI" "int" "300"
+			"units" "int" "0"
+			"constrainAspect" "bool" "1"
+			"heightInPixels" "bool" "1"
+			"widthInPixels" "bool" "1"
+		}
+		
+		"movieSettings" "DmElement"
+		{
+			"id" "elementid" "b3a770d7-0b37-4052-9664-f3876f99fb24"
+			"name" "string" "movieSettings"
+			"videoTarget" "int" "6"
+			"audioTarget" "int" "2"
+			"stereoscopic" "bool" "0"
+			"stereoSingleFile" "bool" "0"
+			"clearDecals" "bool" "0"
+			"width" "int" "1280"
+			"height" "int" "720"
+			"filename" "string" ""
+		}
+		
+		"sharedPresetGroupSettings" "DmElement"
+		{
+			"id" "elementid" "f56a953d-bd94-4d75-b0be-692e7b76bbee"
+			"name" "string" "sharedPresetGroupSettings"
+			"presetGroupInfos" "element_array" 
+			[
+			]
+		}
+		
+	}
+	
+}
+
+"DmeFilmClip"
+{
+	"id" "elementid" "87e36d43-821e-4e33-9dfa-6088c95d9aeb"
+	"name" "string" "session2"
+	"timeFrame" "DmeTimeFrame"
+	{
+		"id" "elementid" "b6327e87-2179-4f3e-b5b0-9763c5edd4f6"
+		"name" "string" "unnamed"
+		"start" "time" "0.0000"
+		"duration" "time" "60.0000"
+		"offset" "time" "0.0000"
+		"scale" "float" "1"
+	}
+	
+	"color" "color" "0 0 0 0"
+	"text" "string" ""
+	"mute" "bool" "0"
+	"trackGroups" "element_array" 
+	[
+		"DmeTrackGroup"
+		{
+			"id" "elementid" "558a3aef-e67c-4bd2-b141-fd020a2800f5"
+			"name" "string" "Sound"
+			"tracks" "element_array" 
+			[
+				"DmeTrack"
+				{
+					"id" "elementid" "2b9510af-7b11-4176-93b8-d8d970a5c31c"
+					"name" "string" "Dialog"
+					"children" "element_array" 
+					[
+					]
+					"collapsed" "bool" "0"
+					"mute" "bool" "0"
+					"synched" "bool" "1"
+					"clipType" "int" "1"
+					"volume" "float" "1"
+					"displayScale" "float" "1"
+				},
+				"DmeTrack"
+				{
+					"id" "elementid" "22fd8f81-e07f-4335-8aa1-cc0a8187abe8"
+					"name" "string" "Music"
+					"children" "element_array" 
+					[
+					]
+					"collapsed" "bool" "0"
+					"mute" "bool" "0"
+					"synched" "bool" "1"
+					"clipType" "int" "1"
+					"volume" "float" "1"
+					"displayScale" "float" "1"
+				},
+				"DmeTrack"
+				{
+					"id" "elementid" "76e352cb-16b8-4475-938d-abda3f511c6e"
+					"name" "string" "Effects"
+					"children" "element_array" 
+					[
+					]
+					"collapsed" "bool" "0"
+					"mute" "bool" "0"
+					"synched" "bool" "1"
+					"clipType" "int" "1"
+					"volume" "float" "1"
+					"displayScale" "float" "1"
+				}
+			]
+			"visible" "bool" "1"
+			"mute" "bool" "0"
+			"displayScale" "float" "1"
+			"minimized" "bool" "0"
+			"volume" "float" "1"
+			"forcemultitrack" "bool" "0"
+		},
+		"DmeTrackGroup"
+		{
+			"id" "elementid" "9dd168be-1b97-425f-bf6b-54fe914f4a40"
+			"name" "string" "Overlay"
+			"tracks" "element_array" 
+			[
+				"DmeTrack"
+				{
+					"id" "elementid" "7ca23e87-c0b0-43d3-858d-951d61a22d84"
+					"name" "string" "Effects"
+					"children" "element_array" 
+					[
+					]
+					"collapsed" "bool" "0"
+					"mute" "bool" "0"
+					"synched" "bool" "1"
+					"clipType" "int" "2"
+					"volume" "float" "1"
+					"displayScale" "float" "1"
+				}
+			]
+			"visible" "bool" "1"
+			"mute" "bool" "0"
+			"displayScale" "float" "1"
+			"minimized" "bool" "0"
+			"volume" "float" "1"
+			"forcemultitrack" "bool" "0"
+		}
+	]
+	"displayScale" "float" "1"
+	"materialOverlay" "element" ""
+	"mapname" "string" ""
+	"camera" "element" ""
+	"monitorCameras" "element_array" 
+	[
+	]
+	"activeMonitor" "int" "-1"
+	"scene" "element" ""
+	"aviFile" "string" ""
+	"fadeIn" "time" "0.0000"
+	"fadeOut" "time" "0.0000"
+	"inputs" "element_array" 
+	[
+	]
+	"operators" "element_array" 
+	[
+	]
+	"useAviFile" "bool" "0"
+	"animationSets" "element_array" 
+	[
+	]
+	"bookmarkSets" "element_array" 
+	[
+		"DmeBookmarkSet"
+		{
+			"id" "elementid" "03132f46-5a47-439e-87f9-a978c517bae5"
+			"name" "string" "Default Set"
+			"bookmarks" "element_array" 
+			[
+			]
+		}
+	]
+	"activeBookmarkSet" "int" "0"
+	"subClipTrackGroup" "DmeTrackGroup"
+	{
+		"id" "elementid" "8183417f-dea7-462b-a0cf-966a24282e6c"
+		"name" "string" "subClipTrackGroup"
+		"tracks" "element_array" 
+		[
+			"DmeTrack"
+			{
+				"id" "elementid" "499af15d-2738-42f1-be2e-31f3930022fb"
+				"name" "string" "Film"
+				"children" "element_array" 
+				[
+					"DmeFilmClip"
+					{
+						"id" "elementid" "cdd14d30-d2d6-429d-bca6-8e9d3ba7922f"
+						"name" "string" "shot1"
+						"timeFrame" "DmeTimeFrame"
+						{
+							"id" "elementid" "1e360457-2130-44cb-ae78-e97d82c73550"
+							"name" "string" "unnamed"
+							"start" "time" "0.0000"
+							"duration" "time" "60.0000"
+							"offset" "time" "0.0000"
+							"scale" "float" "1"
+						}
+						
+						"color" "color" "0 0 0 0"
+						"text" "string" ""
+						"mute" "bool" "0"
+						"trackGroups" "element_array" 
+						[
+						]
+						"displayScale" "float" "1"
+						"materialOverlay" "element" ""
+						"mapname" "string" ""
+						"camera" "element" ""
+						"monitorCameras" "element_array" 
+						[
+						]
+						"activeMonitor" "int" "-1"
+						"scene" "element" ""
+						"aviFile" "string" ""
+						"fadeIn" "time" "0.0000"
+						"fadeOut" "time" "0.0000"
+						"inputs" "element_array" 
+						[
+						]
+						"operators" "element_array" 
+						[
+						]
+						"useAviFile" "bool" "0"
+						"animationSets" "element_array" 
+						[
+						]
+						"bookmarkSets" "element_array" 
+						[
+							"DmeBookmarkSet"
+							{
+								"id" "elementid" "32f6bfb6-e663-4d2b-9377-ce19a1fbc68d"
+								"name" "string" "Default Set"
+								"bookmarks" "element_array" 
+								[
+								]
+							}
+						]
+						"activeBookmarkSet" "int" "0"
+						"subClipTrackGroup" "element" ""
+						"volume" "float" "1"
+						"concommands" "string_array" 
+						[
+						]
+						"convars" "string_array" 
+						[
+						]
+					}
+				]
+				"collapsed" "bool" "0"
+				"mute" "bool" "0"
+				"synched" "bool" "1"
+				"clipType" "int" "3"
+				"volume" "float" "1"
+				"displayScale" "float" "1"
+			}
+		]
+		"visible" "bool" "1"
+		"mute" "bool" "0"
+		"displayScale" "float" "1"
+		"minimized" "bool" "0"
+		"volume" "float" "1"
+		"forcemultitrack" "bool" "0"
+	}
+	
+	"volume" "float" "1"
+	"concommands" "string_array" 
+	[
+	]
+	"convars" "string_array" 
+	[
+	]
+}
+

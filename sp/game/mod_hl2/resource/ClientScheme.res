@@ -54,13 +54,13 @@ Scheme
 		"Main.Title1.X"			"53"
 		"Main.Title1.Y"			"190"
 		"Main.Title1.Y_hidef"	"184"
-		"Main.Title1.Color"	"255 255 255 255"
+		"Main.Title1.Color"	"183 227 107 255"
 
 		// Top-left corner of secondary title e.g. "DEMO" on the main screen
 		"Main.Title2.X"				"291"
 		"Main.Title2.Y"				"207"
 		"Main.Title2.Y_hidef"		"242"
-		"Main.Title2.Color"	"255 255 255 200"
+		"Main.Title2.Color"	"183 227 107 255"
 
 		// Top-left corner of the menu on the main screen
 		"Main.Menu.X"			"53"
@@ -632,13 +632,12 @@ Scheme
 		{
 			"1"
 			{
-				"name"  "HalfLife2"
+				"name"  "Trebuchet MS"
 				"tall"			"32"
 				"tall_hidef"	"46"
 				"weight" "0"
-				"additive" "0"
+				"additive" "1"
 				"antialias" "1"
-				"custom"	"1" [$OSX]
 			}
 		}
 		CreditsLogo

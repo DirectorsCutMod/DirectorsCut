@@ -8,34 +8,32 @@
 #include "cbase.h"
 
 #include "directorscut.h"
-#include "iclientmode.h"
+#include "vgui/dxeditorpanel.h"
+#include <vgui/IInput.h>
+#include <vgui_controls/Controls.h>
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-DirectorsCutSystem g_DirectorsCutSystem;
-
-DirectorsCutSystem& DirectorsCutGameSystem()
+void DXEditorHelper::LevelShutdownPostEntity()
 {
-	return g_DirectorsCutSystem;
-}
+	DXEditorPanel::DestroyEditor();
+};
 
-void DirectorsCutSystem::PostInit()
+void DXEditorHelper::Update( float ft )
 {
-}
+	static bool bWasTabDown = false;
+	bool bIsTabDown = vgui::input()->IsKeyDown( KEY_TAB );
 
-void DirectorsCutSystem::Shutdown()
-{
-}
+	if ( bIsTabDown != bWasTabDown )
+	{
+		if ( bIsTabDown )
+			DXEditorPanel::ToggleEditor();
 
-void DirectorsCutSystem::LevelInitPostEntity()
-{
-}
+		bWasTabDown = bIsTabDown;
+	}
+};
 
-void DirectorsCutSystem::LevelShutdownPreEntity()
+void DXEditorHelper::LevelInitPostEntity()
 {
-}
-
-void DirectorsCutSystem::Update(float frametime)
-{
-}
+};

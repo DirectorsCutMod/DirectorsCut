@@ -33,13 +33,13 @@ Scheme
 		"OrangeZ"           "255 153 35 255"
 		"OrangeZDim"        "255 153 35 196"
 
-		"IfmMenuDark"       "66 66 66 255"
+		"IfmMenuDark"       "63 62 61 255"
 		// "IfmMenuDarkDim"    "66 66 66 196"
 		// "IfmMenuDarkDim"    "66 66 66 90"
-		"IfmMenuDarkDim"    "66 66 66 255"
+		"IfmMenuDarkDim"    "41 41 41 255"
 
-		"IfmMenu"           "127 127 127 255"
-		"IfmMenuDim"        "87 87 87 192"
+		"IfmMenu"           "63 62 61 255"
+		"IfmMenuDim"        "41 41 41 255"
 
 	}
 
@@ -86,7 +86,7 @@ Scheme
 		Frame.OutOfFocusBgColor			"IfmMenuDarkDim"
 		Frame.FocusTransitionEffectTime	"0.02"	// time it takes for a window to fade in/out on focus/out of focus
 		Frame.TransitionEffectTime		"0.02"	// time it takes for a window to fade in/out on open/close
-		Frame.AutoSnapRange				"4"
+		Frame.AutoSnapRange				"8"
 		FrameGrip.Color1				"200 200 200 196"
 		FrameGrip.Color2				"0 0 0 196"
 		FrameTitleButton.FgColor		"200 200 200 196"
@@ -811,10 +811,7 @@ Scheme
 		FrameBorder
 		{
 			// rounded corners for frames
-			// "backgroundtype" "2"
-
-			// pointy corners for frames
-			"backgroundtype" "0"
+			"backgroundtype" "2"
 		}
 
 		DepressedBorder
@@ -895,7 +892,7 @@ Scheme
 				}
 			}
 		}
-
+		
 		TitleButtonBorder
 		{
 			"backgroundtype" "0"
@@ -911,194 +908,15 @@ Scheme
 			"backgroundtype" "0"
 		}
 
-		ScrollBarSliderBorder
-		{
-			"inset" "0 0 0 0"
-			Left
-			{
-				"1"
-				{
-					"color" "ScrollBarNobBorder.Outer"
-					"offset" "0 0"
-				}
-				"2"
-				{
-					"color" "ScrollBarNobBorder.Inner"
-					"offset" "1 1"
-				}
-			}
-
-			Right
-			{
-				"1"
-				{
-					"color" "ScrollBarNobBorder.Outer"
-					"offset" "0 0"
-				}
-				"2"
-				{
-					"color" "ScrollBarNobBorder.Inner"
-					"offset" "1 1"
-				}
-			}
-
-			Top
-			{
-				"1"
-				{
-					"color" "ScrollBarNobBorder.Outer"
-					"offset" "0 0"
-				}
-				"2"
-				{
-					"color" "ScrollBarNobBorder.Inner"
-					"offset" "1 1"
-				}
-			}
-
-			Bottom
-			{
-				"1"
-				{
-					"color" "ScrollBarNobBorder.Outer"
-					"offset" "0 0"
-				}
-				"2"
-				{
-					"color" "ScrollBarNobBorder.Inner"
-					"offset" "1 1"
-				}
-			}
-		}
-
-		ScrollBarSliderBorderHover
-		{
-			"inset" "0 0 0 0"
-			Left
-			{
-				"1"
-				{
-					"color" "ScrollBarNobBorder.Outer"
-					"offset" "0 0"
-				}
-				"2"
-				{
-					"color" "ScrollBarNobBorderHover.Inner"
-					"offset" "1 1"
-				}
-			}
-
-			Right
-			{
-				"1"
-				{
-					"color" "ScrollBarNobBorder.Outer"
-					"offset" "0 0"
-				}
-				"2"
-				{
-					"color" "ScrollBarNobBorderHover.Inner"
-					"offset" "1 1"
-				}
-			}
-
-			Top
-			{
-				"1"
-				{
-					"color" "ScrollBarNobBorder.Outer"
-					"offset" "0 0"
-				}
-				"2"
-				{
-					"color" "ScrollBarNobBorderHover.Inner"
-					"offset" "1 1"
-				}
-			}
-
-			Bottom
-			{
-				"1"
-				{
-					"color" "ScrollBarNobBorder.Outer"
-					"offset" "0 0"
-				}
-				"2"
-				{
-					"color" "ScrollBarNobBorderHover.Inner"
-					"offset" "1 1"
-				}
-			}
-		}
-
-		ScrollBarSliderBorderDragging
-		{
-			"inset" "0 0 0 0"
-			Left
-			{
-				"1"
-				{
-					"color" "ScrollBarNobBorder.Outer"
-					"offset" "0 0"
-				}
-				"2"
-				{
-					"color" "ScrollBarNobBorderDragging.Inner"
-					"offset" "1 1"
-				}
-			}
-
-			Right
-			{
-				"1"
-				{
-					"color" "ScrollBarNobBorder.Outer"
-					"offset" "0 0"
-				}
-				"2"
-				{
-					"color" "ScrollBarNobBorderDragging.Inner"
-					"offset" "1 1"
-				}
-			}
-
-			Top
-			{
-				"1"
-				{
-					"color" "ScrollBarNobBorder.Outer"
-					"offset" "0 0"
-				}
-				"2"
-				{
-					"color" "ScrollBarNobBorderDragging.Inner"
-					"offset" "1 1"
-				}
-			}
-
-			Bottom
-			{
-				"1"
-				{
-					"color" "ScrollBarNobBorder.Outer"
-					"offset" "0 0"
-				}
-				"2"
-				{
-					"color" "ScrollBarNobBorderDragging.Inner"
-					"offset" "1 1"
-				}
-			}
-		}
-
 		ScrollBarButtonBorder
 		{
-			"inset" "0 0 0 0"
+			"inset" "2 2 0 0" [!$OSX]
+			"inset" "-3 2 0 0" [$OSX]
 			Left
 			{
 				"1"
 				{
-					"color" "Border.Dark"
+					"color" "Border.Bright"
 					"offset" "0 1"
 				}
 			}
@@ -1116,7 +934,7 @@ Scheme
 			{
 				"1"
 				{
-					"color" "Border.Dark"
+					"color" "Border.Bright"
 					"offset" "0 0"
 				}
 			}
@@ -1130,10 +948,11 @@ Scheme
 				}
 			}
 		}
-
+		
 		ScrollBarButtonDepressedBorder
 		{
-			"inset" "0 0 0 0"
+			"inset" "2 2 0 0" [!$OSX]
+			"inset" "-3 2 0 0" [$OSX]
 			Left
 			{
 				"1"
@@ -1147,7 +966,7 @@ Scheme
 			{
 				"1"
 				{
-					"color" "Border.Dark"
+					"color" "Border.Bright"
 					"offset" "1 0"
 				}
 			}
@@ -1165,7 +984,7 @@ Scheme
 			{
 				"1"
 				{
-					"color" "Border.Dark"
+					"color" "Border.Bright"
 					"offset" "0 0"
 				}
 			}
