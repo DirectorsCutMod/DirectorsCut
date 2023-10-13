@@ -72,7 +72,8 @@ DXEditorHelper &DirectorsCutGameSystem()
 
 void DXEditorHelper::LoadDocument( const char* pszDocumentName )
 {
-	DECLARE_DMX_CONTEXT_NODECOMMIT();
+	//DECLARE_DMX_CONTEXT_NODECOMMIT();
+	CloseDocument();
 	
 	CDmxElement* document = (CDmxElement*)DMXAlloc( 50000000 );
 
@@ -90,7 +91,8 @@ void DXEditorHelper::LoadDocument( const char* pszDocumentName )
 
 void DXEditorHelper::NewDocument()
 {
-	DECLARE_DMX_CONTEXT_NODECOMMIT();
+	//DECLARE_DMX_CONTEXT_NODECOMMIT();
+	CloseDocument();
 	
 	CDmxElement* DMX = CreateDmxElement("DmElement");
 	DMX->AddAttribute("name")->SetValue("session");
@@ -120,7 +122,7 @@ void DXEditorHelper::SaveDocument()
 
 void DXEditorHelper::SaveDocument( const char* pszDocumentName )
 {
-	DECLARE_DMX_CONTEXT_NODECOMMIT();
+	//DECLARE_DMX_CONTEXT_NODECOMMIT();
 	CDmxElement* document = GetDocument();
 	if (!document)
 		return;
@@ -135,7 +137,8 @@ void DXEditorHelper::SaveDocument( const char* pszDocumentName )
 
 void DXEditorHelper::CloseDocument()
 {
-	DECLARE_DMX_CONTEXT_NODECOMMIT();
+	//DECLARE_DMX_CONTEXT_NODECOMMIT();
+	m_dmxContextHelper = new CDMXContextHelper( false );
 	SetDocument(NULL);
 	SetDocumentFocusedRoot(NULL);
 	SetFileOpen(false);

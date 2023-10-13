@@ -59,6 +59,7 @@ public:
 	bool NeedsUpdate() { return bNeedsUpdate; };
 
 protected:
+	CDMXContextHelper* m_dmxContextHelper;
 	bool m_bFileOpen = false;
 	const char* m_pszLoadedDocumentName = NULL;
 	bool m_bMouseCaptured;

@@ -41,6 +41,7 @@ public:
 protected:
     void RecursivePopulateTreeFromDocument( CDmxElement* pElement, int parentIndex );
 
+    char m_selectedElement[ 256 ];
     TreeView* m_pTree;
     Splitter* m_pSplitter;
     TextEntry* m_pPropTextEntry;

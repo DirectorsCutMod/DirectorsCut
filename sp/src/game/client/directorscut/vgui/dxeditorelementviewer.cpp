@@ -25,9 +25,10 @@
 #undef RegSetValueEx
 #include <windows.h>
 
-
 // memdbgon must be the last include file in a .cpp file!!!
 #include <tier0/memdbgon.h>
+
+// This file is currently a mess but it works
 
 #define TREE_TEXT_COLOR Color( 200, 255, 200, 255 )
 #define LIST_TEXT_COLOR TREE_TEXT_COLOR
@@ -53,7 +54,7 @@ DXEditorElementViewer::DXEditorElementViewer(Panel* pParent)
     m_pPropTextEntry = new TextEntry(m_pSplitter->GetChild(1), "DXEditorElementViewerPropTextEntry");
     m_pPropCheckButton = new CheckButton(m_pSplitter->GetChild(1), "DXEditorElementViewerPropCheckButton", "");
     m_pPropLabel = new Label(m_pSplitter->GetChild(1), "DXEditorElementViewerPropLabel", "");
-    m_pColorPickerButton = new CColorPickerButton(m_pSplitter->GetChild(1), "DXEditorElementViewerPropColorPickerButton");
+    m_pColorPickerButton = new CColorPickerButton(m_pSplitter->GetChild(1), "DXEditorElementViewerPropColorPickerButton", this);
     m_pMakeRootButton = new Button(m_pSplitter->GetChild(1), "DXEditorElementViewerMakeRootButton", "Make Root");
 
     // Hide all property views
@@ -64,9 +65,9 @@ DXEditorElementViewer::DXEditorElementViewer(Panel* pParent)
     m_pMakeRootButton->SetVisible(false);
 
     // Disable editing of properties
-    m_pPropTextEntry->SetEditable(false);
-    m_pPropCheckButton->SetCheckButtonCheckable(false);
-    m_pColorPickerButton->SetMouseClickEnabled(MOUSE_LEFT, false);
+    //m_pPropTextEntry->SetEditable(false);
+    //m_pPropCheckButton->SetCheckButtonCheckable(false);
+    //m_pColorPickerButton->SetMouseClickEnabled(MOUSE_LEFT, false);
 
     // Actions
     m_pTree->AddActionSignalTarget(this);
@@ -81,7 +82,7 @@ DXEditorElementViewer::DXEditorElementViewer(Panel* pParent)
 
 void DXEditorElementViewer::OnTreeViewItemSelected()
 {
-    DECLARE_DMX_CONTEXT_NODECOMMIT();
+    //DECLARE_DMX_CONTEXT_NODECOMMIT();
     // Set appropriate property view
     int itemIndex = m_pTree->GetFirstSelectedItem();
     if (itemIndex == -1)
@@ -111,16 +112,19 @@ void DXEditorElementViewer::OnTreeViewItemSelected()
     {
         m_pPropTextEntry->SetVisible(true);
         m_pPropTextEntry->SetText(kv->GetString("Data"));
+        m_pPropTextEntry->GotoTextEnd();
     }
     else if (Q_strcmp(pszType, "int") == 0)
     {
         m_pPropTextEntry->SetVisible(true);
         m_pPropTextEntry->SetText(kv->GetString("Data"));
+        m_pPropTextEntry->GotoTextEnd();
     }
     else if (Q_strcmp(pszType, "float") == 0)
     {
         m_pPropTextEntry->SetVisible(true);
         m_pPropTextEntry->SetText(kv->GetString("Data"));
+        m_pPropTextEntry->GotoTextEnd();
     }
     else if (Q_strcmp(pszType, "bool") == 0)
     {
@@ -132,13 +136,35 @@ void DXEditorElementViewer::OnTreeViewItemSelected()
     else if (Q_strcmp(pszType, "color") == 0)
     {
         m_pColorPickerButton->SetVisible(true);
-        // Get all color %i values from string
-        int r, g, b, a;
-        sscanf(kv->GetString("Data"), "%i %i %i %i", &r, &g, &b, &a);
-        Color clr(r, g, b, a);
+        Color clr;
+        clr.SetRawColor(atoi(kv->GetString("Data")));
         m_pColorPickerButton->SetColor(clr);
-        m_pColorPickerButton->SetDefaultColor(clr, clr);
-        m_pColorPickerButton->SetText(kv->GetString("Text"));
+        m_pColorPickerButton->SetEnabled(true);
+    }
+    // arrays
+    else if (Q_strcmp(pszType, "int_array") == 0)
+    {
+        m_pPropTextEntry->SetVisible(true);
+        m_pPropTextEntry->SetText(kv->GetString("Data"));
+        m_pPropTextEntry->GotoTextEnd();
+    }
+    else if (Q_strcmp(pszType, "float_array") == 0)
+    {
+        m_pPropTextEntry->SetVisible(true);
+        m_pPropTextEntry->SetText(kv->GetString("Data"));
+        m_pPropTextEntry->GotoTextEnd();
+    }
+    else if (Q_strcmp(pszType, "bool_array") == 0)
+    {
+        m_pPropTextEntry->SetVisible(true);
+        m_pPropTextEntry->SetText(kv->GetString("Data"));
+        m_pPropTextEntry->GotoTextEnd();
+    }
+    else if (Q_strcmp(pszType, "color_array") == 0)
+    {
+        m_pPropTextEntry->SetVisible(true);
+        m_pPropTextEntry->SetText(kv->GetString("Data"));
+        m_pPropTextEntry->GotoTextEnd();
     }
     // selecting elements will make them the root element
     else if (Q_strcmp(pszType, "element") == 0)
@@ -156,13 +182,25 @@ void DXEditorElementViewer::OnTreeViewItemSelected()
 
 void DXEditorElementViewer::RecursivePopulateTreeFromDocument( CDmxElement* pElement, int parentIndex )
 {
-    DECLARE_DMX_CONTEXT_NODECOMMIT();
+    //DECLARE_DMX_CONTEXT_NODECOMMIT();
     if( pElement == NULL)
     {
         // Find root element
         CDmxElement* pRoot = DirectorsCutGameSystem().GetDocumentFocusedRoot();
         if (pRoot == NULL)
             pRoot = DirectorsCutGameSystem().GetDocument();
+
+        // Clear tree view
+        int selIndex = m_pTree->GetFirstSelectedItem();
+        if (selIndex != -1)
+        {
+            KeyValues* selData = m_pTree->GetItemData(selIndex);
+            if (selData != NULL)
+            {
+                // Set selected element
+                Q_strncpy(m_selectedElement, selData->GetString("Text"), 256);
+            }
+        }
 
         // Get current tree view bounds
         int x, y, w, h;
@@ -200,7 +238,6 @@ void DXEditorElementViewer::RecursivePopulateTreeFromDocument( CDmxElement* pEle
         UniqueIdToString( pRoot->GetId(), uniqueId, 40 );
         kv->SetString( "UniqueId", uniqueId );
         int rootIndex = m_pTree->AddItem( kv, -1 );
-
         RecursivePopulateTreeFromDocument( pRoot, rootIndex );
     }
     else
@@ -208,6 +245,7 @@ void DXEditorElementViewer::RecursivePopulateTreeFromDocument( CDmxElement* pEle
         // Add attributes
         for (int i = 0; i < pElement->AttributeCount(); i++)
         {
+            //DECLARE_DMX_CONTEXT_NODECOMMIT();
             int index = -1;
             CDmxAttribute* pCur = pElement->GetAttribute(i);
             CDmxElement* subElem = NULL;
@@ -255,7 +293,7 @@ void DXEditorElementViewer::RecursivePopulateTreeFromDocument( CDmxElement* pEle
                 break;
             case AT_COLOR:
                 kv->SetString("Type", "color");
-                Q_snprintf(pszData, 32, "%f %f %f %f", pCur->GetValue<Color>().r(), pCur->GetValue<Color>().g(), pCur->GetValue<Color>().b(), pCur->GetValue<Color>().a());
+                Q_snprintf(pszData, 32, "%i", pCur->GetValue<Color>().GetRawColor());
                 kv->SetString("Data", pszData);
                 index = m_pTree->AddItem(kv, parentIndex);
                 break;
@@ -277,90 +315,45 @@ void DXEditorElementViewer::RecursivePopulateTreeFromDocument( CDmxElement* pEle
                         kv->SetString("Type", "element");
                         kv->SetString("Data", "");
                         m_pTree->AddItem(kv, index);
-                        /*
-                        RecursivePopulateTreeFromDocument(subElem, subIndex);
-                        */
+                        //RecursivePopulateTreeFromDocument(subElem, subIndex);
                     }
                 }
                 break;
             case AT_INT_ARRAY:
                 kv->SetString("Type", "int_array");
-                Q_snprintf(pszData, 32, "%i item%s", pCur->GetArrayCount(), pCur->GetArrayCount() == 1 ? "" : "s");
+                for (int j = 0; j < pCur->GetArrayCount(); j++)
+                {
+                    Q_snprintf(pszData, 256, "%s%i", j == 0 ? "" : ", ", pCur->GetArray<int>()[j]);
+                }
                 kv->SetString("Data", pszData);
                 index = m_pTree->AddItem(kv, parentIndex);
-                if (pCur->GetArrayCount() > 0)
-                {
-                    for (int j = 0; j < pCur->GetArrayCount(); j++)
-                    {
-                        kv = new KeyValues("TVI");
-                        kv->SetString("UniqueId", "");
-                        Q_snprintf(pszData, 32, "%i", j);
-                        kv->SetString("Text", pszData);
-                        kv->SetString("Type", "int");
-                        Q_snprintf(pszData, 32, "%i", pCur->GetArray<int>()[j]);
-                        kv->SetString("Data", pszData);
-                        m_pTree->AddItem(kv, index);
-                    }
-                }
                 break;
             case AT_FLOAT_ARRAY:
                 kv->SetString("Type", "float_array");
-                Q_snprintf(pszData, 32, "%i item%s", pCur->GetArrayCount(), pCur->GetArrayCount() == 1 ? "" : "s");
+                for (int j = 0; j < pCur->GetArrayCount(); j++)
+                {
+                    Q_snprintf(pszData, 256, "%s%f", j == 0 ? "" : ", ", pCur->GetArray<float>()[j]);
+                }
                 kv->SetString("Data", pszData);
                 index = m_pTree->AddItem(kv, parentIndex);
-                if (pCur->GetArrayCount() > 0)
-                {
-                    for (int j = 0; j < pCur->GetArrayCount(); j++)
-                    {
-                        kv = new KeyValues("TVI");
-                        kv->SetString("UniqueId", "");
-                        Q_snprintf(pszData, 32, "%i", j);
-                        kv->SetString("Text", pszData);
-                        kv->SetString("Type", "float");
-                        Q_snprintf(pszData, 32, "%f", pCur->GetArray<float>()[j]);
-                        kv->SetString("Data", pszData);
-                        m_pTree->AddItem(kv, index);
-                    }
-                }
                 break;
             case AT_BOOL_ARRAY:
                 kv->SetString("Type", "bool_array");
-                Q_snprintf(pszData, 32, "%i item%s", pCur->GetArrayCount(), pCur->GetArrayCount() == 1 ? "" : "s");
+                for (int j = 0; j < pCur->GetArrayCount(); j++)
+                {
+                    Q_snprintf(pszData, 256, "%s%s", j == 0 ? "" : ", ", pCur->GetArray<bool>()[j] ? "true" : "false");
+                }
                 kv->SetString("Data", pszData);
                 index = m_pTree->AddItem(kv, parentIndex);
-                if (pCur->GetArrayCount() > 0)
-                {
-                    for (int j = 0; j < pCur->GetArrayCount(); j++)
-                    {
-                        kv = new KeyValues("TVI");
-                        kv->SetString("UniqueId", "");
-                        Q_snprintf(pszData, 32, "%i", j);
-                        kv->SetString("Text", pszData);
-                        kv->SetString("Type", "bool");
-                        kv->SetString("Data", pCur->GetArray<bool>()[j] ? "true" : "false");
-                        m_pTree->AddItem(kv, index);
-                    }
-                }
                 break;
             case AT_COLOR_ARRAY:
                 kv->SetString("Type", "color_array");
-                Q_snprintf(pszData, 32, "%i item%s", pCur->GetArrayCount(), pCur->GetArrayCount() == 1 ? "" : "s");
+                for (int j = 0; j < pCur->GetArrayCount(); j++)
+                {
+                    Q_snprintf(pszData, 256, "%s%i", j == 0 ? "" : ", ", pCur->GetArray<Color>()[j].GetRawColor());
+                }
                 kv->SetString("Data", pszData);
                 index = m_pTree->AddItem(kv, parentIndex);
-                if (pCur->GetArrayCount() > 0)
-                {
-                    for (int j = 0; j < pCur->GetArrayCount(); j++)
-                    {
-                        kv = new KeyValues("TVI");
-                        kv->SetString("UniqueId", "");
-                        Q_snprintf(pszData, 32, "%i", j);
-                        kv->SetString("Text", pszData);
-                        kv->SetString("Type", "color");
-                        Q_snprintf(pszData, 32, "%i %i %i %i", pCur->GetArray<Color>()[j].r(), pCur->GetArray<Color>()[j].g(), pCur->GetArray<Color>()[j].b(), pCur->GetArray<Color>()[j].a());
-                        kv->SetString("Data", pszData);
-                        m_pTree->AddItem(kv, index);
-                    }
-                }
                 break;
             }
             if(index == -1)
@@ -370,14 +363,6 @@ void DXEditorElementViewer::RecursivePopulateTreeFromDocument( CDmxElement* pEle
             }
         }
     }
-    
-    // Expand all items
-    CUtlVector <int> expandedItems;
-    for (int i = 0; i < m_pTree->GetItemCount(); i++)
-    {
-        expandedItems.AddToTail(i);
-    }
-    m_pTree->ExpandItem(m_pTree->GetRootItemIndex(), true);
 }
 
 void DXEditorElementViewer::MakeRootButtonClick()
@@ -389,6 +374,15 @@ void DXEditorElementViewer::MakeRootButtonClick()
 		Msg("Error: No tree view item selected.\n");
 		return;
 	}
+
+    // If pRoot's uniqueId is the same as the one we're trying to set, then set to the root document
+    if (itemIndex == m_pTree->GetRootItemIndex())
+    {
+        // Set new root
+        DirectorsCutGameSystem().SetDocumentFocusedRoot(NULL);
+        DirectorsCutGameSystem().SetNeedsUpdate(true);
+        return;
+    }
 
     KeyValues* kv = m_pTree->GetItemData(itemIndex);
     if (kv == NULL)
@@ -414,15 +408,6 @@ void DXEditorElementViewer::MakeRootButtonClick()
     if (pRoot == NULL)
     {
         Msg("No document loaded.\n");
-        return;
-    }
-
-    // If pRoot's uniqueId is the same as the one we're trying to set, then set to the root document
-    if (itemIndex == m_pTree->GetRootItemIndex())
-    {
-        // Set new root
-        DirectorsCutGameSystem().SetDocumentFocusedRoot(NULL);
-        DirectorsCutGameSystem().SetNeedsUpdate(true);
         return;
     }
 
@@ -463,12 +448,6 @@ void DXEditorElementViewer::MakeRootButtonClick()
         }
     }
 
-    if (pNewRoot == NULL)
-    {
-        Msg("Error: Could not find element with uniqueId %s.\n", uniqueIdStr);
-        return;
-    }
-
     // Set new root
     DirectorsCutGameSystem().SetDocumentFocusedRoot(pNewRoot);
     DirectorsCutGameSystem().SetNeedsUpdate(true);
@@ -476,6 +455,8 @@ void DXEditorElementViewer::MakeRootButtonClick()
 
 void DXEditorElementViewer::OnThink()
 {
+    //DECLARE_DMX_CONTEXT_NODECOMMIT();
+    
     // Root button click
     if (m_pMakeRootButton->IsVisible() && m_pMakeRootButton->IsSelected())
     {
@@ -483,11 +464,193 @@ void DXEditorElementViewer::OnThink()
         MakeRootButtonClick();
     }
 
+    // Check to see if properties had changed from the tree view data
+    int itemIndex = m_pTree->GetFirstSelectedItem();
+    if (itemIndex != -1)
+    {
+        KeyValues* kv = m_pTree->GetItemData(itemIndex);
+        if (kv != NULL)
+        {
+            const char* pszType = kv->GetString("Type");
+            if (Q_strcmp(pszType, "string") == 0
+                || Q_strcmp(pszType, "int") == 0
+                || Q_strcmp(pszType, "float") == 0
+                || Q_strcmp(pszType, "int_array") == 0
+                || Q_strcmp(pszType, "float_array") == 0
+                || Q_strcmp(pszType, "bool_array") == 0
+                || Q_strcmp(pszType, "color_array") == 0)
+            {
+                // Check to see if the property has changed
+                char pszTextEntry[256];
+                m_pPropTextEntry->GetText(pszTextEntry, 256);
+                if (Q_strcmp(pszTextEntry, kv->GetString("Data")) != 0)
+                {
+                    // Update property
+                    kv->SetString("Data", pszTextEntry);
+                    const char* pszText = kv->GetString("Text");
+                    Msg("Updating %s to %s\n", pszText, pszTextEntry);
+                    CDmxElement* pRoot = DirectorsCutGameSystem().GetDocumentFocusedRoot();
+                    if (pRoot == NULL)
+                        pRoot = DirectorsCutGameSystem().GetDocument();
+                    if (pRoot == NULL)
+                    {
+                        Msg("No document loaded.\n");
+                        return;
+                    }
+                    if (Q_strcmp(pszType, "string") == 0)
+                    {
+                        pRoot->SetValue<CUtlString>(pszText, pszTextEntry);
+                    }
+                    else if (Q_strcmp(pszType, "int") == 0)
+                    {
+                        pRoot->SetValue<int>(pszText, atoi(pszTextEntry));
+                    }
+                    else if (Q_strcmp(pszType, "float") == 0)
+                    {
+                        pRoot->SetValue<float>(pszText, atof(pszTextEntry));
+                    }
+                    // arrays are comma separated
+                    else if (Q_strcmp(pszType, "int_array") == 0)
+                    {
+                        CUtlVector<int> intArray;
+                        char* pszToken = strtok(pszTextEntry, ",");
+                        while (pszToken != NULL)
+                        {
+                            intArray.AddToTail(atoi(pszToken));
+                            pszToken = strtok(NULL, ",");
+                        }
+                        pRoot->GetAttribute(pszText)->GetArrayForEdit<int>().RemoveAll();
+                        for (int i = 0; i < intArray.Count(); i++)
+                        {
+                            pRoot->GetAttribute(pszText)->GetArrayForEdit<int>().AddToTail(intArray[i]);
+						}
+                    }
+                    else if (Q_strcmp(pszType, "float_array") == 0)
+                    {
+                        CUtlVector<float> floatArray;
+                        char* pszToken = strtok(pszTextEntry, ",");
+                        while (pszToken != NULL)
+                        {
+                            floatArray.AddToTail(atof(pszToken));
+                            pszToken = strtok(NULL, ",");
+                        }
+                        pRoot->GetAttribute(pszText)->GetArrayForEdit<float>().RemoveAll();
+                        for (int i = 0; i < floatArray.Count(); i++)
+                        {
+                            pRoot->GetAttribute(pszText)->GetArrayForEdit<float>().AddToTail(floatArray[i]);
+                        }
+                    }
+                    else if (Q_strcmp(pszType, "bool_array") == 0)
+                    {
+                        CUtlVector<bool> boolArray;
+                        char* pszToken = strtok(pszTextEntry, ",");
+                        while (pszToken != NULL)
+                        {
+                            boolArray.AddToTail(Q_strcmp(pszToken, "true") == 0);
+                            pszToken = strtok(NULL, ",");
+                        }
+                        pRoot->GetAttribute(pszText)->GetArrayForEdit<bool>().RemoveAll();
+                        for (int i = 0; i < boolArray.Count(); i++)
+                        {
+                            pRoot->GetAttribute(pszText)->GetArrayForEdit<bool>().AddToTail(boolArray[i]);
+                        }
+                    }
+                    else if (Q_strcmp(pszType, "color_array") == 0)
+                    {
+                        CUtlVector<Color> colorArray;
+                        char* pszToken = strtok(pszTextEntry, ",");
+                        while (pszToken != NULL)
+                        {
+                            int rawColor = atoi(pszToken);
+                            Color clr;
+                            clr.SetRawColor(rawColor);
+                            colorArray.AddToTail(clr);
+                            pszToken = strtok(NULL, ",");
+                        }
+                        pRoot->GetAttribute(pszText)->GetArrayForEdit<Color>().RemoveAll();
+                        for (int i = 0; i < colorArray.Count(); i++)
+                        {
+                            pRoot->GetAttribute(pszText)->GetArrayForEdit<Color>().AddToTail(colorArray[i]);
+                        }
+                    }
+                    DirectorsCutGameSystem().SetNeedsUpdate(true);
+                }
+            }
+            else if (Q_strcmp(pszType, "bool") == 0)
+            {
+                // Check to see if the property has changed
+                bool bSelected = m_pPropCheckButton->IsSelected();
+                if (Q_strcmp(bSelected ? "true" : "false", kv->GetString("Data")) != 0)
+                {
+                    // Update property
+                    kv->SetString("Data", bSelected ? "true" : "false");
+                    const char* pszText = kv->GetString("Text");
+                    Msg("Updating %s to %s\n", pszText, bSelected ? "true" : "false");
+                    CDmxElement* pRoot = DirectorsCutGameSystem().GetDocumentFocusedRoot();
+                    if (pRoot == NULL)
+                        pRoot = DirectorsCutGameSystem().GetDocument();
+                    if (pRoot == NULL)
+                    {
+                        Msg("No document loaded.\n");
+                        return;
+                    }
+                    pRoot->SetValue<bool>(pszText, bSelected);
+                    DirectorsCutGameSystem().SetNeedsUpdate(true);
+                }
+            }
+            else if (Q_strcmp(pszType, "color") == 0)
+            {
+                // Check to see if the property has changed
+                Color clr = m_pColorPickerButton->GetColor();
+                char pszTextEntry[256];
+                Q_snprintf(pszTextEntry, 256, "%i", clr.GetRawColor());
+                if (Q_strcmp(pszTextEntry, kv->GetString("Data")) != 0)
+                {
+                    // Update property
+                    const char* pszText = kv->GetString("Text");
+                    Msg("Updating %s from %s to %s\n", pszText, kv->GetString("Data"), pszTextEntry);
+                    kv->SetString("Data", pszTextEntry);
+                    CDmxElement* pRoot = DirectorsCutGameSystem().GetDocumentFocusedRoot();
+                    if (pRoot == NULL)
+                        pRoot = DirectorsCutGameSystem().GetDocument();
+                    if (pRoot == NULL)
+                    {
+                        Msg("No document loaded.\n");
+                        return;
+                    }
+                    pRoot->SetValue<Color>(pszText, clr);
+                    DirectorsCutGameSystem().SetNeedsUpdate(true);
+                }
+            }
+        }
+    }
+
     if(DirectorsCutGameSystem().NeedsUpdate() == true)
     {
         Msg("Updating element viewer...\n");
         DirectorsCutGameSystem().SetNeedsUpdate(false);
         RecursivePopulateTreeFromDocument(NULL, -1);
+        // Expand all items
+        CUtlVector <int> expandedItems;
+        for (int i = 0; i < m_pTree->GetItemCount(); i++)
+        {
+            expandedItems.AddToTail(i);
+        }
+        m_pTree->ExpandItem(m_pTree->GetRootItemIndex(), true);
+        // Find previously selected item and select it again
+        for (int i = 0; i < m_pTree->GetItemCount(); i++)
+        {
+            KeyValues* kv = m_pTree->GetItemData(i);
+            if (kv != NULL)
+            {
+                const char* pszText = kv->GetString("Text");
+                if (Q_strcmp(pszText, m_selectedElement) == 0)
+                {
+                    m_pTree->AddSelectedItem(i, true, false, true);
+                    break;
+                }
+            }
+        }
     }
 
     int x, y, w, h;
