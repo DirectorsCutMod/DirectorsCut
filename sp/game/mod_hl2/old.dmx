@@ -1,0 +1,218 @@
+<!-- dmx encoding keyvalues2 1 format sfm_session 1 -->
+"DmElement"
+{
+	"id" "elementid" "3d8d5375-d307-4e8e-9a31-72c6ba12a6f7"
+	"name" "string" "session"
+	"editorType" "string" "ifm"
+	"activeClip" "element" "bdb47f87-5d5f-4368-945d-e979869e82f5"
+	"miscBin" "element_array" 
+	[
+	]
+	"cameraBin" "element_array" 
+	[
+	]
+	"clipBin" "element_array" 
+	[
+		"element" "bdb47f87-5d5f-4368-945d-e979869e82f5"
+	]
+	"settings" "DmElement"
+	{
+		"id" "elementid" "88a96722-42b5-4abb-a999-909a88751e56"
+		"name" "string" "sessionSettings"
+		"timeSelection" "DmeTimeSelection"
+		{
+			"id" "elementid" "efac107d-bbac-4a48-bb32-c47e3291b4fc"
+			"name" "string" "timeSelection"
+			"enabled" "bool" "0"
+			"relative" "bool" "0"
+			"falloff_left" "int" "-10000"
+			"falloff_right" "int" "10000"
+			"hold_left" "int" "0"
+			"hold_right" "int" "0"
+			"interpolator_left" "int" "6"
+			"interpolator_right" "int" "6"
+			"threshold" "float" "0.0005"
+			"recordingstate" "int" "3"
+		}
+		
+		"animationSetOverlayBackground" "color" "0 0 0 192"
+		"standardColors" "color_array" 
+		[
+			"0 0 0 128",
+			"194 120 0 128",
+			"255 0 100 128",
+			"200 200 255 128",
+			"255 255 255 128"
+		]
+		"proceduralPresets" "DmeProceduralPresetSettings"
+		{
+			"id" "elementid" "860c52ff-4a70-41a6-9a2f-497238a646e2"
+			"name" "string" "proceduralPresets"
+			"jitterscale" "float" "1"
+			"smoothscale" "float" "1"
+			"sharpenscale" "float" "1"
+			"softenscale" "float" "1"
+			"jitteriterations" "int" "5"
+			"smoothiterations" "int" "5"
+			"sharpeniterations" "int" "1"
+			"softeniterations" "int" "1"
+			"staggerinterval" "int" "833"
+		}
+		
+		"renderSettings" "DmElement"
+		{
+			"id" "elementid" "00165626-856f-4d05-b27c-48f99ec920a8"
+			"name" "string" "renderSettings"
+			"frameRate" "float" "24"
+			"lightAverage" "int" "0"
+			"showFocalPlane" "int" "0"
+			"modelLod" "int" "0"
+			"ProgressiveRefinement" "DmElement"
+			{
+				"id" "elementid" "705a0edc-6402-4637-b30e-af8688d0a482"
+				"name" "string" "ProgressiveRefinementSettings"
+				"on" "bool" "1"
+				"useDepthOfField" "bool" "1"
+				"overrideDepthOfFieldQuality" "bool" "0"
+				"overrideDepthOfFieldQualityValue" "int" "1"
+				"useMotionBlur" "bool" "1"
+				"overrideMotionBlurQuality" "bool" "0"
+				"overrideMotionBlurQualityValue" "int" "1"
+				"useAntialiasing" "bool" "0"
+				"overrideShutterSpeed" "bool" "0"
+				"overrideShutterSpeedValue" "float" "0.020833334"
+			}
+			
+		}
+		
+	}
+	
+}
+
+"DmeFilmClip"
+{
+	"id" "elementid" "bdb47f87-5d5f-4368-945d-e979869e82f5"
+	"name" "string" "sequence"
+	"timeFrame" "DmeTimeFrame"
+	{
+		"id" "elementid" "413c128a-49a8-42c9-8328-0486904644e7"
+		"name" "string" "unnamed"
+		"startTime" "int" "0"
+		"durationTime" "int" "600000"
+		"offsetTime" "int" "0"
+		"scale" "float" "1"
+	}
+	
+	"color" "color" "0 0 0 0"
+	"text" "string" ""
+	"mute" "bool" "0"
+	"trackGroups" "element_array" 
+	[
+	]
+	"materialOverlay" "element" ""
+	"mapname" "string" ""
+	"camera" "element" ""
+	"monitorCameras" "element_array" 
+	[
+	]
+	"activeMonitor" "int" "-1"
+	"lights" "element_array" 
+	[
+	]
+	"scene" "element" ""
+	"aviFile" "string" ""
+	"fadeIn" "int" "0"
+	"fadeOut" "int" "0"
+	"inputs" "element_array" 
+	[
+	]
+	"operators" "element_array" 
+	[
+	]
+	"useAviFile" "bool" "0"
+	"animationSets" "element_array" 
+	[
+	]
+	"bookmarks" "element_array" 
+	[
+	]
+	"subClipTrackGroup" "DmeTrackGroup"
+	{
+		"id" "elementid" "e390f57f-7011-43a3-af3a-6cad106dbc50"
+		"name" "string" "subClipTrackGroup"
+		"tracks" "element_array" 
+		[
+			"DmeTrack"
+			{
+				"id" "elementid" "8441d057-ca0c-4578-a750-2287352bdfed"
+				"name" "string" "Film"
+				"children" "element_array" 
+				[
+					"DmeFilmClip"
+					{
+						"id" "elementid" "ae39fdee-61b3-4e79-a475-754b57f7b3a5"
+						"name" "string" "shot"
+						"timeFrame" "DmeTimeFrame"
+						{
+							"id" "elementid" "d93342dd-51a0-46e2-8e59-467af29a8883"
+							"name" "string" "unnamed"
+							"startTime" "int" "0"
+							"durationTime" "int" "600000"
+							"offsetTime" "int" "0"
+							"scale" "float" "1"
+						}
+						
+						"color" "color" "0 0 0 0"
+						"text" "string" ""
+						"mute" "bool" "0"
+						"trackGroups" "element_array" 
+						[
+						]
+						"materialOverlay" "element" ""
+						"mapname" "string" ""
+						"camera" "element" ""
+						"monitorCameras" "element_array" 
+						[
+						]
+						"activeMonitor" "int" "-1"
+						"lights" "element_array" 
+						[
+						]
+						"scene" "element" ""
+						"aviFile" "string" ""
+						"fadeIn" "int" "0"
+						"fadeOut" "int" "0"
+						"inputs" "element_array" 
+						[
+						]
+						"operators" "element_array" 
+						[
+						]
+						"useAviFile" "bool" "0"
+						"animationSets" "element_array" 
+						[
+						]
+						"bookmarks" "element_array" 
+						[
+						]
+						"subClipTrackGroup" "element" ""
+						"volume" "float" "1"
+					}
+				]
+				"collapsed" "bool" "0"
+				"mute" "bool" "0"
+				"synched" "bool" "1"
+				"clipType" "int" "3"
+				"volume" "float" "1"
+			}
+		]
+		"visible" "bool" "1"
+		"mute" "bool" "0"
+		"displaySize" "int" "110"
+		"minimized" "bool" "0"
+		"volume" "float" "1"
+	}
+	
+	"volume" "float" "1"
+}
+

@@ -27,6 +27,10 @@ public:
 	virtual void Paint();
 	virtual void OnThink();
 
+	virtual void OnMousePressed(MouseCode code);
+	virtual void OnMouseReleased(MouseCode code);
+	virtual void OnCursorMoved(int x, int y);
+
 protected:
 	int m_nTextureID;
 	IMaterial *m_pScreenMaterial;

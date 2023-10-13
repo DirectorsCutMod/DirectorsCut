@@ -18,6 +18,10 @@
 #include <vgui_controls/TreeView.h>
 #include <vgui_controls/ListPanel.h>
 #include <vgui_controls/Button.h>
+#include <vgui_controls/Splitter.h>
+#include <vgui_controls/TextEntry.h>
+#include <vgui_controls/CheckButton.h>
+#include <matsys_controls/colorpickerpanel.h>
 
 using namespace vgui;
 
@@ -28,23 +32,22 @@ class DXEditorElementViewer : public EditablePanel
 public:
 	DXEditorElementViewer( Panel *pParent );
 
-    void OnViewItemSelected();
-
     MESSAGE_FUNC( OnTreeViewItemSelected, "TreeViewItemSelected" );
-	MESSAGE_FUNC( OnItemSelected, "ItemSelected" );
+    void MakeRootButtonClick();
 
     virtual void ApplySchemeSettings( IScheme *scheme );
     virtual void OnThink();
 
 protected:
-    void RecursivePopulateListFromTree( int current, CUtlVector< KeyValues* >& items );
+    void RecursivePopulateTreeFromDocument( CDmxElement* pElement, int parentIndex );
 
     TreeView* m_pTree;
-    ListPanel* m_pList;
-    Button* m_pBackButton;
-    Button* m_pForwardButton;
-    Button* m_pUpButton;
-    Button* m_pRefreshButton;
+    Splitter* m_pSplitter;
+    TextEntry* m_pPropTextEntry;
+    CheckButton* m_pPropCheckButton;
+    Label* m_pPropLabel;
+    CColorPickerButton* m_pColorPickerButton;
+    Button* m_pMakeRootButton;
 };
 
 #endif // DXEDITORELEMENTVIEWER_H

@@ -9,6 +9,7 @@
 
 #include <KeyValues.h>
 
+#include "../directorscut.h"
 #include "dxeditorpanel.h"
 
 #include "ienginevgui.h"
@@ -220,21 +221,14 @@ DXEditorPanel::DXEditorPanel( VPANEL pParent )
 	m_pMenuBar = new MenuBar( m_pPanel, "menu_bar" );
 	m_pMenuBar->SetBounds( 0, 42, w, 24 );
 	m_pMBut_File = new MenuButton( m_pPanel, "mbut_file", "File" );
-	m_pMBut_File->AddActionSignalTarget( this );
 	Menu *pMenu_File = new Menu( m_pMBut_File, "" );
-	pMenu_File->AddMenuItem( "New", new KeyValues("onmenufile","entry",ER_FMENU_NEW), m_pPanel );
+	pMenu_File->AddMenuItem( "New", "New", "newfile", this );
+	pMenu_File->AddMenuItem( "Open", "Open", "openfile", this );
+	pMenu_File->AddMenuItem( "Save", "Save", "savefile", this );
+	pMenu_File->AddMenuItem( "Save As", "Save As", "savefileas", this );
+	pMenu_File->AddMenuItem( "Close", "Close", "closefile", this );
 	pMenu_File->AddSeparator();
-	pMenu_File->AddMenuItem( "Open", new KeyValues("onmenufile","entry",ER_FMENU_OPEN), m_pPanel );
-	pMenu_File->AddSeparator();
-	pMenu_File->AddMenuItem( "Save", new KeyValues("onmenufile","entry",ER_FMENU_SAVE), m_pPanel );
-	pMenu_File->AddMenuItem( "Save as", new KeyValues("onmenufile","entry",ER_FMENU_SAVE_AS), m_pPanel );
-	pMenu_File->AddMenuItem( "Save all", new KeyValues("onmenufile","entry",ER_FMENU_SAVE_ALL), m_pPanel );
-	pMenu_File->AddSeparator();
-	pMenu_File->AddMenuItem( "Undo", new KeyValues("onmenufile","entry",ER_FMENU_UNDO), m_pPanel );
-	pMenu_File->AddMenuItem( "Redo", new KeyValues("onmenufile","entry",ER_FMENU_REDO), m_pPanel );
-	pMenu_File->AddSeparator();
-	pMenu_File->AddMenuItem( "Take screenshot", new KeyValues("onmenufile","entry",ER_FMENU_SCREENSHOT), m_pPanel );
-	pMenu_File->AddMenuItem( "Editor config", new KeyValues("onmenufile","entry",ER_FMENU_ECONFIG), m_pPanel );
+	pMenu_File->AddMenuItem( "Toggle Work Camera", "Toggle Work Camera", "toggleworkcamera", this );
 	m_pMBut_File->SetMenu( pMenu_File );
 	m_pMenuBar->AddButton( m_pMBut_File );
 
@@ -253,37 +247,86 @@ DXEditorPanel::DXEditorPanel( VPANEL pParent )
 	PopulateEditor();
 }
 
-void DXEditorPanel::OnMenuFile( int entry )
+void DXEditorPanel::OpenDocumentFileDialog(bool bSave)
 {
-	switch ( entry )
+	if ( m_hFileOpenDialog.Get() )
+		m_hFileOpenDialog.Get()->MarkForDeletion();
+
+	m_hFileOpenDialog = new FileOpenDialog( this,
+		bSave ? "Save session" : "Load session",
+		bSave ? FOD_SAVE : FOD_OPEN,
+		new KeyValues("FileOpenContext", "context",
+		bSave ? "savec" : "openc" )
+		);
+	m_hFileOpenDialog->AddActionSignalTarget( this );
+
+	if ( m_hFileOpenDialog.Get() )
 	{
-	case ER_FMENU_NEW: // new
-		Msg( "New\n" );
-		break;
-	case ER_FMENU_OPEN: // open
-		Msg( "Open\n" );
-		break;
-	case ER_FMENU_SAVE: // save
-		Msg( "Save\n" );
-		break;
-	case ER_FMENU_SAVE_AS: // save as
-		Msg( "Save as\n" );
-		break;
-	case ER_FMENU_SAVE_ALL:
-		Msg( "Save all\n" );
-		break;
-	case ER_FMENU_SCREENSHOT: // screenshot
-		Msg( "Screenshot\n" );
-		break;
-	case ER_FMENU_ECONFIG: // editor config
-		Msg( "Editor config\n" );
-		break;
-	case ER_FMENU_UNDO:
-		Msg( "Undo\n" );
-		break;
-	case ER_FMENU_REDO:
-		Msg( "Redo\n" );
-		break;
+		m_hFileOpenDialog->AddFilter( "*.dmx", "Datamodel", true );
+		m_hFileOpenDialog->DoModal( true );
+	}
+}
+
+void DXEditorPanel::OnCommand(char const *cmd )
+{
+	if ( !Q_stricmp( cmd, "newfile" ) )
+	{
+		DirectorsCutGameSystem().NewDocument();
+	}
+	else if ( !Q_stricmp( cmd, "openfile" ) )
+	{
+		OpenDocumentFileDialog(false);
+	}
+	else if ( !Q_stricmp( cmd, "savefile" ) )
+	{
+		if(DirectorsCutGameSystem().GetFileOpen() == false)
+			return;
+		if(DirectorsCutGameSystem().GetLoadedDocumentName() == NULL)
+			OpenDocumentFileDialog(true);
+		else
+			DirectorsCutGameSystem().SaveDocument();
+	}
+	else if ( !Q_stricmp( cmd, "savefileas" ) )
+	{
+		if(DirectorsCutGameSystem().GetFileOpen() == false)
+			return;
+		OpenDocumentFileDialog(true);
+	}
+	else if ( !Q_stricmp( cmd, "closefile" ) )
+	{
+		DirectorsCutGameSystem().CloseDocument();
+	}
+	else if ( !Q_stricmp( cmd, "toggleworkcamera" ) )
+	{
+		DirectorsCutGameSystem().SetWorkCameraActive(!DirectorsCutGameSystem().IsWorkCameraActive());
+	}
+	else
+	{
+		BaseClass::OnCommand( cmd );
+	}
+}
+
+void DXEditorPanel::OnFileSelected(KeyValues* pKV)
+{
+	KeyValues* pContext = pKV->FindKey("FileOpenContext");
+	if (!pContext)
+		return;
+	const char* __c = pContext->GetString("context");
+	bool bSaving = true;
+	if (!Q_stricmp(__c, "openc"))
+		bSaving = false;
+
+	const char* pathIn = pKV->GetString("fullpath");
+	if (Q_strlen(pathIn) <= 1)
+		return;
+
+	if (!bSaving)
+	{
+		DirectorsCutGameSystem().LoadDocument(pathIn);
+	}
+	else
+	{
+		DirectorsCutGameSystem().SaveDocument(pathIn);
 	}
 }
 

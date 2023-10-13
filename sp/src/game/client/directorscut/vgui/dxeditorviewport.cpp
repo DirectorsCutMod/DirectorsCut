@@ -7,10 +7,12 @@
 
 #include "cbase.h"
 
+#include "../directorscut.h"
 #include "dxeditorviewport.h"
 #include "vguimatsurface/imatsystemsurface.h"
 #include "iviewrender.h"
 #include "view_shared.h"
+#include <vgui/IInput.h>
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include <tier0/memdbgon.h>
@@ -87,6 +89,21 @@ void DXEditorViewport::OnThink()
 
 			// Set up player view and render to texture
 			CViewSetup playerview = *view->GetPlayerViewSetup();
+			if (DirectorsCutGameSystem().IsWorkCameraActive())
+			{
+				playerview.origin = DirectorsCutGameSystem().GetWorkCameraOrigin();
+				playerview.angles = DirectorsCutGameSystem().GetWorkCameraAngles();
+			}
+			else
+			{
+				C_BasePlayer *pPlayer = C_BasePlayer::GetLocalPlayer();
+				if (pPlayer)
+				{
+					// get head origin
+					playerview.origin = pPlayer->GetAbsOrigin() + pPlayer->GetViewOffset();
+					playerview.angles = pPlayer->GetAbsAngles();
+				}
+			}
 			render->SetMainView(playerview.origin, playerview.angles);
 			view->RenderView(playerview, VIEW_CLEAR_DEPTH | VIEW_CLEAR_COLOR, RENDERVIEW_DRAWHUD | RENDERVIEW_DRAWVIEWMODEL);
 
@@ -149,3 +166,104 @@ void DXEditorViewport::Paint()
 		g_pMatSystemSurface->DrawFilledRect( viewportX, viewportY, viewportX + viewportW, viewportY + viewportH );
 	}
 }
+
+void DXEditorViewport::OnMousePressed(MouseCode code)
+{
+	ConVar* mouseMoveButton = g_pCVar->FindVar("dx_mousemovebutton");
+	ButtonCode_t moveButton = MOUSE_LEFT;
+	switch (mouseMoveButton->GetInt())
+	{
+	case 1:
+		moveButton = MOUSE_LEFT;
+		break;
+	case 2:
+		moveButton = MOUSE_RIGHT;
+		break;
+	case 3:
+		moveButton = MOUSE_MIDDLE;
+		break;
+	case 4:
+		moveButton = MOUSE_4;
+		break;
+	case 5:
+		moveButton = MOUSE_5;
+		break;
+	}
+	if (code == moveButton)
+	{
+		DirectorsCutGameSystem().SetMouseCaptured(true);
+		input()->SetMouseCapture(GetVPanel());
+		// Warp the mouse to the center of the screen
+		int width, height;
+		GetSize( width, height );
+		int x = width / 2;
+		int y = height / 2;
+
+		int xpos = x;
+		int ypos = y;
+		LocalToScreen( xpos, ypos );
+		input()->SetCursorPos( xpos, ypos );
+	}
+}
+
+void DXEditorViewport::OnMouseReleased(MouseCode code)
+{
+	ConVar* mouseMoveButton = g_pCVar->FindVar("dx_mousemovebutton");
+	ButtonCode_t moveButton = MOUSE_LEFT;
+	switch (mouseMoveButton->GetInt())
+	{
+	case 1:
+		moveButton = MOUSE_LEFT;
+		break;
+	case 2:
+		moveButton = MOUSE_RIGHT;
+		break;
+	case 3:
+		moveButton = MOUSE_MIDDLE;
+		break;
+	case 4:
+		moveButton = MOUSE_4;
+		break;
+	case 5:
+		moveButton = MOUSE_5;
+		break;
+	}
+	if (code == moveButton)
+	{
+		DirectorsCutGameSystem().SetMouseCaptured(false);
+		input()->SetMouseCapture(NULL);
+	}
+}
+
+void DXEditorViewport::OnCursorMoved(int x, int y)
+{
+	if (DirectorsCutGameSystem().IsMouseCaptured())
+	{
+		// Set mouse to middle of viewport
+		int width, height;
+		GetSize(width, height);
+		int xpos = width / 2;
+		int ypos = height / 2;
+		LocalToScreen(xpos, ypos);
+		input()->SetCursorPos(xpos, ypos);
+
+		// Get mouse delta
+		int deltaX, deltaY;
+		input()->GetCursorPos(deltaX, deltaY);
+		deltaX -= xpos;
+		deltaY -= ypos;
+
+		// Mouse sensitivity
+		ConVar* dx_mousesensitivity = g_pCVar->FindVar("dx_mousesensitivity");
+		float mouseSensitivity = dx_mousesensitivity ? dx_mousesensitivity->GetFloat() : 0.1f;
+
+		// Rotate camera
+		QAngle angCamera = DirectorsCutGameSystem().GetWorkCameraAngles();
+		angCamera.y -= deltaX * mouseSensitivity;
+		angCamera.x += deltaY * mouseSensitivity;
+		angCamera.x = clamp(angCamera.x, -89.0f, 89.0f);
+		DirectorsCutGameSystem().SetWorkCameraAngles(angCamera);
+	}
+}
+
+

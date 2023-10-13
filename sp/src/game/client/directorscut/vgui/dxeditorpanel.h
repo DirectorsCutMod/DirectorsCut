@@ -17,25 +17,15 @@
 #include "dxeditoranimationseteditor.h"
 #include "dxeditortimeline.h"
 
+using namespace vgui;
+
 #include <vgui/IVGui.h>
 #include <vgui_controls/Panel.h>
 #include <vgui_controls/Frame.h>
 #include <vgui_controls/MenuBar.h>
 #include <vgui_controls/MenuButton.h>
 #include <vgui_controls/Label.h>
-
-enum ERoot_FileMenu_t
-{
-	ER_FMENU_NEW = 0,
-	ER_FMENU_OPEN,
-	ER_FMENU_SAVE,
-	ER_FMENU_SAVE_AS,
-	ER_FMENU_SAVE_ALL,
-	ER_FMENU_SCREENSHOT,
-	ER_FMENU_ECONFIG,
-	ER_FMENU_UNDO,
-	ER_FMENU_REDO,
-};
+#include <vgui_controls/FileOpenDialog.h>
 
 class DXEditorPanel : public Panel
 {
@@ -43,13 +33,13 @@ class DXEditorPanel : public Panel
 	DECLARE_REFERENCED_CLASS( DXEditorPanel );
 
 public:
-
-	MESSAGE_FUNC_INT( OnMenuFile, "onmenufile", entry );
-
 	static void DestroyEditor();
 	static void ToggleEditor();
 	static bool IsEditorVisible();
 	void PopulateEditor();
+	void OpenDocumentFileDialog(bool bSave);
+	
+	MESSAGE_FUNC_PARAMS( OnFileSelected, "FileSelected", pKV );
 
 	~DXEditorPanel();
 
@@ -58,11 +48,13 @@ public:
 	CUtlVector< EditablePanel* > m_vecPanels;
 
 protected:
+	DHANDLE< FileOpenDialog > m_hFileOpenDialog;
 	void ApplySchemeSettings( IScheme *scheme );
 	void PerformLayout();
 	void PaintBackground();
 	virtual void OnMousePressed( MouseCode code );
 	virtual void Think();
+	virtual void OnCommand( char const *cmd );
 
 	Frame* m_pPanel;
 	MenuBar* m_pMenuBar;
