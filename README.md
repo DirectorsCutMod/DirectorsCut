@@ -1,12 +1,19 @@
-<p align="center">
-  <img width=50% alt="Director's Cut logo" src="https://i.imgur.com/iHJVGEZ.png">
+<p>
+  <a href="https://github.com/KiwifruitDev/DirectorsCut">
+    <img width=25% alt="Director's Cut logo" src="https://i.imgur.com/iHJVGEZ.png">
+  </a>&nbsp;
+  <a href="https://github.com/KiwifruitDev/">
+    <img width="12.5%" src="https://github.com/KiwifruitDev/KiwifruitDev/blob/ec086637d8f3fa76db1fd562e4f61c016d77067f/branding/kiwifruitdev_logo_green.png"/>
+  </a>
   <br><br>
   <a title="Director's Cut on GitHub" href="https://github.com/KiwifruitDev/DirectorsCut"><img alt="Director's Cut on GitHub" src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"/></a>
   <a title="Director's Cut on Discord" href="https://discord.gg/3X3teNecWs"><img alt="Director's Cut on Discord" src="https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white"/></a>
   <a title="Director's Cut on X (Twitter)" href="https://twitter.com/SFMDirectorsCut"><img alt="Director's Cut on X (Twitter)" src="https://img.shields.io/badge/X%20%28Twitter%29-%23000000.svg?style=for-the-badge&logo=X&logoColor=white"/></a>
   <a title="Sponsor KiwifruitDev on GitHub" href="https://github.com/sponsors/KiwifruitDev"><img alt="Sponsor KiwifruitDev on GitHub" src="https://img.shields.io/badge/sponsor-30363D?style=for-the-badge&logo=GitHub-Sponsors&logoColor=#EA4AAA"/></a>
-  <a title="Sponsor KiwifruitDev on GitHub" href="https://github.com/sponsors/KiwifruitDev"><img alt="Sponsor KiwifruitDev on Ko-fi" src="https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white"/></a>
+  <br>
+  <a title="Sponsor KiwifruitDev on Ko-fi" href="https://ko-fi.com/kiwifruitdev"><img alt="Sponsor KiwifruitDev on Ko-fi" src="https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white"/></a>
   <a title="Director's Cut on Valve Developer Wiki" href="https://developer.valvesoftware.com/wiki/Director's_Cut"><img alt="Director's Cut on Valve Developer Wiki" src="https://img.shields.io/badge/Valve%20Developer%20Wiki-%23262626.svg?style=for-the-badge&logo=wikipedia&logoColor=white"/></a>
+  <br>
 </p>
 
 # Director's Cut
