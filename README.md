@@ -1,9 +1,6 @@
 <p>
   <a href="https://github.com/KiwifruitDev/DirectorsCut">
-    <img width=25% alt="Director's Cut logo" src="https://i.imgur.com/iHJVGEZ.png">
-  </a>&nbsp;
-  <a href="https://github.com/KiwifruitDev/">
-    <img width="12.5%" src="https://github.com/KiwifruitDev/KiwifruitDev/blob/ec086637d8f3fa76db1fd562e4f61c016d77067f/branding/kiwifruitdev_logo_green.png"/>
+    <img width=50% alt="Director's Cut logo" src="https://i.imgur.com/iHJVGEZ.png">
   </a>
   <br><br>
   <a title="Director's Cut on GitHub" href="https://github.com/KiwifruitDev/DirectorsCut"><img alt="Director's Cut on GitHub" src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"/></a>
@@ -24,27 +21,46 @@ This is in early production as development was recently reset.
 - `Tab` - Open/close the Director's Cut editor.
 
 ## Usage
-To use Director's Cut, you must have Source SDK Base 2013 Singleplayer installed. You can download it through Steam or by [clicking here](steam://install/243730).
+- **Prerequisites:**
+  - Install Source SDK Base 2013 Singleplayer. You can download it through Steam.
 
-After installing Source SDK Base 2013 Singleplayer, its branch (beta) must be changed to `upcoming` in order to use Director's Cut. To do this, right click on Source SDK Base 2013 Singleplayer in your Steam library, click Properties, go to the Betas tab, and select `upcoming` from the dropdown menu.
+- **Setting up Source SDK Base 2013 Singleplayer:**
+  - Change its branch to "upcoming":
+    - Right-click on Source SDK Base 2013 Singleplayer in your Steam library.
+    - Click on Properties.
+    - Go to the Betas tab.
+    - Select "upcoming" from the dropdown menu.
 
-Once you have Source SDK Base 2013 Singleplayer installed and its branch changed to `upcoming`, you must [download Mapbase](https://www.moddb.com/mods/mapbase/downloads/mapbase-release-build) and extract it to your `sourcemods` directory, which is located in your Steam library's installation folder. For example, if your Steam library is located at `C:\Program Files (x86)\Steam`, your `sourcemods` directory is located at `C:\Program Files (x86)\Steam\sourcemods`.
+- **Installing Mapbase:**
+  - Download [Mapbase](https://www.moddb.com/mods/mapbase/downloads/mapbase-release-build) and extract it to your `sourcemods` directory. This directory is typically located in your Steam library's installation folder. For example, if your Steam library is at `C:\Program Files (x86)\Steam`, your `sourcemods` directory will be at `C:\Program Files (x86)\Steam\sourcemods`.
 
-After installing Mapbase, you can download the latest development build of Director's Cut from the [Releases](https://github.com/KiwifruitDev/DirectorsCut/releases) page as `directorscut.zip` and extract the containing folder to your `sourcemods` directory.
+- **Installing Director's Cut:**
+  - Download the latest development build of Director's Cut from the [Releases](https://github.com/KiwifruitDev/DirectorsCut/releases) page as `directorscut.zip`.
+  - Extract the containing folder to your `sourcemods` directory.
 
-Once all steps are complete, restart Steam and Director's Cut should now be available in your Steam library.
+- **Finalizing Setup:**
+  - Restart Steam.
+  - Director's Cut should now be available in your Steam library.
 
 ## Building
-Director's Cut requires [Visual Studio 2022](https://visualstudio.microsoft.com/vs/) to build.
+- **Prerequisites:**
+  - Director's Cut requires [Visual Studio 2022](https://visualstudio.microsoft.com/vs/) to build.
 
-To build Director's Cut, you must first clone the repository. To do this, open a command prompt and run the following command:
-```bat
-git clone https://github.com/KiwifruitDev/DirectorsCut.git
-```
+- **Building Director's Cut:**
+  - **Cloning the Repository:**
+    - Open a command prompt and run the following command:
+      ```bat
+      git clone https://github.com/KiwifruitDev/DirectorsCut.git
+      ```
 
-After cloning the repository, run `sp/src/createdirectorscutproject.bat` to create the Visual Studio solution. Then, open `sp/src/directorscut.sln` in Visual Studio and build the solution.
+  - **Creating Visual Studio Solution:**
+    - After cloning the repository, run `sp/src/createdirectorscutproject.bat` to create the Visual Studio solution.
 
-Launching the build requires `discord-rpc.dll` to be in the same directory as `client.dll`. This can be found in a Mapbase or Director's Cut release build. Failure to do so will result in the game unable to find `client.dll`.
+  - **Building the Solution:**
+    - Open `sp/src/directorscut.sln` in Visual Studio and build the solution.
+
+  - **Launching the Build:**
+    - Ensure `discord-rpc.dll` is in the same directory as `client.dll`. You can find this in a Mapbase or Director's Cut release build. Failure to do so will result in the game being unable to find `client.dll`.
 
 ## Implementation
 If you would like to implement the Director's Cut animation system into your own mod, please note the following changes and files required:
