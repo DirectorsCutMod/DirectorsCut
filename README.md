@@ -1,24 +1,27 @@
-<p>
+<p align="center">
   <a href="https://github.com/KiwifruitDev/DirectorsCut">
-    <img width=50% alt="Director's Cut logo" src="https://i.imgur.com/iHJVGEZ.png">
+    <img width=75% alt="Director's Cut logo" src="https://i.imgur.com/iHJVGEZ.png">
   </a>
   <br><br>
-  <a title="Director's Cut on GitHub" href="https://github.com/KiwifruitDev/DirectorsCut"><img alt="Director's Cut on GitHub" src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"/></a>
-  <a title="Director's Cut on Discord" href="https://discord.gg/3X3teNecWs"><img alt="Director's Cut on Discord" src="https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white"/></a>
-  <a title="Director's Cut on X (Twitter)" href="https://twitter.com/SFMDirectorsCut"><img alt="Director's Cut on X (Twitter)" src="https://img.shields.io/badge/X%20%28Twitter%29-%23000000.svg?style=for-the-badge&logo=X&logoColor=white"/></a>
-  <a title="Director's Cut on Valve Developer Wiki" href="https://developer.valvesoftware.com/wiki/Director's_Cut"><img alt="Director's Cut on Valve Developer Wiki" src="https://img.shields.io/badge/Valve%20Developer%20Wiki-%23262626.svg?style=for-the-badge&logo=wikipedia&logoColor=white"/></a>
   <a title="Sponsor KiwifruitDev on GitHub" href="https://github.com/sponsors/KiwifruitDev"><img alt="Sponsor KiwifruitDev on GitHub" src="https://img.shields.io/badge/sponsor-30363D?style=for-the-badge&logo=GitHub-Sponsors&logoColor=#EA4AAA"/></a>
   <a title="Sponsor KiwifruitDev on Ko-fi" href="https://ko-fi.com/kiwifruitdev"><img alt="Sponsor KiwifruitDev on Ko-fi" src="https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white"/></a>
   <br>
 </p>
 
 # Director's Cut
-An open source 3D animation tool built on top of [Mapbase](https://github.com/mapbase-source/source-sdk-2013) and [Source SDK 2013](https://github.com/ValveSoftware/source-sdk-2013).
+An open source 3D animation tool built on top of [Mapbase](https://github.com/mapbase-source/source-sdk-2013).
 
-This is in early production as development was recently reset.
+This software is in early production as development was recently reset.
 
-## Controls
-- `Tab` - Open/close the Director's Cut editor.
+View development milestones at issue [#11](https://github.com/KiwifruitDev/DirectorsCut/issues/11).
+
+## Links
+- [Director's Cut Github](https://github.com/KiwifruitDev/DirectorsCut)
+- [Director's Cut Discord](https://discord.gg/3X3teNecWs)
+- [Director's Cut YouTube](https://youtube.com/@DirectorsCutSource)
+- [Director's Cut on X (Twitter)](https://x.com/SFMDirectorsCut)
+- [Director's Cut on Bluesky](https://bsky.app/profile/directorscut.bsky.social)
+- [Director's Cut on Valve Developer Wiki](https://developer.valvesoftware.com/wiki/Director's_Cut)
 
 ## Usage
 - **Prerequisites:**
@@ -32,7 +35,7 @@ This is in early production as development was recently reset.
     - Select "upcoming" from the dropdown menu.
 
 - **Installing Mapbase:**
-  - Download [Mapbase](https://www.moddb.com/mods/mapbase/downloads/mapbase-release-build) and extract it to your `sourcemods` directory. This directory is typically located in your Steam library's installation folder. For example, if your Steam library is at `C:\Program Files (x86)\Steam`, your `sourcemods` directory will be at `C:\Program Files (x86)\Steam\sourcemods`.
+  - Download [Mapbase](https://www.moddb.com/mods/mapbase/downloads/mapbase-release-build) and extract it to your `sourcemods` directory. This directory is typically located in your Steam installation folder. For example, if Steam is installed to `C:\Program Files (x86)\Steam`, your `sourcemods` directory will be at `C:\Program Files (x86)\Steam\sourcemods`.
 
 - **Installing Director's Cut:**
   - Download the latest development build of Director's Cut from the [Releases](https://github.com/KiwifruitDev/DirectorsCut/releases) page as `directorscut.zip`.
@@ -41,6 +44,7 @@ This is in early production as development was recently reset.
 - **Finalizing Setup:**
   - Restart Steam.
   - Director's Cut should now be available in your Steam library.
+  - Use `Tab` to toggle the Director's Cut editor while in-app.
 
 ## Building
 - **Prerequisites:**
