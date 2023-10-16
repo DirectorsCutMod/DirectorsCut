@@ -33,7 +33,7 @@ This software is in early production as development was recently reset.
     - Select "upcoming" from the dropdown menu.
 
 - **Installing Mapbase:**
-  - Download [Mapbase](https://www.moddb.com/mods/mapbase/downloads/mapbase-release-build) and extract it to your `sourcemods` directory. This directory is typically located in your Steam installation folder. For example, if Steam is installed to `C:\Program Files (x86)\Steam`, your `sourcemods` directory will be at `C:\Program Files (x86)\Steam\sourcemods`.
+  - Download [Mapbase](https://www.moddb.com/mods/mapbase/downloads/mapbase-release-build) and extract it to your `sourcemods` directory, usually located at `C:\Program Files (x86)\Steam\steamapps\sourcemods`.
 
 - **Installing Director's Cut:**
   - Download the latest development build of Director's Cut from the [Releases](https://github.com/KiwifruitDev/DirectorsCut/releases) page as `directorscut.zip`.
