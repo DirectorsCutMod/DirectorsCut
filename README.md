@@ -13,13 +13,11 @@ An open source 3D animation tool built on top of [Mapbase](https://github.com/ma
 
 This software is in early production as development was recently reset.
 
-View development milestones at issue [#11](https://github.com/KiwifruitDev/DirectorsCut/issues/11).
-
 ## Links
 - [Director's Cut Github](https://github.com/KiwifruitDev/DirectorsCut)
 - [Director's Cut Discord](https://discord.gg/3X3teNecWs)
-- [Director's Cut YouTube](https://youtube.com/@DirectorsCutSource)
-- [Director's Cut on X (Twitter)](https://x.com/SFMDirectorsCut)
+- [Director's Cut YouTube](https://youtube.com/@DirectorsCutMod)
+- [Director's Cut on X (Twitter)](https://x.com/DirectorsCutMod)
 - [Director's Cut on Bluesky](https://bsky.app/profile/directorscut.bsky.social)
 - [Director's Cut on Valve Developer Wiki](https://developer.valvesoftware.com/wiki/Director's_Cut)
 
