@@ -114,6 +114,10 @@ private:
 	bool _active;
 	Color _textColor;
 	Color _dimTextColor;
+#ifdef DIRECTORSCUT
+	Color _activeColor;
+	Color _inactiveColor;
+#endif
 	int m_bMaxTabWidth;
 	IBorder *m_pActiveBorder;
 	IBorder *m_pNormalBorder;
@@ -334,6 +338,17 @@ public:
 
 		_textColor = GetSchemeColor("PropertySheet.SelectedTextColor", GetFgColor(), pScheme);
 		_dimTextColor = GetSchemeColor("PropertySheet.TextColor", GetFgColor(), pScheme);
+
+#ifdef DIRECTORSCUT
+		// Allow the tab to be themed for Director's Cut
+		_activeColor = GetSchemeColor("PageTab.ActiveColor", GetBgColor(), pScheme);
+		_inactiveColor = GetSchemeColor("PageTab.InactiveColor", GetBgColor(), pScheme);
+		SetSelectedColor( GetFgColor(), _activeColor );
+		SetArmedColor( GetFgColor(), _activeColor );
+		SetDepressedColor( GetFgColor(), _activeColor );
+		SetDefaultColor( GetFgColor(), _active ? _activeColor : _inactiveColor );
+#endif
+
 		m_pActiveBorder = pScheme->GetBorder("TabActiveBorder");
 		m_pNormalBorder = pScheme->GetBorder("TabBorder");
 
@@ -421,6 +436,9 @@ public:
 	virtual void SetActive(bool state)
 	{
 		_active = state;
+#ifdef DIRECTORSCUT
+		SetDefaultColor( GetFgColor(), _active ? _activeColor : _inactiveColor );
+#endif
 		SetZPos( state ? 100 : 0 );
 		InvalidateLayout();
 		Repaint();

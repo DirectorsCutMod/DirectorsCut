@@ -16,6 +16,9 @@
 #include "dxeditorviewport.h"
 #include "dxeditoranimationseteditor.h"
 #include "dxeditortimeline.h"
+#include "dxeditorproperties.h"
+#include "dxeditorassetbrowser.h"
+#include "dxeditorwelcome.h"
 
 using namespace vgui;
 
@@ -26,6 +29,7 @@ using namespace vgui;
 #include <vgui_controls/MenuButton.h>
 #include <vgui_controls/Label.h>
 #include <vgui_controls/FileOpenDialog.h>
+
 
 class DXEditorPanel : public Panel
 {
@@ -46,12 +50,14 @@ public:
 	static CUtlReference< DXEditorPanel > m_refInstance;
 
 	CUtlVector< EditablePanel* > m_vecPanels;
+	bool bShowedWelcome;
 
 protected:
 	DHANDLE< FileOpenDialog > m_hFileOpenDialog;
 	void ApplySchemeSettings( IScheme *scheme );
 	void PerformLayout();
 	void PaintBackground();
+	void MakeReadyForUse();
 	virtual void OnMousePressed( MouseCode code );
 	virtual void Think();
 	virtual void OnCommand( char const *cmd );

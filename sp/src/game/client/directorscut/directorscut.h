@@ -12,10 +12,12 @@
 #include "dmxloader/dmxloader.h"
 #include "dmxloader/dmxelement.h"
 #include "filesystem.h"
+#include "dxproperties.h"
 
 class DXEditorHelper : public CAutoGameSystemPerFrame
 {
 public:
+	bool Init();
 	void LevelShutdownPostEntity();
 	void Update( float ft );
 	void LevelInitPostEntity();
@@ -58,6 +60,12 @@ public:
 	void SetNeedsUpdate( bool bNeedsUpdate ) { this->bNeedsUpdate = bNeedsUpdate; };
 	bool NeedsUpdate() { return bNeedsUpdate; };
 
+	void SetCurrentProperty( DXProperty* pCurrentProperty ) { m_pCurrentProperty = pCurrentProperty; };
+	DXProperty* GetCurrentProperty() { return m_pCurrentProperty; };
+
+	void SetPropertyUpdated( bool bPropertyUpdated ) { this->bPropertyUpdated = bPropertyUpdated; };
+	bool PropertyUpdated() { return bPropertyUpdated; };
+
 protected:
 	CDMXContextHelper* m_dmxContextHelper;
 	bool m_bFileOpen = false;
@@ -68,10 +76,11 @@ protected:
 	QAngle m_angWorkCameraAngles;
 	float m_flCurrentCameraMovementSpeed = 100.0f;
 	bool m_bHoldingMovementKey = false;
-
 	CDmxElement* m_pDocument = NULL;
 	CDmxElement* m_pDocumentFocusedRoot = NULL;
 	bool bNeedsUpdate = false;
+	DXProperty* m_pCurrentProperty;
+	bool bPropertyUpdated = false;
 };
 
 DXEditorHelper &DirectorsCutGameSystem();

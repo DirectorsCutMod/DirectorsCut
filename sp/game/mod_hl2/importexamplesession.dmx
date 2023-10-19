@@ -1,0 +1,472 @@
+<!-- dmx encoding keyvalues2 1 format dmx 1 -->
+"DmElement"
+{
+	"id" "elementid" "4a170286-6bc2-410e-9f96-7a554779de80"
+	"activeClip" "element" "5e773b1a-a775-4390-a4bd-d96c38b044d1"
+	"cameraBin" "element_array"
+	[
+	]
+	"clipBin" "element_array" 
+	[
+		"element" "5e773b1a-a775-4390-a4bd-d96c38b044d1"
+	]
+	"miscBin" "element_array"
+	[
+	]
+	"name" "string" "session"
+	"settings" "DmElement"
+	{
+		"id" "elementid" "6b3c5c7f-74bd-4566-95ca-63a2dadb9039"
+		"graphEditorState" "DmeGraphEditorState"
+		{
+			"id" "elementid" "f4367357-8f99-4f9d-af12-00237fb69b68"
+			"displayGrid" "bool" "1"
+			"name" "string" "graphEditorState"
+		}
+		
+		"movieSettings" "DmElement"
+		{
+			"id" "elementid" "c544e5c3-eb19-4518-acc5-a71bffdc1501"
+			"audioTarget" "int" "2"
+			"clearDecals" "bool" "0"
+			"filename" "string" ""
+			"height" "int" "720"
+			"name" "string" "movieSettings"
+			"stereoscopic" "bool" "0"
+			"stereoSingleFile" "bool" "0"
+			"videoTarget" "int" "6"
+			"width" "int" "1280"
+		}
+		
+		"name" "string" "sessionSettings"
+		"posterSettings" "DmElement"
+		{
+			"id" "elementid" "aa6722b5-2406-42cd-a26d-fe4d79a31434"
+			"constrainAspect" "bool" "1"
+			"DPI" "int" "300"
+			"height" "int" "1080"
+			"heightInPixels" "bool" "1"
+			"name" "string" "posterSettings"
+			"units" "int" "0"
+			"width" "int" "1920"
+			"widthInPixels" "bool" "1"
+		}
+		
+		"proceduralPresets" "DmeProceduralPresetSettings"
+		{
+			"id" "elementid" "29ddfbf0-89a1-4d14-8728-3f765f7e962f"
+			"jitteriterations" "int" "5"
+			"jitterscale" "float" "1"
+			"jitterscale_vector" "float" "2.5"
+			"name" "string" "proceduralPresets"
+			"smoothiterations" "int" "5"
+			"smoothscale" "float" "1"
+			"smoothscale_vector" "float" "2.5"
+			"staggerinterval" "float" "0.0833000019"
+		}
+		
+		"renderSettings" "DmElement"
+		{
+			"id" "elementid" "d89b28b8-5eff-4fcd-848c-e102424d4366"
+			"ambientOcclusionMode" "int" "1"
+			"drawGameRenderablesMask" "int" "216"
+			"drawToolRenderablesMask" "int" "15"
+			"engineCameraEffects" "bool" "0"
+			"frameRate" "float" "24"
+			"lightAverage" "int" "0"
+			"modelLod" "int" "0"
+			"name" "string" "renderSettings"
+			"ProgressiveRefinement" "DmElement"
+			{
+				"id" "elementid" "c1d74f9b-4fec-40af-89f7-c4187e11fd04"
+				"name" "string" "ProgressiveRefinementSettings"
+				"on" "bool" "1"
+				"overrideDepthOfFieldQuality" "bool" "0"
+				"overrideDepthOfFieldQualityValue" "int" "1"
+				"overrideMotionBlurQuality" "bool" "0"
+				"overrideMotionBlurQualityValue" "int" "1"
+				"overrideShutterSpeed" "bool" "0"
+				"overrideShutterSpeedValue" "float" "0.020833334"
+				"useAntialiasing" "bool" "1"
+				"useDepthOfField" "bool" "1"
+				"useMotionBlur" "bool" "1"
+			}
+			
+			"showAmbientOcclusion" "int" "0"
+			"toneMapScale" "float" "1"
+		}
+		
+		"sharedPresetGroupSettings" "DmElement"
+		{
+			"id" "elementid" "498992fa-d086-4371-94f2-b2e1f55cb0cb"
+			"name" "string" "sharedPresetGroupSettings"
+			"presetGroupInfos" "element_array"
+	[
+	]
+		}
+		
+		"timeSelection" "DmeTimeSelection"
+		{
+			"id" "elementid" "438588b8-0c83-47b0-a15d-6770a8dd0e89"
+			"enabled" "bool" "0"
+			"falloff_left" "float" "-214748.359375"
+			"falloff_right" "float" "214748.359375"
+			"hold_left" "float" "-214748.359375"
+			"hold_right" "float" "214748.359375"
+			"interpolator_left" "int" "6"
+			"interpolator_right" "int" "6"
+			"name" "string" "timeSelection"
+			"recordingstate" "int" "3"
+			"relative" "bool" "0"
+			"resampleinterval" "float" "0.0099999998"
+			"threshold" "float" "0.0005"
+		}
+		
+	}
+	
+}
+
+"DmeFilmClip"
+{
+	"id" "elementid" "5e773b1a-a775-4390-a4bd-d96c38b044d1"
+	"activeBookmarkSet" "int" "0"
+	"activeMonitor" "int" "-1"
+	"animationSets" "element_array"
+	[
+	]
+	"aviFile" "string" ""
+	"bookmarkSets" "element_array" 
+	[
+		"DmeBookmarkSet"
+		{
+			"id" "elementid" "b6568e68-4a06-4e03-a685-e022b0a0198c"
+			"bookmarks" "element_array"
+	[
+	]
+			"name" "string" "Default Set"
+		}
+	]
+	"camera" "element_array"
+	[
+	]
+	"color" "color" "0 0 0 0"
+	"concommands" "element_array"
+	[
+	]
+	"convars" "element_array"
+	[
+	]
+	"displayScale" "float" "1"
+	"fadeIn" "float" "0"
+	"fadeOut" "float" "0"
+	"inputs" "element_array"
+	[
+	]
+	"mapname" "string" "stage.bsp"
+	"materialOverlay" "element_array"
+	[
+	]
+	"monitorCameras" "element_array"
+	[
+	]
+	"mute" "bool" "0"
+	"name" "string" "session5"
+	"operators" "element_array"
+	[
+	]
+	"scene" "element_array"
+	[
+	]
+	"subClipTrackGroup" "DmeTrackGroup"
+	{
+		"id" "elementid" "8551f49d-1657-4dcf-85e3-f7159e27170a"
+		"displayScale" "float" "1"
+		"forcemultitrack" "bool" "0"
+		"minimized" "bool" "0"
+		"mute" "bool" "0"
+		"name" "string" "subClipTrackGroup"
+		"tracks" "element_array" 
+		[
+			"DmeTrack"
+			{
+				"id" "elementid" "c99a3206-f761-493d-b47c-f74d28d38b50"
+				"children" "element_array" 
+				[
+					"DmeFilmClip"
+					{
+						"id" "elementid" "46015eb8-663b-4ff0-9dff-bd4bb799e3b4"
+						"activeBookmarkSet" "int" "0"
+						"activeMonitor" "int" "-1"
+						"animationSets" "element_array"
+	[
+	]
+						"aviFile" "string" ""
+						"bookmarkSets" "element_array" 
+						[
+							"DmeBookmarkSet"
+							{
+								"id" "elementid" "d2161ee0-062c-409b-b920-506d67570e67"
+								"bookmarks" "element_array"
+	[
+	]
+								"name" "string" "Default Set"
+							}
+						]
+						"camera" "element" "29429edf-c4c6-47e5-a152-b11ea1715a38"
+						"color" "color" "0 0 0 0"
+						"concommands" "element_array"
+	[
+	]
+						"convars" "element_array"
+	[
+	]
+						"displayScale" "float" "1"
+						"fadeIn" "float" "0"
+						"fadeOut" "float" "0"
+						"inputs" "element_array"
+	[
+	]
+						"mapname" "string" ""
+						"materialOverlay" "element_array"
+	[
+	]
+						"monitorCameras" "element_array"
+	[
+	]
+						"mute" "bool" "0"
+						"name" "string" "shot1"
+						"operators" "element_array"
+	[
+	]
+						"scene" "DmeDag"
+						{
+							"id" "elementid" "21b11be5-085c-46d2-915a-42923fa4e3a0"
+							"children" "element_array" 
+							[
+								"DmeDag"
+								{
+									"id" "elementid" "b67894b4-71c0-4d6b-a77d-d1b8b994c2ad"
+									"children" "element_array" 
+									[
+										"element" "29429edf-c4c6-47e5-a152-b11ea1715a38"
+									]
+									"name" "string" "Cameras"
+									"shape" "element_array"
+	[
+	]
+									"transform" "DmeTransform"
+									{
+										"id" "elementid" "2103d5fb-e9e6-469e-8da8-e72b017aa6fb"
+										"name" "string" "unnamed"
+										"orientation" "quaternion" "0 0 0 1"
+										"position" "vector3" "0 0 0"
+									}
+									
+									"visible" "bool" "1"
+								}
+							]
+							"name" "string" "scene"
+							"shape" "element_array"
+	[
+	]
+							"transform" "DmeTransform"
+							{
+								"id" "elementid" "5d248e7f-100e-4c28-8607-9dbadd789136"
+								"name" "string" "unnamed"
+								"orientation" "quaternion" "0 0 0 1"
+								"position" "vector3" "0 0 0"
+							}
+							
+							"visible" "bool" "1"
+						}
+						
+						"subClipTrackGroup" "element_array"
+	[
+	]
+						"text" "string" ""
+						"timeFrame" "DmeTimeFrame"
+						{
+							"id" "elementid" "a031f9aa-3a8d-426d-95a5-8b5e8a619311"
+							"duration" "float" "60"
+							"name" "string" "unnamed"
+							"offset" "float" "0"
+							"scale" "float" "1"
+							"start" "float" "0"
+						}
+						
+						"trackGroups" "element_array"
+	[
+	]
+						"useAviFile" "bool" "0"
+						"volume" "float" "1"
+					}
+				]
+				"clipType" "int" "3"
+				"collapsed" "bool" "0"
+				"displayScale" "float" "1"
+				"mute" "bool" "0"
+				"name" "string" "Film"
+				"synched" "bool" "1"
+				"volume" "float" "1"
+			}
+		]
+		"visible" "bool" "1"
+		"volume" "float" "1"
+	}
+	
+	"text" "string" ""
+	"timeFrame" "DmeTimeFrame"
+	{
+		"id" "elementid" "54692476-866c-4271-bd3f-904df98f7161"
+		"duration" "float" "60"
+		"name" "string" "unnamed"
+		"offset" "float" "0"
+		"scale" "float" "1"
+		"start" "float" "0"
+	}
+	
+	"trackGroups" "element_array" 
+	[
+		"DmeTrackGroup"
+		{
+			"id" "elementid" "92999442-bcd2-4bc9-9bda-08b62e1efa27"
+			"displayScale" "float" "1"
+			"forcemultitrack" "bool" "0"
+			"minimized" "bool" "0"
+			"mute" "bool" "0"
+			"name" "string" "Sound"
+			"tracks" "element_array" 
+			[
+				"DmeTrack"
+				{
+					"id" "elementid" "6dfa7802-c591-4dfb-b57e-8d8c4a862840"
+					"children" "element_array"
+	[
+	]
+					"clipType" "int" "1"
+					"collapsed" "bool" "0"
+					"displayScale" "float" "1"
+					"mute" "bool" "0"
+					"name" "string" "Dialog"
+					"synched" "bool" "1"
+					"volume" "float" "1"
+				},
+				"DmeTrack"
+				{
+					"id" "elementid" "43e53060-caac-4802-aa15-f36ff773d5e8"
+					"children" "element_array"
+	[
+	]
+					"clipType" "int" "1"
+					"collapsed" "bool" "0"
+					"displayScale" "float" "1"
+					"mute" "bool" "0"
+					"name" "string" "Music"
+					"synched" "bool" "1"
+					"volume" "float" "1"
+				},
+				"DmeTrack"
+				{
+					"id" "elementid" "7868ef7e-2672-417b-a528-a636ca077b99"
+					"children" "element_array"
+	[
+	]
+					"clipType" "int" "1"
+					"collapsed" "bool" "0"
+					"displayScale" "float" "1"
+					"mute" "bool" "0"
+					"name" "string" "Effects"
+					"synched" "bool" "1"
+					"volume" "float" "1"
+				}
+			]
+			"visible" "bool" "1"
+			"volume" "float" "1"
+		},
+		"DmeTrackGroup"
+		{
+			"id" "elementid" "d4d1738a-a9b1-42b3-8168-0e4610894b19"
+			"displayScale" "float" "1"
+			"forcemultitrack" "bool" "0"
+			"minimized" "bool" "0"
+			"mute" "bool" "0"
+			"name" "string" "Overlay"
+			"tracks" "element_array" 
+			[
+				"DmeTrack"
+				{
+					"id" "elementid" "d50551b2-8699-4c5f-85cf-7019eb38533a"
+					"children" "element_array"
+	[
+	]
+					"clipType" "int" "2"
+					"collapsed" "bool" "0"
+					"displayScale" "float" "1"
+					"mute" "bool" "0"
+					"name" "string" "Effects"
+					"synched" "bool" "1"
+					"volume" "float" "1"
+				}
+			]
+			"visible" "bool" "1"
+			"volume" "float" "1"
+		}
+	]
+	"useAviFile" "bool" "0"
+	"volume" "float" "1"
+}
+
+"DmeCamera"
+{
+	"id" "elementid" "29429edf-c4c6-47e5-a152-b11ea1715a38"
+	"aperture" "float" "0.200000003"
+	"axis" "int" "0"
+	"behindfrustum" "bool" "0"
+	"bloomScale" "float" "0.2800000012"
+	"bloomWidth" "float" "9"
+	"children" "element_array"
+	[
+	]
+	"depthOfFieldQuality" "int" "0"
+	"distance" "float" "32"
+	"eyeSeparation" "float" "0.75"
+	"fieldOfView" "float" "90"
+	"focalDistance" "float" "72"
+	"lookat0" "vector3" "0 0 0"
+	"lookat1" "vector3" "0 0 0"
+	"lookat2" "vector3" "0 0 0"
+	"lookat3" "vector3" "0 0 0"
+	"lookat4" "vector3" "0 0 0"
+	"lookat5" "vector3" "0 0 0"
+	"motionBlurQuality" "int" "0"
+	"name" "string" "camera1"
+	"ortho" "bool" "0"
+	"scale0" "float" "1"
+	"scale1" "float" "1"
+	"scale2" "float" "1"
+	"scale3" "float" "1"
+	"scale4" "float" "1"
+	"scale5" "float" "1"
+	"shape" "element_array"
+	[
+	]
+	"shutterSpeed" "float" "0.0208000001"
+	"SSAOBias" "float" "0.0005"
+	"SSAORadius" "float" "15"
+	"SSAOStrength" "float" "1"
+	"SSAOTint" "color" "0 0 0 255"
+	"toneMapScale" "float" "1"
+	"transform" "DmeTransform"
+	{
+		"id" "elementid" "7dc276b0-1850-4c33-ab7d-88cc01976f08"
+		"name" "string" "unnamed"
+		"orientation" "quaternion" "0 0 0 1"
+		"position" "vector3" "0 0 64.03125"
+	}
+	
+	"visible" "bool" "1"
+	"zeroParallaxDistance" "float" "75"
+	"zfar" "float" "28377.919921875"
+	"znear" "float" "3"
+}
+

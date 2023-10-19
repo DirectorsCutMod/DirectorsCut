@@ -17,6 +17,7 @@
 #include <vgui/IVGui.h>
 #include <vgui/IInput.h>
 #include <vgui/ISurface.h>
+#include <vgui_controls/Panel.h>
 #include <vgui_controls/ToolWindow.h>
 #include <vgui_controls/Menu.h>
 #include <vgui_controls/PropertySheet.h>
@@ -36,6 +37,11 @@ void DXEditorPanel::DestroyEditor()
 		pPanel->DeletePanel();
 }
 
+void DXEditorPanel::MakeReadyForUse()
+{
+	BaseClass::MakeReadyForUse();
+}
+
 void DXEditorPanel::ToggleEditor()
 {
 	DXEditorPanel *pPanel = DXEditorPanel::m_refInstance.m_pObject;
@@ -53,7 +59,9 @@ void DXEditorPanel::ToggleEditor()
 		Msg( "Created editor panel\n" );
 	}
 	else
+	{
 		pPanel->SetVisible( !pPanel->IsVisible() );
+	}
 
 	if ( pPanel->IsVisible() )
 	{
@@ -101,6 +109,7 @@ void DXEditorPanel::PopulateEditor()
 
 	if (pagesToPopulate.Count() != 0)
 	{
+		// TODO: Welcome window isn't guaranteed to be the last page
 		for (int i = 0; i < pagesToPopulate.Count(); i++)
 		{
 			// We can assume the tool window is kept track of elsewhere
@@ -113,59 +122,60 @@ void DXEditorPanel::PopulateEditor()
 			toolWindows.AddToTail(m_pToolWindow);
 		}
 		// Set sizes of tool windows
-		// Animation Set Editor: x 0, y 24, w 1/4 width, h 1/2 height + 1/4 height - 1/8 height
-		// Element Viewer: Add page to Animation Set Editor
-		// Viewport: x 1/2 width - 1/4 width, y 24, w 1/2 width + 1/4 width, h 1/2 height + 1/4 height - 1/8 height
-		// Timeline: fill bottom under viewport and animation set editor
+		int padding = 4; // Padding between tool windows
 		int w, h;
 		GetSize(w, h);
-		int animationSetEditorX = 0;
-		int animationSetEditorY = 24;
-		int animationSetEditorW = w / 4;
-		int animationSetEditorH = (h / 2 + h / 4) - h / 8;
-		int viewportX = w / 2 - w / 4;
-		int viewportY = 24;
-		int viewportW = w / 2 + w / 4;
-		int viewportH = (h / 2 + h / 4) - h / 8;
-		int timelineX = 0;
-		int timelineY = ((h / 2 + h / 4) - h / 8) + 24;
-		int timelineW = w;
-		int timelineH = h - timelineY;
-		ToolWindow* animationSetEditor = NULL;
+		// Tab layouts
 		for (int i = 0; i < toolWindows.Count(); i++)
 		{
 			ToolWindow* pToolWindow = toolWindows[i];
 			Panel* page = pToolWindow->GetActivePage();
-			if (page == m_vecPanels[0])
+			if (page == m_vecPanels[0] || page == m_vecPanels[1]) // Animation set editor + element viewer
 			{
-				animationSetEditor = pToolWindow;
-				pToolWindow->SetBounds(animationSetEditorX, animationSetEditorY, animationSetEditorW, animationSetEditorH);
+				pToolWindow->SetBounds(0, 24, w / 3, (h / 2) + (h / 8) - 24);
 			}
-			else if (page == m_vecPanels[1])
+			else if(page == m_vecPanels[2] || page == m_vecPanels[3]) // welcome + viewport
 			{
-				if (animationSetEditor != NULL)
+				pToolWindow->SetBounds((w / 3) - padding, 24, w - (w / 3) + padding, (h / 2) + (h / 8) - 24);
+			}
+			else if(page == m_vecPanels[4] || page == m_vecPanels[5]) // timeline + asset browser
+			{
+				pToolWindow->SetBounds((w / 3) - padding, (h / 2) + (h / 8) - (24 / 2) + (padding*2), w - (w / 3) + padding, (h / 2) - (h / 8) + padding);
+			}
+			else if(page == m_vecPanels[6]) // properties
+			{
+				pToolWindow->SetBounds(0, (h / 2) + (h / 8) - (24/2) + (padding * 2), w / 3, (h / 2) - (h / 8) + padding);
+			}
+			// Apply padding to all sides
+			int x, y, wide, tall;
+			pToolWindow->GetBounds(x, y, wide, tall);
+			pToolWindow->SetBounds(x + padding, y + padding, wide - (padding * 2), tall - (padding * 2));
+		}
+		// Tab groups
+		for (int i = 0; i < toolWindows.Count(); i++)
+		{
+			if (i == 0)
+				continue;
+			// Combine with previous tool window if their sizes and positions are the same
+			ToolWindow* pToolWindow = toolWindows[i];
+			Assert(pToolWindow != NULL);
+			ToolWindow* pPrevToolWindow = toolWindows[i - 1];
+			Assert(pPrevToolWindow != NULL);
+			int x, y, wide, tall;
+			pToolWindow->GetBounds(x, y, wide, tall);
+			int prevX, prevY, prevWide, prevTall;
+			pPrevToolWindow->GetBounds(prevX, prevY, prevWide, prevTall);
+			if (x == prevX && y == prevY && wide == prevWide && tall == prevTall)
+			{
+				// Add all pages from the previous tool window to the current one
+				PropertySheet* sheet = pPrevToolWindow->GetPropertySheet();
+				for (int j = 0; j < sheet->GetNumPages(); j++)
 				{
-					PropertySheet* sheet = pToolWindow->GetPropertySheet();
+					Panel* page = sheet->GetPage(j);
 					sheet->RemovePage(page);
-					if ( sheet->GetNumPages() == 0 )
-					{
-						pToolWindow->MarkForDeletion();
-					}
-					animationSetEditor->AddPage(page, page->GetName(), false);
+					pToolWindow->AddPage(page, page->GetName(), false);
 				}
-				else
-				{
-					animationSetEditor = pToolWindow;
-					pToolWindow->SetBounds(animationSetEditorX, animationSetEditorY, animationSetEditorW, animationSetEditorH);
-				}
-			}
-			else if (page == m_vecPanels[2])
-			{
-				pToolWindow->SetBounds(viewportX, viewportY, viewportW, viewportH);
-			}
-			else if (page == m_vecPanels[3])
-			{
-				pToolWindow->SetBounds(timelineX, timelineY, timelineW, timelineH);
+				pPrevToolWindow->MarkForDeletion();
 			}
 		}
 	}
@@ -239,10 +249,13 @@ DXEditorPanel::DXEditorPanel( VPANEL pParent )
 	m_pLabel->SetZPos( 1000 );
 
 	// Add windows
-	m_vecPanels.AddToTail( new DXEditorAnimationSetEditor( this ) );
 	m_vecPanels.AddToTail( new DXEditorElementViewer( this ) );
+	m_vecPanels.AddToTail( new DXEditorAnimationSetEditor( this ) );
 	m_vecPanels.AddToTail( new DXEditorViewport( this ) );
+	m_vecPanels.AddToTail( new DXEditorWelcome( this ) );
+	m_vecPanels.AddToTail( new DXEditorAssetBrowser( this ) );
 	m_vecPanels.AddToTail( new DXEditorTimeline( this ) );
+	m_vecPanels.AddToTail( new DXEditorProperties( this ) );
 
 	PopulateEditor();
 }
@@ -262,7 +275,7 @@ void DXEditorPanel::OpenDocumentFileDialog(bool bSave)
 
 	if ( m_hFileOpenDialog.Get() )
 	{
-		m_hFileOpenDialog->AddFilter( "*.dmx", "Datamodel", true );
+		m_hFileOpenDialog->AddFilter( "*.dmx", "Datamodel (*.dmx)", true );
 		m_hFileOpenDialog->DoModal( true );
 	}
 }
@@ -342,6 +355,17 @@ void DXEditorPanel::ApplySchemeSettings( IScheme *scheme )
 	SetPaintBorderEnabled(false);
 	SetPaintEnabled(true);
 	MakeReadyForUse();
+
+	for (int i = 0; i < m_vecPanels.Count(); i++)
+	{
+		EditablePanel* pPage = m_vecPanels[i];
+		if (pPage)
+		{
+			pPage->SetBgColor(GetSchemeColor("DXEditorPanelPage.BgColor", scheme));
+			pPage->SetFgColor(GetSchemeColor("DXEditorPanelPage.FgColor", scheme));
+			pPage->SetPaintBackgroundType(2);
+		}
+	}
 }
 
 void DXEditorPanel::PerformLayout()

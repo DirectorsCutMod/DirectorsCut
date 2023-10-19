@@ -11,6 +11,10 @@
 #include "vgui/dxeditorpanel.h"
 #include <vgui/IInput.h>
 #include <vgui_controls/Controls.h>
+#include <hl2_gamerules.h>
+
+#include <string>
+#include <regex>
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -20,7 +24,7 @@ ConVar cameraMovementSpeedMin( "dx_cameramovementspeedmin", "100.0", 0, "Minimum
 ConVar cameraMovementSpeedMax( "dx_cameramovementspeedmax", "1000.0", 0, "Maximum speed of the camera when moving with WASD" );
 
 // Mouse sensitivity
-ConVar mouseSensitivity( "dx_mousesensitivity", "0.4", 0, "View mouse sensitivity" );
+ConVar mouseSensitivity( "dx_mousesensitivity", "0.3", 0, "View mouse sensitivity" );
 
 // Which mouse button to move the camera
 ConVar mouseMoveButton( "dx_mousemovebutton", "1", 0, "1: Left mouse button, 2: Right mouse button, 3: Middle mouse button" );
@@ -70,22 +74,83 @@ DXEditorHelper &DirectorsCutGameSystem()
 	return g_DirectorsCutSystem;
 }
 
+bool DXEditorHelper::Init()
+{
+	DXEditorPanel::ToggleEditor();
+	return true;
+}
+
 void DXEditorHelper::LoadDocument( const char* pszDocumentName )
 {
 	//DECLARE_DMX_CONTEXT_NODECOMMIT();
 	CloseDocument();
-	
 	CDmxElement* document = (CDmxElement*)DMXAlloc( 50000000 );
 
-	if (UnserializeDMX(pszDocumentName, "MOD", true, &document))
+	// Mark timestamp so we can document how long it takes to load
+	double flStartTime = Plat_FloatTime();
+
+	// Read for a bit to find "keyvalues2" or "binary"
+	FileHandle_t fh = filesystem->Open(pszDocumentName, "r", "DEFAULT_WRITE_PATH");
+	char buf[64];
+	filesystem->Read(buf, 64, fh);
+	filesystem->Close(fh);
+
+	bool bBinary = false;
+	if (strstr(buf, "binary"))
+	{
+		bBinary = true;
+	}
+
+	fh = filesystem->Open(pszDocumentName, "r", "DEFAULT_WRITE_PATH");
+	CUtlBuffer::BufferFlags_t flags = bBinary ? CUtlBuffer::READ_ONLY : CUtlBuffer::TEXT_BUFFER;
+	CUtlBuffer buffer = CUtlBuffer(0, 0, flags);
+	filesystem->ReadToBuffer(fh, buffer);
+	filesystem->Close(fh);
+
+	// If text, find all mentions of "time" and "time_array" and replace them with "float" and "float_array"
+	Msg("Converting session format: \"time\" -> \"float\", \"time_array\" -> \"float_array\"\n");
+	if (!bBinary)
+	{
+		Msg("Text session format detected, continuing...\n");
+		// Replace all "time" with "float" and "time_array" with "float_array"
+		// This is because the DMX parser doesn't support "time" and "time_array" types
+		const char * pszBuffer = buffer.String();
+		const char * pszTime = "\"time\"";
+		const char * pszTimeArray = "\"time_array\"";
+		const char * pszFloat = "\"float\"";
+		const char * pszFloatArray = "\"float_array\"";
+		std::string strBuffer = pszBuffer;
+		std::regex rgxTime(pszTime);
+		std::regex rgxTimeArray(pszTimeArray);
+		std::regex rgxFloat(pszFloat);
+		std::regex rgxFloatArray(pszFloatArray);
+		std::string strReplaced = std::regex_replace(strBuffer, rgxTime, pszFloat);
+		strReplaced = std::regex_replace(strReplaced, rgxTimeArray, pszFloatArray);
+		buffer.Clear();
+		buffer.PutString(strReplaced.c_str());
+	}
+	else
+	{
+		Warning("Binary session format detected, failed to convert!\nPlease run the following command in the origin mod's bin folder:\n");
+		Warning("dmxconvert -i session.dmx -oe keyvalues2 -o session_kv2.dmx\n");
+	}
+
+	if (UnserializeDMX(buffer, &document, pszDocumentName))
 	{
 		//IterateDmxElement(document);
 		SetDocument(document);
 		SetFileOpen(true);
 		SetDocumentFocusedRoot(NULL);
+		m_pszLoadedDocumentName = pszDocumentName;
+
+		// Get timestamp and print how long it took to load
+		double flEndTime = Plat_FloatTime();
+		double flTimeTaken = flEndTime - flStartTime;
+		Msg("Finished loading session in %f seconds\n", flTimeTaken);
 	}
 	else
 		Warning("Could not read DMX file %s\n", pszDocumentName);
+	
 	DirectorsCutGameSystem().SetNeedsUpdate(true);
 }
 
@@ -126,19 +191,42 @@ void DXEditorHelper::SaveDocument( const char* pszDocumentName )
 	CDmxElement* document = GetDocument();
 	if (!document)
 		return;
-	CUtlBuffer buf;
+
+	// Mark timestamp so we can document how long it takes to save
+	double flStartTime = Plat_FloatTime();
+
+	CUtlBuffer buf = CUtlBuffer(0, 0, CUtlBuffer::TEXT_BUFFER);
 	SerializeDMX(buf, document);
+
+	// Replace all "\"unknown\" \"\"" with "\"element_array\"\n[\n]\n"
+	// This is because future mods do not support the "unknown" attribute type
+	Msg("Converting session format: \"unknown\" -> \"element_array\"\n");
+	const char * pszBuffer = buf.String();
+	const char * pszUnknown = "\"unknown\"";
+	const char * pszElementArray = "\"element_array\"";
+	std::string strBuffer = pszBuffer;
+	std::regex rgxUnknown(pszUnknown);
+	std::string strReplaced = std::regex_replace(strBuffer, rgxUnknown, pszElementArray);
+	buf.Clear();
+	buf.PutString(strReplaced.c_str());
 
 	FileHandle_t fh = filesystem->Open(pszDocumentName, "w", "DEFAULT_WRITE_PATH");
 	filesystem->Write(buf.Base(), buf.TellPut(), fh);
 	filesystem->Close(fh);
 	m_pszLoadedDocumentName = pszDocumentName;
+
+	// Get timestamp and print how long it took to save
+	double flEndTime = Plat_FloatTime();
+	double flTimeTaken = flEndTime - flStartTime;
+	Msg("Finished saving session in %f seconds\n", flTimeTaken);
 }
 
 void DXEditorHelper::CloseDocument()
 {
 	//DECLARE_DMX_CONTEXT_NODECOMMIT();
 	m_dmxContextHelper = new CDMXContextHelper( false );
+	SetPropertyUpdated(false);
+	SetCurrentProperty(NULL);
 	SetDocument(NULL);
 	SetDocumentFocusedRoot(NULL);
 	SetFileOpen(false);
@@ -159,7 +247,7 @@ CON_COMMAND(dx_update, "Updates the DMX document")
 
 void DXEditorHelper::LevelShutdownPostEntity()
 {
-	DXEditorPanel::DestroyEditor();
+	//DXEditorPanel::DestroyEditor();
 };
 
 void DXEditorHelper::Update( float ft )
@@ -173,6 +261,9 @@ void DXEditorHelper::Update( float ft )
 			DXEditorPanel::ToggleEditor();
 
 		bWasTabDown = bIsTabDown;
+
+		if(DXEditorPanel::IsEditorVisible())
+			DXEditorPanel::m_refInstance->bShowedWelcome = true;
 	}
 
 	// Movement keys (m_bMouseCaptured) will move the work camera

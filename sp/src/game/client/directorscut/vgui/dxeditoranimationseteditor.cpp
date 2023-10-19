@@ -17,6 +17,7 @@ using namespace vgui;
 DXEditorAnimationSetEditor::DXEditorAnimationSetEditor(Panel* pParent)
 	: BaseClass(pParent, "Animation Set Editor")
 {
+    //m_pTree = new TreeView(this, "DXEditorElementViewerTree");
 }
 
 void DXEditorAnimationSetEditor::OnThink()

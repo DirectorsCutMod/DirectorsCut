@@ -28,6 +28,9 @@ public:
 	DXEditorAnimationSetEditor( Panel *pParent );
     virtual void ApplySchemeSettings( IScheme *scheme );
     virtual void OnThink();
+
+protected:
+    TreeView* m_pTree = NULL;
 };
 
 #endif // DXEDITORANIMATIONSETEDITOR_H

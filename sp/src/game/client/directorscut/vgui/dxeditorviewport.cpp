@@ -47,14 +47,18 @@ DXEditorViewport::DXEditorViewport(Panel* pParent)
 	: BaseClass(pParent, "Primary Viewport")
 {
 	GetViewportTex();
+	m_hFont = vgui::scheme()->GetIScheme( vgui::scheme()->GetScheme( "ClientScheme" ) )->GetFont( "Default", true );
 }
 
 DXEditorViewport::~DXEditorViewport()
 {
-	m_pScreenKV->Clear();
+	//if(m_pScreenKV != NULL)
+		//m_pScreenKV->Clear();
 	//ForceDeleteMaterial( &m_pScreenMaterial );
-	m_pScreenMaterial->Release();
-	m_pScreenKV = NULL;
+	//if(m_pScreenMaterial != NULL)
+		//m_pScreenMaterial->Release();
+	//m_pScreenKV = NULL;
+	//m_pScreenMaterial = NULL;
 }
 
 void DXEditorViewport::OnThink()
@@ -85,7 +89,12 @@ void DXEditorViewport::OnThink()
 			int height;
 			GetSize(width, height);
 
-			pRenderContext->PushRenderTargetAndViewport(GetViewportTex(), 0, 0, width, height);
+			ITexture* ref = GetViewportTex();
+
+			if( ref == NULL )
+				return;
+
+			pRenderContext->PushRenderTargetAndViewport(ref, 0, 0, width, height);
 
 			// Set up player view and render to texture
 			CViewSetup playerview = *view->GetPlayerViewSetup();
@@ -152,23 +161,53 @@ void DXEditorViewport::Paint()
 		viewportY += (height - viewportH) / 2;
 	}
 
+	if(DirectorsCutGameSystem().GetDocument() == NULL)
+	{
+		// TODO: Standard function for drawing text
+		wchar_t* text = L"NO SESSION";
+		g_pMatSystemSurface->DrawSetTextFont( m_hFont );
+
+		int textWidth = 0;
+		int textHeight = 0;
+		g_pMatSystemSurface->GetTextSize(m_hFont, text, textWidth, textHeight);
+		g_pMatSystemSurface->DrawSetTextColor(255, 0, 0, 255);
+
+		int textX = x + (width - textWidth) / 2;
+		int textY = y + (height - textHeight) / 2;
+		g_pMatSystemSurface->DrawSetTextPos(textX, textY);
+		g_pMatSystemSurface->DrawPrintText(text, wcslen(text));
+		return;
+	}
+
+	if(!engine->IsInGame())
+	{
+		// TODO: Standard function for drawing text
+		wchar_t* text = L"NO MAP LOADED!";
+		g_pMatSystemSurface->DrawSetTextFont( m_hFont );
+
+		int textWidth = 0;
+		int textHeight = 0;
+		g_pMatSystemSurface->GetTextSize(m_hFont, text, textWidth, textHeight);
+		g_pMatSystemSurface->DrawSetTextColor(255, 0, 0, 255);
+
+		int textX = x + (width - textWidth) / 2;
+		int textY = y + (height - textHeight) / 2;
+		g_pMatSystemSurface->DrawSetTextPos(textX, textY);
+		g_pMatSystemSurface->DrawPrintText(text, wcslen(text));
+		return;
+	}
+
 	// Draw the viewport with texture ID
-	if (engine->IsInGame())
-	{
-		// Draw the viewport with texture ID
-		g_pMatSystemSurface->DrawSetTexture(m_nTextureID);
-		g_pMatSystemSurface->DrawTexturedRect(viewportX, viewportY, viewportX + viewportW, viewportY + viewportH);
-	}
-	else
-	{
-		// Draw a blank viewport to indicate that the game is not running
-		g_pMatSystemSurface->DrawSetColor( 64, 64, 64, 255 );
-		g_pMatSystemSurface->DrawFilledRect( viewportX, viewportY, viewportX + viewportW, viewportY + viewportH );
-	}
+	g_pMatSystemSurface->DrawSetTexture(m_nTextureID);
+	g_pMatSystemSurface->DrawTexturedRect(viewportX, viewportY, viewportX + viewportW, viewportY + viewportH);
 }
 
 void DXEditorViewport::OnMousePressed(MouseCode code)
 {
+	// Needs to be in-game
+	if (!engine->IsInGame())
+		return;
+
 	ConVar* mouseMoveButton = g_pCVar->FindVar("dx_mousemovebutton");
 	ButtonCode_t moveButton = MOUSE_LEFT;
 	switch (mouseMoveButton->GetInt())

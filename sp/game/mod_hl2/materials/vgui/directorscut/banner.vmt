@@ -1,0 +1,7 @@
+"UnlitGeneric"
+{
+	"$basetexture" "vgui/directorscut/banner"
+	"$nolod" 1
+	"$ignorez" 1
+	"$translucent" 1
+}

@@ -11,6 +11,7 @@
 #include "../directorscut.h"
 #include "dmxloader/dmxattribute.h"
 #include "dmxloader/dmxloader.h"
+#include "dxeditorproperties.h"
 
 #undef GetCommandLine
 #undef INVALID_HANDLE_VALUE
@@ -29,6 +30,8 @@
 #include <tier0/memdbgon.h>
 
 // This file is currently a mess but it works
+// TODO: Move property editing to properties window and standardize how we wanna handle attributes
+// TODO: Do we need a tree view? It's only ever used for arrays and elements, unlike the animation set editor
 
 #define TREE_TEXT_COLOR Color( 200, 255, 200, 255 )
 #define LIST_TEXT_COLOR TREE_TEXT_COLOR
@@ -38,31 +41,105 @@ using namespace vgui;
 DXEditorElementViewer::DXEditorElementViewer(Panel* pParent)
 	: BaseClass(pParent, "Element Viewer")
 {
-    m_pSplitter = new Splitter(this, "DXEditorElementViewerSplitter", SPLITTER_MODE_HORIZONTAL, 1);
-    float fractions[] = { 0.95f, 0.05f };
-    m_pSplitter->RespaceSplitters(fractions);
+    //pSplitter = new Splitter(this, "DXEditorElementViewerSplitter", SPLITTER_MODE_HORIZONTAL, 1);
+    //float fractions[] = { 0.95f, 0.05f };
+    //pSplitter->RespaceSplitters(fractions);
 
     // Top view is the tree view
-    m_pTree = new TreeView(m_pSplitter->GetChild(0), "DXEditorElementViewerTree");
+    m_pTree = new TreeView(this, "DXEditorElementViewerTree");
     IScheme* pscheme = scheme()->GetIScheme(GetScheme());
     HFont treeFont = pscheme->GetFont("DefaultVerySmall");
     m_pTree->SetFont(treeFont);
     m_pTree->SetFgColor(TREE_TEXT_COLOR);
 
-    // Bottom view is the property view
-    // Store text entries, checkboxes, etc. for each property type to switch between
-    m_pPropTextEntry = new TextEntry(m_pSplitter->GetChild(1), "DXEditorElementViewerPropTextEntry");
-    m_pPropCheckButton = new CheckButton(m_pSplitter->GetChild(1), "DXEditorElementViewerPropCheckButton", "");
-    m_pPropLabel = new Label(m_pSplitter->GetChild(1), "DXEditorElementViewerPropLabel", "");
-    m_pColorPickerButton = new CColorPickerButton(m_pSplitter->GetChild(1), "DXEditorElementViewerPropColorPickerButton", this);
-    m_pMakeRootButton = new Button(m_pSplitter->GetChild(1), "DXEditorElementViewerMakeRootButton", "Make Root");
+    // Make ready for use
+    m_pTree->MakeReadyForUse();
+}
 
-    // Hide all property views
-    m_pPropTextEntry->SetVisible(false);
-    m_pPropCheckButton->SetVisible(false);
-    m_pPropLabel->SetVisible(false);
-    m_pColorPickerButton->SetVisible(false);
-    m_pMakeRootButton->SetVisible(false);
+void DXEditorElementViewer::SetupProperties(bool reset)
+{
+    DXEditorProperties* pProperties = GetDXEditorProperties();
+    if (pProperties == NULL)
+    {
+        Msg("Error: Could not get properties window.\n");
+        return;
+    }
+
+    Splitter* pSplitter = pProperties->GetSplitter();
+    if (pSplitter == NULL
+        || pSplitter->GetChildCount() < 2
+        || pSplitter->GetChild(0) == NULL
+        || pSplitter->GetChild(1) == NULL)
+    {
+        Msg("Error: Could not get splitter.\n");
+        return;
+    }
+
+    pProperties->ResetPanels(false);
+
+    if (pPreviewLabel == NULL
+        || m_pPropTextEntry == NULL
+        || m_pPropCheckButton == NULL
+        || m_pPropLabel == NULL
+        || m_pColorPickerButton == NULL
+        || m_pMakeRootButton == NULL)
+    {
+        if (!reset)
+        {
+            Msg("Warning: Could not get property controls. Resetting.\n");
+            reset = true;
+        }
+        else
+        {
+            Msg("Error: Could not get property controls.\n");
+            return;
+        }
+    }
+
+    // Left view is the preview
+    // Just show the name and type of the element for now
+    int itemIndex = m_pTree->GetFirstSelectedItem();
+    if (itemIndex == -1)
+    {
+        Msg("Error: No tree view item selected.\n");
+        return;
+    }
+    KeyValues* kv = m_pTree->GetItemData(itemIndex);
+    if (kv == NULL)
+    {
+        Msg("Error: Tree view item has no data.\n");
+        return;
+    }
+    const char* pszText = kv->GetString("Text");
+    const char* pszType = kv->GetString("Type");
+    const char* pszUniqueId = kv->GetString("UniqueId");
+    const char* pszData = kv->GetString("Data");
+
+    // Create preview label
+    if(reset)
+        pPreviewLabel = new RichText(pSplitter->GetChild(0), "DXEditorElementViewerPreviewLabel");
+    char* pszPreviewText = new char[256];
+    Q_snprintf(pszPreviewText, 256, "Name: %s\nType: %s\nUnique ID: %s\nData: %s", pszText, pszType, pszUniqueId, pszData);
+    pPreviewLabel->SetText(pszPreviewText);
+    pPreviewLabel->SetVisible(true);
+
+    // Right view is the property view
+    // Store text entries, checkboxes, etc. for each property type to switch between
+    if(reset)
+    {
+        m_pPropTextEntry = new TextEntry(pSplitter->GetChild(1), "DXEditorElementViewerPropTextEntry");
+        m_pPropCheckButton = new CheckButton(pSplitter->GetChild(1), "DXEditorElementViewerPropCheckButton", "");
+        m_pPropLabel = new RichText(pSplitter->GetChild(1), "DXEditorElementViewerPropLabel");
+        m_pColorPickerButton = new CColorPickerButton(pSplitter->GetChild(1), "DXEditorElementViewerPropColorPickerButton", this);
+        m_pMakeRootButton = new Button(pSplitter->GetChild(1), "DXEditorElementViewerMakeRootButton", "Make Root");
+
+        // Hide all property views
+        m_pPropTextEntry->SetVisible(false);
+        m_pPropCheckButton->SetVisible(false);
+        m_pPropLabel->SetVisible(false);
+        m_pColorPickerButton->SetVisible(false);
+        m_pMakeRootButton->SetVisible(false);
+    }
 
     // Disable editing of properties
     //m_pPropTextEntry->SetEditable(false);
@@ -70,14 +147,16 @@ DXEditorElementViewer::DXEditorElementViewer(Panel* pParent)
     //m_pColorPickerButton->SetMouseClickEnabled(MOUSE_LEFT, false);
 
     // Actions
-    m_pTree->AddActionSignalTarget(this);
-    m_pPropTextEntry->AddActionSignalTarget(this);
-    m_pPropCheckButton->AddActionSignalTarget(this);
-    m_pColorPickerButton->AddActionSignalTarget(this);
-    m_pMakeRootButton->AddActionSignalTarget(this);
+    if(reset)
+    {
+        m_pTree->AddActionSignalTarget(this);
+        m_pPropTextEntry->AddActionSignalTarget(this);
+        m_pPropCheckButton->AddActionSignalTarget(this);
+        m_pColorPickerButton->AddActionSignalTarget(this);
+        m_pMakeRootButton->AddActionSignalTarget(this);
+    }
 
-    // Make ready for use
-    m_pTree->MakeReadyForUse();
+    //pProperties->InvalidateLayout(true);
 }
 
 void DXEditorElementViewer::OnTreeViewItemSelected()
@@ -87,25 +166,54 @@ void DXEditorElementViewer::OnTreeViewItemSelected()
     int itemIndex = m_pTree->GetFirstSelectedItem();
     if (itemIndex == -1)
     {
-        Msg("Error: No tree view item selected.\n");
+        //Msg("Error: No tree view item selected.\n");
         return;
     }
     
     KeyValues* kv = m_pTree->GetItemData(itemIndex);
     if (kv == NULL)
     {
-        Msg("Error: Tree view item has no data.\n");
+        //Msg("Error: Tree view item has no data.\n");
         return;
+    }
+    
+    // Double click
+    if(lastSelectedIndex == itemIndex)
+    {
+        double curTime = system()->GetFrameTime();
+        if (m_bCanDoubleClick)
+        {
+            if (curTime - lastClickTime < 0.5)
+            {
+                // Double click
+                MakeRootButtonClick();
+            }
+        }
+        else
+        {
+            m_bCanDoubleClick = true;
+        }
+        lastClickTime = curTime;
+    }
+    else
+    {
+        lastSelectedIndex = itemIndex;
+        m_bCanDoubleClick = false;
     }
 
     const char* pszType = kv->GetString("Type");
 
-    // Hide all property views
-    m_pPropTextEntry->SetVisible(false);
-    m_pPropCheckButton->SetVisible(false);
-    m_pPropLabel->SetVisible(false);
-    m_pColorPickerButton->SetVisible(false);
-    m_pMakeRootButton->SetVisible(false);
+    SetupProperties(false);
+
+    if(m_pPropTextEntry == NULL
+        || m_pPropCheckButton == NULL
+        || m_pPropLabel == NULL
+        || m_pColorPickerButton == NULL
+        || m_pMakeRootButton == NULL)
+    {
+        Msg("Error: Could not get property controls.\n");
+        return;
+    }
 
     // Show appropriate property view
     if (Q_strcmp(pszType, "string") == 0)
@@ -175,8 +283,7 @@ void DXEditorElementViewer::OnTreeViewItemSelected()
     {
         // Show label to indicate that this property cannot be edited
         m_pPropLabel->SetVisible(true);
-        m_pPropLabel->SetText("This property cannot be edited.");
-        m_pPropLabel->SetContentAlignment(Label::a_center);
+        m_pPropLabel->SetText("Unsupported type.");
     }
 }
 
@@ -212,20 +319,17 @@ void DXEditorElementViewer::RecursivePopulateTreeFromDocument( CDmxElement* pEle
         // Set tree view bounds
         m_pTree->SetBounds(x, y, w, h);
 
-        m_pSplitter->InvalidateLayout(true);
-        float fractions[] = { 0.95f, 0.05f };
-        m_pSplitter->RespaceSplitters(fractions);
-
-        // Clear properties
-        m_pPropTextEntry->SetVisible(false);
-        m_pPropCheckButton->SetVisible(false);
-        m_pPropLabel->SetVisible(false);
-        m_pColorPickerButton->SetVisible(false);
-        m_pMakeRootButton->SetVisible(false);
+        DXEditorProperties* pProperties = GetDXEditorProperties();
+        if (pProperties == NULL)
+        {
+            //Msg("Error: Could not get properties window.\n");
+            return;
+        }
+        pProperties->ResetPanels(false);
         
         if( pRoot == NULL)
         {
-            //Msg("No document loaded.\n");
+            ////Msg("No document loaded.\n");
             return;
         }
 
@@ -238,6 +342,7 @@ void DXEditorElementViewer::RecursivePopulateTreeFromDocument( CDmxElement* pEle
         UniqueIdToString( pRoot->GetId(), uniqueId, 40 );
         kv->SetString( "UniqueId", uniqueId );
         int rootIndex = m_pTree->AddItem( kv, -1 );
+        m_pTree->SetItemFgColor( rootIndex, Color( 0, 128, 255, 255 ) );
         RecursivePopulateTreeFromDocument( pRoot, rootIndex );
     }
     else
@@ -255,6 +360,7 @@ void DXEditorElementViewer::RecursivePopulateTreeFromDocument( CDmxElement* pEle
             kv->SetString("Type", "unknown");
             kv->SetString("Data", "");
             char* pszData = new char[32];
+            Color col = Color(0, 0, 0, 255);
             switch (pCur->GetType())
             {
             case AT_ELEMENT:
@@ -264,6 +370,7 @@ void DXEditorElementViewer::RecursivePopulateTreeFromDocument( CDmxElement* pEle
                 kv->SetString("UniqueId", uniqueId);
                 kv->SetString("Type", "element");
                 index = m_pTree->AddItem(kv, parentIndex);
+                m_pTree->SetItemFgColor(index, Color(0, 128, 255, 255));
                 /*
                 if (subElem != NULL)
                     RecursivePopulateTreeFromDocument(subElem, index);
@@ -273,35 +380,43 @@ void DXEditorElementViewer::RecursivePopulateTreeFromDocument( CDmxElement* pEle
                 kv->SetString("Type", "string");
                 kv->SetString("Data", pCur->GetValue<CUtlString>().Get());
                 index = m_pTree->AddItem(kv, parentIndex);
+                m_pTree->SetItemFgColor(index, Color(255, 255, 0, 255));
                 break;
             case AT_INT:
                 kv->SetString("Type", "int");
                 Q_snprintf(pszData, 32, "%i", pCur->GetValue<int>());
                 kv->SetString("Data", pszData);
                 index = m_pTree->AddItem(kv, parentIndex);
+                m_pTree->SetItemFgColor(index, Color(255, 0, 0, 255));
                 break;
             case AT_FLOAT:
                 kv->SetString("Type", "float");
                 Q_snprintf(pszData, 32, "%f", pCur->GetValue<float>());
                 kv->SetString("Data", pszData);
                 index = m_pTree->AddItem(kv, parentIndex);
+                m_pTree->SetItemFgColor(index, Color(0, 255, 0, 255));
                 break;
             case AT_BOOL:
                 kv->SetString("Type", "bool");
                 kv->SetString("Data", pCur->GetValue<bool>() ? "true" : "false");
                 index = m_pTree->AddItem(kv, parentIndex);
+                m_pTree->SetItemFgColor(index, Color(0, 255, 0, 255));
                 break;
             case AT_COLOR:
                 kv->SetString("Type", "color");
-                Q_snprintf(pszData, 32, "%i", pCur->GetValue<Color>().GetRawColor());
+                col = pCur->GetValue<Color>();
+                col.SetColor(col.r(), col.g(), col.b(), 255);
+                Q_snprintf(pszData, 32, "%i", col.GetRawColor());
                 kv->SetString("Data", pszData);
                 index = m_pTree->AddItem(kv, parentIndex);
+                m_pTree->SetItemFgColor(index, col);
                 break;
             case AT_ELEMENT_ARRAY:
                 kv->SetString("Type", "element_array");
                 Q_snprintf(pszData, 32, "%i item%s", pCur->GetArrayCount(), pCur->GetArrayCount() == 1 ? "" : "s");
                 kv->SetString("Data", pszData);
                 index = m_pTree->AddItem(kv, parentIndex);
+                m_pTree->SetItemFgColor(index, Color(0, 128, 255, 255));
                 if (pCur->GetArrayCount() > 0)
                 {
                     for (int j = 0; j < pCur->GetArrayCount(); j++)
@@ -327,6 +442,7 @@ void DXEditorElementViewer::RecursivePopulateTreeFromDocument( CDmxElement* pEle
                 }
                 kv->SetString("Data", pszData);
                 index = m_pTree->AddItem(kv, parentIndex);
+                m_pTree->SetItemFgColor(index, Color(255, 0, 0, 255));
                 break;
             case AT_FLOAT_ARRAY:
                 kv->SetString("Type", "float_array");
@@ -336,6 +452,7 @@ void DXEditorElementViewer::RecursivePopulateTreeFromDocument( CDmxElement* pEle
                 }
                 kv->SetString("Data", pszData);
                 index = m_pTree->AddItem(kv, parentIndex);
+                m_pTree->SetItemFgColor(index, Color(0, 255, 0, 255));
                 break;
             case AT_BOOL_ARRAY:
                 kv->SetString("Type", "bool_array");
@@ -345,21 +462,26 @@ void DXEditorElementViewer::RecursivePopulateTreeFromDocument( CDmxElement* pEle
                 }
                 kv->SetString("Data", pszData);
                 index = m_pTree->AddItem(kv, parentIndex);
+                m_pTree->SetItemFgColor(index, Color(0, 255, 0, 255));
                 break;
             case AT_COLOR_ARRAY:
                 kv->SetString("Type", "color_array");
                 for (int j = 0; j < pCur->GetArrayCount(); j++)
                 {
-                    Q_snprintf(pszData, 256, "%s%i", j == 0 ? "" : ", ", pCur->GetArray<Color>()[j].GetRawColor());
+                    col = pCur->GetArray<Color>()[j];
+                    Q_snprintf(pszData, 256, "%s%i", j == 0 ? "" : ", ", col.GetRawColor());
                 }
+                col.SetColor(col.r(), col.g(), col.b(), 255);
                 kv->SetString("Data", pszData);
                 index = m_pTree->AddItem(kv, parentIndex);
+                m_pTree->SetItemFgColor(index, col);
                 break;
             }
             if(index == -1)
             {
                 // Add anyways
                 index = m_pTree->AddItem(kv, parentIndex);
+                m_pTree->SetItemFgColor(index, Color(192, 192, 192, 255));
             }
         }
     }
@@ -371,7 +493,7 @@ void DXEditorElementViewer::MakeRootButtonClick()
     int itemIndex = m_pTree->GetFirstSelectedItem();
     if (itemIndex == -1)
     {
-		Msg("Error: No tree view item selected.\n");
+		//Msg("Error: No tree view item selected.\n");
 		return;
 	}
 
@@ -387,7 +509,7 @@ void DXEditorElementViewer::MakeRootButtonClick()
     KeyValues* kv = m_pTree->GetItemData(itemIndex);
     if (kv == NULL)
     {
-        Msg("Error: Tree view item has no data.\n");
+        //Msg("Error: Tree view item has no data.\n");
     }
 
     // Get uniqueid
@@ -397,7 +519,7 @@ void DXEditorElementViewer::MakeRootButtonClick()
 
     if (failure)
     {
-        Msg("Error: Could not convert uniqueId %s to UniqueId_t.\n", uniqueIdStr);
+        //Msg("Error: Could not convert uniqueId %s to UniqueId_t.\n", uniqueIdStr);
         return;
     }
 
@@ -407,7 +529,7 @@ void DXEditorElementViewer::MakeRootButtonClick()
         pRoot = DirectorsCutGameSystem().GetDocument();
     if (pRoot == NULL)
     {
-        Msg("No document loaded.\n");
+        //Msg("No document loaded.\n");
         return;
     }
 
@@ -456,13 +578,6 @@ void DXEditorElementViewer::MakeRootButtonClick()
 void DXEditorElementViewer::OnThink()
 {
     //DECLARE_DMX_CONTEXT_NODECOMMIT();
-    
-    // Root button click
-    if (m_pMakeRootButton->IsVisible() && m_pMakeRootButton->IsSelected())
-    {
-        m_pMakeRootButton->SetSelected(false);
-        MakeRootButtonClick();
-    }
 
     // Check to see if properties had changed from the tree view data
     int itemIndex = m_pTree->GetFirstSelectedItem();
@@ -471,6 +586,23 @@ void DXEditorElementViewer::OnThink()
         KeyValues* kv = m_pTree->GetItemData(itemIndex);
         if (kv != NULL)
         {
+            // Check to see if properties are valid
+            if (m_pPropTextEntry == NULL
+                || m_pPropCheckButton == NULL
+                || m_pPropLabel == NULL
+                || m_pColorPickerButton == NULL
+                || m_pMakeRootButton == NULL)
+            {
+				//Msg("Error: Could not get property controls.\n");
+				return;
+			}
+            // Root button click
+            if (m_pMakeRootButton->IsVisible()
+                && m_pMakeRootButton->IsSelected())
+            {
+                m_pMakeRootButton->SetSelected(false);
+                MakeRootButtonClick();
+            }
             const char* pszType = kv->GetString("Type");
             if (Q_strcmp(pszType, "string") == 0
                 || Q_strcmp(pszType, "int") == 0
@@ -488,13 +620,13 @@ void DXEditorElementViewer::OnThink()
                     // Update property
                     kv->SetString("Data", pszTextEntry);
                     const char* pszText = kv->GetString("Text");
-                    Msg("Updating %s to %s\n", pszText, pszTextEntry);
+                    //Msg("Updating %s to %s\n", pszText, pszTextEntry);
                     CDmxElement* pRoot = DirectorsCutGameSystem().GetDocumentFocusedRoot();
                     if (pRoot == NULL)
                         pRoot = DirectorsCutGameSystem().GetDocument();
                     if (pRoot == NULL)
                     {
-                        Msg("No document loaded.\n");
+                        //Msg("No document loaded.\n");
                         return;
                     }
                     if (Q_strcmp(pszType, "string") == 0)
@@ -585,13 +717,13 @@ void DXEditorElementViewer::OnThink()
                     // Update property
                     kv->SetString("Data", bSelected ? "true" : "false");
                     const char* pszText = kv->GetString("Text");
-                    Msg("Updating %s to %s\n", pszText, bSelected ? "true" : "false");
+                    //Msg("Updating %s to %s\n", pszText, bSelected ? "true" : "false");
                     CDmxElement* pRoot = DirectorsCutGameSystem().GetDocumentFocusedRoot();
                     if (pRoot == NULL)
                         pRoot = DirectorsCutGameSystem().GetDocument();
                     if (pRoot == NULL)
                     {
-                        Msg("No document loaded.\n");
+                        //Msg("No document loaded.\n");
                         return;
                     }
                     pRoot->SetValue<bool>(pszText, bSelected);
@@ -608,14 +740,14 @@ void DXEditorElementViewer::OnThink()
                 {
                     // Update property
                     const char* pszText = kv->GetString("Text");
-                    Msg("Updating %s from %s to %s\n", pszText, kv->GetString("Data"), pszTextEntry);
+                    //Msg("Updating %s from %s to %s\n", pszText, kv->GetString("Data"), pszTextEntry);
                     kv->SetString("Data", pszTextEntry);
                     CDmxElement* pRoot = DirectorsCutGameSystem().GetDocumentFocusedRoot();
                     if (pRoot == NULL)
                         pRoot = DirectorsCutGameSystem().GetDocument();
                     if (pRoot == NULL)
                     {
-                        Msg("No document loaded.\n");
+                        //Msg("No document loaded.\n");
                         return;
                     }
                     pRoot->SetValue<Color>(pszText, clr);
@@ -627,7 +759,7 @@ void DXEditorElementViewer::OnThink()
 
     if(DirectorsCutGameSystem().NeedsUpdate() == true)
     {
-        Msg("Updating element viewer...\n");
+        //Msg("Updating element viewer...\n");
         DirectorsCutGameSystem().SetNeedsUpdate(false);
         RecursivePopulateTreeFromDocument(NULL, -1);
         // Expand all items
@@ -646,6 +778,7 @@ void DXEditorElementViewer::OnThink()
                 const char* pszText = kv->GetString("Text");
                 if (Q_strcmp(pszText, m_selectedElement) == 0)
                 {
+                    m_bCanDoubleClick = false;
                     m_pTree->AddSelectedItem(i, true, false, true);
                     break;
                 }
@@ -653,21 +786,18 @@ void DXEditorElementViewer::OnThink()
         }
     }
 
+    // TODO: layout?
+
     int x, y, w, h;
+    int offset = 4;
+
     GetBounds(x, y, w, h);
-	y -= 27; // I'm not sure why, but there's an offset here for some reason
-    m_pSplitter->SetBounds(x, y, w, h);
+    m_pTree->SetBounds(offset, offset, w - offset * 2, h - offset * 2);
+}
 
-    m_pSplitter->GetChild(0)->GetBounds(x, y, w, h);
-    m_pTree->SetBounds(0, 0, w, h);
-
-    // Extend properties to use all available space
-    m_pSplitter->GetChild(1)->GetBounds(x, y, w, h);
-    m_pPropTextEntry->SetBounds(0, 0, w, h);
-    m_pPropCheckButton->SetBounds(0, 0, w, h);
-    m_pPropLabel->SetBounds(0, 0, w, h);
-    m_pColorPickerButton->SetBounds(0, 0, w, h);
-    m_pMakeRootButton->SetBounds(0, 0, w, h);
+void DXEditorElementViewer::PerformLayout()
+{
+    BaseClass::PerformLayout();
 }
 
 void DXEditorElementViewer::ApplySchemeSettings(IScheme *pScheme)

@@ -17,30 +17,23 @@ Scheme
 	{
 		// base colors
 		"White"				"255 255 255 255"
-		"OffWhite"			"216 216 216 255"
+		"OffWhite"			"182 182 182 255"
 		"DullWhite"			"142 142 142 255"
+		"WhiteBorder"		"110 110 110 255"
 
-		"TransparentBlack"	"0 0 0 128"
 		"Black"				"0 0 0 255"
-
 		"Blank"				"0 0 0 0"
 
 		"Red"               "255 128 128 255"
 		"Green"             "128 255 128 255"
 		"Blue"              "128 128 255 255"
 
-		"OrangeV"           "255 155 0 255"
-		"OrangeZ"           "255 153 35 255"
-		"OrangeZDim"        "255 153 35 196"
+		"DXMenuDark"       "38 38 39 255"
+		"DXMenuDarkAlt1"   "54 54 54 255"
+		"DXMenuDarkAlt2"   "44 44 45 255"
 
-		"IfmMenuDark"       "63 62 61 255"
-		// "IfmMenuDarkDim"    "66 66 66 196"
-		// "IfmMenuDarkDim"    "66 66 66 90"
-		"IfmMenuDarkDim"    "41 41 41 255"
-
-		"IfmMenu"           "63 62 61 255"
-		"IfmMenuDim"        "41 41 41 255"
-
+		"DXSelection"		"79 82 89 255"
+		"DXInactive"		"32 32 31 255"
 	}
 
 	///////////////////// BASE SETTINGS ////////////////////////
@@ -50,21 +43,27 @@ Scheme
 	BaseSettings
 	{
 		// vgui_controls color specifications
-		Border.Bright					"200 200 200 196"	// the lit side of a control
-		Border.Dark						"40 40 40 196"		// the dark/unlit side of a control
-		Border.Selection				"0 0 0 196"			// the additional border color for displaying the default/selected button
+		Border.Bright					"Blank"	// the lit side of a control
+		Border.Dark						"Blank"		// the dark/unlit side of a control
+		Border.Selection				"Blank"			// the additional border color for displaying the default/selected button
 
-		Button.TextColor				"OrangeZ"
-		Button.BgColor					"Blank"
-		Button.ArmedTextColor			"OrangeZ"
-		Button.ArmedBgColor				"Blank"
-		Button.DepressedTextColor		"OrangeZDim"
-		Button.DepressedBgColor			"Blank"
-		Button.FocusBorderColor			"Black"
+		Button.TextColor				"OffWhite"
+		Button.BgColor					"DXMenuDark"
+		Button.ArmedTextColor			"White"
+		Button.ArmedBgColor				"DXMenuDarkAlt2"
+		Button.DepressedTextColor		"White"
+		Button.DepressedBgColor			"DXMenuDarkAlt2"
+		Button.FocusBorderColor			"Blank"
+
+		DXEditorPanelPage.BgColor			"DXMenuDarkAlt1"
+		DXEditorPanelPage.SelectedBgColor	"DXMenuDarkAlt1"
+
+		PageTab.ActiveColor "DXMenuDarkAlt1"
+		PageTab.InactiveColor "DXMenuDark"
 
 		CheckButton.TextColor			"OffWhite"
 		CheckButton.SelectedTextColor	"White"
-		CheckButton.BgColor				"TransparentBlack"
+		CheckButton.BgColor				"DXMenuDarkAlt1"
 		CheckButton.Border1  			"Border.Dark" 		// the left checkbutton border
 		CheckButton.Border2  			"Border.Bright"		// the right checkbutton border
 		CheckButton.Check				"White"				// color of the check itself
@@ -77,16 +76,18 @@ Scheme
 		ComboBoxButton.BgColor			"Blank"
 		ComboBoxButton.DisabledBgColor	"Blank"
 
-		ExpandButton.Color				"OrangeZ"
+		ExpandButton.Color				"DXMenuDark"
 
 		Frame.TitleTextInsetX			16
 		Frame.ClientInsetX				8
 		Frame.ClientInsetY				6
-		Frame.BgColor					"IfmMenuDark"
-		Frame.OutOfFocusBgColor			"IfmMenuDarkDim"
-		Frame.FocusTransitionEffectTime	"0.02"	// time it takes for a window to fade in/out on focus/out of focus
-		Frame.TransitionEffectTime		"0.02"	// time it takes for a window to fade in/out on open/close
-		Frame.AutoSnapRange				"8"
+		Frame.BgColor					"DXMenuDark"
+		Frame.OutOfFocusBgColor			"DXMenuDark"
+		Frame.FocusTransitionEffectTime	"0.3"	// time it takes for a window to fade in/out on focus/out of focus
+		Frame.TransitionEffectTime		"0.3"	// time it takes for a window to fade in/out on open/close
+		// Frame.AutoSnapRange				"8"
+		Frame.AutoSnapRange				"0"
+		Frame.FocusBorderColor			"WhiteBorder"
 		FrameGrip.Color1				"200 200 200 196"
 		FrameGrip.Color2				"0 0 0 196"
 		FrameTitleButton.FgColor		"200 200 200 196"
@@ -98,14 +99,14 @@ Scheme
 		FrameSystemButton.Icon			""
 		FrameSystemButton.DisabledIcon	""
 		FrameTitleBar.Font				"UiBold"
-		FrameTitleBar.TextColor			"OrangeZ"
-		FrameTitleBar.BgColor			"IfmMenu"
-		FrameTitleBar.DisabledTextColor	"OrangeZDim"
-		FrameTitleBar.DisabledBgColor	"IfmMenuDim"
+		FrameTitleBar.TextColor			"White"
+		FrameTitleBar.BgColor			"Blank"
+		FrameTitleBar.DisabledTextColor	"DXMenuDarkAlt1"
+		FrameTitleBar.DisabledBgColor	"Blank"
 		FrameTitleBar.SmallFont				"UiBoldSmall"
 
 		GraphPanel.FgColor				"White"
-		GraphPanel.BgColor				"TransparentBlack"
+		GraphPanel.BgColor				"DXMenuDarkAlt1"
 
 		Label.TextDullColor				"DullWhite"
 		Label.TextColor					"OffWhite"
@@ -117,33 +118,36 @@ Scheme
 
 		ListPanel.TextColor					"OffWhite"
 		ListPanel.TextBgColor				"Blank"
-		ListPanel.BgColor					"TransparentBlack"
+		ListPanel.BgColor					"DXMenuDarkAlt1"
 		ListPanel.SelectedTextColor			"Black"
-		ListPanel.SelectedBgColor			"255 155 0 255"
-		ListPanel.SelectedOutOfFocusBgColor	"255 155 0 128"
+		ListPanel.SelectedBgColor			"DXSelection"
+		ListPanel.SelectedOutOfFocusBgColor	"DXSelection"
 		ListPanel.EmptyListInfoTextColor	"OffWhite"
 		ListPanel.DisabledTextColor			"Label.DisabledFgColor1"
 		ListPanel.DisabledSelectedTextColor			"OffWhite"
 
 		IfmWorkspace.BgColor            "50 70 50 90"
 
-		MenuBar.BgColor					"IfmMenuDarkDim"
+		MenuBar.FgColor					"Blank"
+		MenuBar.BgColor					"Blank"
 
-		Menu.TextColor					"OrangeZ"
-		Menu.BgColor					"IfmMenuDarkDim"
-		Menu.ArmedTextColor				"IfmMenuDark"
-		Menu.ArmedBgColor				"OrangeZ"
-		Menu.SeparatorColor				"DullWhite"
-		Menu.TextInset					"6"
+		Menu.TextColor					"OffWhite"
+		Menu.BgColor					"DXMenuDarkAlt1"
+		Menu.ArmedTextColor				"White"
+		Menu.ArmedBgColor				"DXSelection"
+		Menu.SeparatorColor				"109 109 109 255"
+		Menu.TextInset					"16"
 		// Menu.Font                       "UiBoldSmall"
 
 		Panel.FgColor					"DullWhite"
 		Panel.BgColor					"Blank"
 
 		ProgressBar.FgColor				"White"
-		ProgressBar.BgColor				"TransparentBlack"
+		ProgressBar.BgColor				"DXMenuDarkAlt1"
 
+		PropertySheet.BgColor			"DXMenuDark"
 		PropertySheet.TextColor			"OffWhite"
+		PropertySheet.SelectedBgColor	"DXMenuDarkAlt1"
 		PropertySheet.SelectedTextColor	"White"
 		PropertySheet.TransitionEffectTime	"0.25"	// time to change from one tab to another
 
@@ -151,9 +155,9 @@ Scheme
 		RadioButton.SelectedTextColor	"White"
 
 		RichText.TextColor				"OffWhite"
-		RichText.BgColor				"TransparentBlack"
+		RichText.BgColor				"DXMenuDarkAlt2"
 		RichText.SelectedTextColor		"Black"
-		RichText.SelectedBgColor		"255 155 0 255"
+		RichText.SelectedBgColor		"DXSelection"
 
 		ScrollBar.Wide				14
 
@@ -180,11 +184,11 @@ Scheme
 		SectionedListPanel.DividerColor		"Black"
 		SectionedListPanel.TextColor		"DullWhite"
 		SectionedListPanel.BrightTextColor	"White"
-		SectionedListPanel.BgColor			"TransparentBlack"
+		SectionedListPanel.BgColor			"DXMenuDarkAlt1"
 		SectionedListPanel.SelectedTextColor			"Black"
-		SectionedListPanel.SelectedBgColor				"255 155 0 255"
+		SectionedListPanel.SelectedBgColor				"DXSelection"
 		SectionedListPanel.OutOfFocusSelectedTextColor	"Black"
-		SectionedListPanel.OutOfFocusSelectedBgColor	"255 155 0 128"
+		SectionedListPanel.OutOfFocusSelectedBgColor	"DXSelection"
 
 		Slider.NobColor				"108 108 108 255"
 		Slider.TextColor			"180 180 180 255"
@@ -193,21 +197,21 @@ Scheme
 		Slider.DisabledTextColor2	"30 30 30 255"
 
 		TextEntry.TextColor			"OffWhite"
-		TextEntry.BgColor			"TransparentBlack"
+		TextEntry.BgColor			"DXMenuDarkAlt2"
 		TextEntry.CursorColor		"OffWhite"
 		TextEntry.DisabledTextColor	"DullWhite"
 		TextEntry.DisabledBgColor	"Blank"
 		TextEntry.SelectedTextColor	"Black"
-		TextEntry.SelectedBgColor	"255 155 0 255"
-		TextEntry.OutOfFocusSelectedBgColor	"255 155 0 128"
+		TextEntry.SelectedBgColor	"DXSelection"
+		TextEntry.OutOfFocusSelectedBgColor	"DXSelection"
 		TextEntry.FocusEdgeColor	"0 0 0 196"
 
 		ToggleButton.SelectedTextColor	"White"
 
 		Tooltip.TextColor			"0 0 0 196"
-		Tooltip.BgColor				"255 155 0 255"
+		Tooltip.BgColor				"DXSelection"
 
-		TreeView.BgColor			"TransparentBlack"
+		TreeView.BgColor			"DXInactive"
 
 		WizardSubPanel.BgColor		"Blank"
 
@@ -224,7 +228,7 @@ Scheme
 
 		NewGame.TextColor			"White"
 		NewGame.FillColor			"0 0 0 255"
-		NewGame.SelectionColor		"255 155 0 255"
+		NewGame.SelectionColor		"DXSelection"
 		NewGame.DisabledColor		"128 128 128 196"
 
 		DragDrop.DragFrame		"255 255 255 192"
@@ -232,7 +236,7 @@ Scheme
 
 		AttributeWidget.DirtyBgColor "100 100 200 63"
 
-		Clip.Selected				"255 155 0 255"
+		Clip.Selected				"DXSelection"
 		Clip.Unselected				"150 150 150 255"
 
 		Clip.BgColor				"Blank"
@@ -248,7 +252,7 @@ Scheme
 		Clip.StartDragColor			"0 255 255 128"
 
 		KeyBoardEditor.AlteredBinding		"100 255 100 255"
-		StatusBar.BgColor 			"IfmMenuDarkDim"
+		StatusBar.BgColor 			"DXMenuDarkAlt1"
 
 		FilmStrip.FilmBgColor		"75 75 220 128"
 		FilmStrip.AudioBgColor		"75 220 75 128"
@@ -269,7 +273,7 @@ Scheme
 		AnimSet.ItemColor					"200 200 200 255"
 		AnimSet.FullSelectionColor			"128 128 128 128"
 		AnimSet.PartialSelectionColor		"128 128 64 64"
-		AnimSet.ContextMenuSelectionColor	"OrangeV"
+		AnimSet.ContextMenuSelectionColor	"DXMenuDark"
 
 		IFM.CurrentTimeScrubber		"100 150 255 192"  // In the timeline views, the grabbable scrubber color
 		IFM.CurrentTimeScrubberOutline	"0 0 0 0"  // In the timeline views, the outline around the bar and scrubber
@@ -816,6 +820,7 @@ Scheme
 
 		DepressedBorder
 		{
+			"backgroundtype" "2"
 			"inset" "0 0 1 1"
 			Left
 			{
@@ -855,6 +860,7 @@ Scheme
 		}
 		RaisedBorder
 		{
+			"backgroundtype" "2"
 			"inset" "0 0 1 1"
 			Left
 			{
@@ -895,21 +901,22 @@ Scheme
 		
 		TitleButtonBorder
 		{
-			"backgroundtype" "0"
+			"backgroundtype" "2"
 		}
 
 		TitleButtonDisabledBorder
 		{
-			"backgroundtype" "0"
+			"backgroundtype" "2"
 		}
 
 		TitleButtonDepressedBorder
 		{
-			"backgroundtype" "0"
+			"backgroundtype" "2"
 		}
 
 		ScrollBarButtonBorder
 		{
+			"backgroundtype" "2"
 			"inset" "2 2 0 0" [!$OSX]
 			"inset" "-3 2 0 0" [$OSX]
 			Left
@@ -951,6 +958,7 @@ Scheme
 		
 		ScrollBarButtonDepressedBorder
 		{
+			"backgroundtype" "2"
 			"inset" "2 2 0 0" [!$OSX]
 			"inset" "-3 2 0 0" [$OSX]
 			Left
@@ -992,6 +1000,7 @@ Scheme
 
 		TabBorder
 		{
+			"backgroundtype" "2"
 			"inset" "0 0 1 1"
 			Left
 			{
@@ -1024,6 +1033,7 @@ Scheme
 
 		TabActiveBorder
 		{
+			"backgroundtype" "2"
 			"inset" "0 0 1 0"
 			Left
 			{
@@ -1057,6 +1067,7 @@ Scheme
 
 		ToolTipBorder
 		{
+			"backgroundtype" "2"
 			"inset" "0 0 1 0"
 			Left
 			{
@@ -1098,6 +1109,7 @@ Scheme
 		// this is the border used for default buttons (the button that gets pressed when you hit enter)
 		ButtonKeyFocusBorder
 		{
+			"backgroundtype" "2"
 			"inset" "0 0 1 1"
 			Left
 			{
@@ -1155,6 +1167,7 @@ Scheme
 
 		ButtonDepressedBorder
 		{
+			"backgroundtype" "2"
 			"inset" "2 1 1 1"
 			Left
 			{

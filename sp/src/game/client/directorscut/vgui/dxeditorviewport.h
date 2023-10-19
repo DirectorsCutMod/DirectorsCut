@@ -16,6 +16,9 @@
 
 using namespace vgui;
 
+static IMaterial *m_pScreenMaterial;
+static KeyValues *m_pScreenKV;
+
 class DXEditorViewport : public EditablePanel
 {
 	DECLARE_CLASS_SIMPLE(DXEditorViewport, EditablePanel);
@@ -33,8 +36,7 @@ public:
 
 protected:
 	int m_nTextureID;
-	IMaterial *m_pScreenMaterial;
-	KeyValues *m_pScreenKV;
+	HFont m_hFont;
 };
 
 #endif // DXEDITORVIEWPORT_H
