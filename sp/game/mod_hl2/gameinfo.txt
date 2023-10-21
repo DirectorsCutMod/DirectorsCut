@@ -39,6 +39,9 @@
 			game+game_write		hl2
 			game				|all_source_engine_paths|hl2
 			platform			|all_source_engine_paths|platform
+			game+mod			"C:\Program Files (x86)\Steam\steamapps\common\Team Fortress 2\tf\tf2_textures.vpk"
+			game+mod			"C:\Program Files (x86)\Steam\steamapps\common\Team Fortress 2\tf\tf2_sound_vo_english.vpk"
+			game+mod			"C:\Program Files (x86)\Steam\steamapps\common\Team Fortress 2\tf\tf2_sound_misc.vpk"
 		}
 	}
 }

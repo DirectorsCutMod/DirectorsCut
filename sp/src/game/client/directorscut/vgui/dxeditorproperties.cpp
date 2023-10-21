@@ -51,7 +51,7 @@ void DXEditorProperties::OnThink()
 			pProperty->CreatePanel(m_pLeftPanel, m_pRightPanel);
 		}
 	}
-	if(DirectorsCutGameSystem().NeedsUpdate())
+	if(DirectorsCutGameSystem().NeedsUpdate(0))
 	{
 		if (pProperty != NULL)
 		{

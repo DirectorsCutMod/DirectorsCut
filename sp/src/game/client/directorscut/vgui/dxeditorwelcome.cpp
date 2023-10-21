@@ -54,7 +54,7 @@ void DXEditorWelcome::PerformLayout()
 	BaseClass::PerformLayout();
 	int w = GetWide();
 	int h = GetTall();
-	int startX = 16;
+	int startX = 8;
 	int buttonHeight = 24;
 	int startY = h - buttonHeight - startX;
 	int padding = startX;

@@ -105,6 +105,9 @@ voice_ban.dt
 server_blacklist.txt
 sound.cache
 stats.txt
+sp/game/**/custom/**
+*.bsp
+*.ain
 
 # shader files
 *.tmp

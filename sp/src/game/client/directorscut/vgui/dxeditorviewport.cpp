@@ -19,46 +19,14 @@
 
 using namespace vgui;
 
-static CTextureReference _viewport;
-ITexture *GetViewportTex()
-{
-	if ( !_viewport )
-	{
-		int viewportWidth;
-		int viewportHeight;
-		engine->GetScreenSize(viewportWidth, viewportHeight);
-
-		g_pMaterialSystem->BeginRenderTargetAllocation();
-
-		_viewport.Init(g_pMaterialSystem->CreateNamedRenderTargetTextureEx2(
-			"_rt_DXViewport",
-			viewportWidth, viewportHeight, RT_SIZE_OFFSCREEN,
-			g_pMaterialSystem->GetBackBufferFormat(),
-			MATERIAL_RT_DEPTH_SHARED,
-			0,
-			CREATERENDERTARGETFLAGS_HDR));
-
-		g_pMaterialSystem->EndRenderTargetAllocation();
-	}
-	return _viewport;
-}
-
 DXEditorViewport::DXEditorViewport(Panel* pParent)
 	: BaseClass(pParent, "Primary Viewport")
 {
-	GetViewportTex();
 	m_hFont = vgui::scheme()->GetIScheme( vgui::scheme()->GetScheme( "ClientScheme" ) )->GetFont( "Default", true );
 }
 
 DXEditorViewport::~DXEditorViewport()
 {
-	//if(m_pScreenKV != NULL)
-		//m_pScreenKV->Clear();
-	//ForceDeleteMaterial( &m_pScreenMaterial );
-	//if(m_pScreenMaterial != NULL)
-		//m_pScreenMaterial->Release();
-	//m_pScreenKV = NULL;
-	//m_pScreenMaterial = NULL;
 }
 
 void DXEditorViewport::OnThink()
@@ -66,58 +34,27 @@ void DXEditorViewport::OnThink()
 	// Engine must be running and texture must be valid
 	if (engine->IsInGame())
 	{
-		if (!m_pScreenMaterial)
-		{
-			Assert(!m_pScreenKV);
+		ITexture* ref = GetPrimaryViewportTex();
+		Assert(ref != NULL);
 
-			m_pScreenKV = new KeyValues("UnlitGeneric");
-			Assert(m_pScreenKV);
-			m_pScreenKV->SetString("$basetexture", "_rt_DXViewport");
-			m_pScreenKV->SetInt("$ignorez", 1);
-			m_pScreenKV->SetInt("$nofog", 1);
-			m_pScreenMaterial = materials->CreateMaterial("__DXViewport", m_pScreenKV);
-			Assert(m_pScreenMaterial);
-			m_pScreenMaterial->Refresh();
-			m_nTextureID = surface()->CreateNewTextureID();
-			g_pMatSystemSurface->DrawSetTextureMaterial(m_nTextureID, m_pScreenMaterial);
-		}
-		if (m_pScreenMaterial)
-		{
-			CMatRenderContextPtr pRenderContext(g_pMaterialSystem);
+		CMatRenderContextPtr pRenderContext(g_pMaterialSystem);
 
-			int width;
-			int height;
-			GetSize(width, height);
+		pRenderContext->PushRenderTargetAndViewport(ref, 0, 0, DirectorsCutGameSystem().GetViewportWidth(), DirectorsCutGameSystem().GetViewportHeight());
 
-			ITexture* ref = GetViewportTex();
+		// Set up player view and render to texture
+		CViewSetup playerview = *view->GetPlayerViewSetup();
+		playerview.origin = DirectorsCutGameSystem().GetCameraOrigin();
+		playerview.angles = DirectorsCutGameSystem().GetCameraAngles();
+		// Convert vertical FOV to horizontal FOV
+		float fVerticalFov = DirectorsCutGameSystem().GetCameraFOV();
+		float aspectRatio = (float)playerview.width / (float)playerview.height;
+		float fHorizontalFov = 2.0f * atan(tan(fVerticalFov * M_PI / 360.0f) * aspectRatio) * 180.0f / M_PI;
+		playerview.fov = fHorizontalFov;
+		playerview.m_bDoBloomAndToneMapping = false;
+		render->SetMainView(playerview.origin, playerview.angles);
+		view->RenderView(playerview, VIEW_CLEAR_DEPTH | VIEW_CLEAR_COLOR, RENDERVIEW_DRAWHUD | RENDERVIEW_DRAWVIEWMODEL);
 
-			if( ref == NULL )
-				return;
-
-			pRenderContext->PushRenderTargetAndViewport(ref, 0, 0, width, height);
-
-			// Set up player view and render to texture
-			CViewSetup playerview = *view->GetPlayerViewSetup();
-			if (DirectorsCutGameSystem().IsWorkCameraActive())
-			{
-				playerview.origin = DirectorsCutGameSystem().GetWorkCameraOrigin();
-				playerview.angles = DirectorsCutGameSystem().GetWorkCameraAngles();
-			}
-			else
-			{
-				C_BasePlayer *pPlayer = C_BasePlayer::GetLocalPlayer();
-				if (pPlayer)
-				{
-					// get head origin
-					playerview.origin = pPlayer->GetAbsOrigin() + pPlayer->GetViewOffset();
-					playerview.angles = pPlayer->GetAbsAngles();
-				}
-			}
-			render->SetMainView(playerview.origin, playerview.angles);
-			view->RenderView(playerview, VIEW_CLEAR_DEPTH | VIEW_CLEAR_COLOR, RENDERVIEW_DRAWHUD | RENDERVIEW_DRAWVIEWMODEL);
-
-			pRenderContext->PopRenderTargetAndViewport();
-		}
+		pRenderContext->PopRenderTargetAndViewport();
 	}
 }
 
@@ -132,6 +69,12 @@ void DXEditorViewport::Paint()
 	GetSize(width, height);
 
 	y -= 27; // I'm not sure why, but there's an offset here for some reason
+
+	int offset = 8;
+	x += offset;
+	y += offset;
+	width -= offset * 2;
+	height -= offset * 2;
 
 	// Draw black background
 	g_pMatSystemSurface->DrawSetColor( 0, 0, 0, 255 );
@@ -198,8 +141,26 @@ void DXEditorViewport::Paint()
 	}
 
 	// Draw the viewport with texture ID
-	g_pMatSystemSurface->DrawSetTexture(m_nTextureID);
+	int nTextureID = GetPrimaryViewportTexID();
+	g_pMatSystemSurface->DrawSetTexture(nTextureID);
 	g_pMatSystemSurface->DrawTexturedRect(viewportX, viewportY, viewportX + viewportW, viewportY + viewportH);
+
+	if(DirectorsCutGameSystem().IsWorkCameraActive())
+	{
+		// TODO: Standard function for drawing text
+		wchar_t* text = L"WORK CAMERA";
+		g_pMatSystemSurface->DrawSetTextFont( m_hFont );
+
+		int textWidth = 0;
+		int textHeight = 0;
+		g_pMatSystemSurface->GetTextSize(m_hFont, text, textWidth, textHeight);
+		g_pMatSystemSurface->DrawSetTextColor(255, 255, 255, 255);
+
+		int textX = x + (width - textWidth) / 2;
+		int textY = height - textHeight - 4;
+		g_pMatSystemSurface->DrawSetTextPos(textX, textY);
+		g_pMatSystemSurface->DrawPrintText(text, wcslen(text));
+	}
 }
 
 void DXEditorViewport::OnMousePressed(MouseCode code)

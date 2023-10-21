@@ -12,11 +12,15 @@
 #pragma once
 #endif
 
+#include "../directorscut.h"
 #include <vgui_controls/Frame.h>
 #include <vgui_controls/PropertyPage.h>
 #include <vgui_controls/ToolWindow.h>
 #include <vgui_controls/TreeView.h>
 #include <vgui_controls/ListPanel.h>
+#include "dmxloader/dmxattribute.h"
+#include "dmxloader/dmxloader.h"
+#include "dmxloader/dmxelement.h"
 
 using namespace vgui;
 
@@ -30,6 +34,10 @@ public:
     virtual void OnThink();
 
 protected:
+    void PopulateTreeFromDocument();
+    CDmxElement* m_pSelectedShot;
+    
+    char m_selectedElement[ 256 ];
     TreeView* m_pTree = NULL;
 };
 

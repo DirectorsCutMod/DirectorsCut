@@ -10,10 +10,12 @@
 #include "cbase.h"
 
 #include "dxproperties.h"
-#include "basemodelpanel.h"
+//#include "basemodelpanel.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
+
+/*
 
 DXProperty::DXProperty(CDmxElement* pElement, DXPropertyOrigin iOrigin, DXPropertyView iView)
 {
@@ -38,3 +40,4 @@ void DXProperty::CreatePanel(Panel* pLeftPanel, Panel* pRightPanel)
 		}
 	}
 }
+*/

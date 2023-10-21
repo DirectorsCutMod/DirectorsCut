@@ -12,6 +12,7 @@
 #pragma once
 #endif
 
+/*
 #include "vgui_controls/Panel.h"
 #include <dmxloader/dmxelement.h>
 
@@ -56,5 +57,6 @@ public:
     virtual ~DXProperty();
     void CreatePanel( Panel* pLeftPanel, Panel* pRightPanel );
 };
+*/
 
 #endif // DXPROPERTIES_H

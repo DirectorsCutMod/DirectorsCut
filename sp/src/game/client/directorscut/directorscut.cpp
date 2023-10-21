@@ -9,7 +9,10 @@
 
 #include "directorscut.h"
 #include "vgui/dxeditorpanel.h"
+#include <vgui/ISurface.h>
 #include <vgui/IInput.h>
+#include "vguimatsurface/imatsystemsurface.h"
+#include "iviewrender.h"
 #include <vgui_controls/Controls.h>
 #include <hl2_gamerules.h>
 
@@ -28,6 +31,113 @@ ConVar mouseSensitivity( "dx_mousesensitivity", "0.3", 0, "View mouse sensitivit
 
 // Which mouse button to move the camera
 ConVar mouseMoveButton( "dx_mousemovebutton", "1", 0, "1: Left mouse button, 2: Right mouse button, 3: Middle mouse button" );
+
+// Viewport size
+ConVar viewportWidth( "dx_viewportwidth", "1280", FCVAR_ARCHIVE, "Viewport width" );
+ConVar viewportHeight( "dx_viewportheight", "720", FCVAR_ARCHIVE, "Viewport height" );
+
+CON_COMMAND(dx_loaddocument, "Loads a DMX document")
+{
+	DirectorsCutGameSystem().LoadDocument(args[1]);
+}
+
+CON_COMMAND(dx_update, "Updates the DMX document")
+{
+	DirectorsCutGameSystem().SetAllNeedsUpdate(true);
+	Msg("Updated\n");
+}
+
+// Viewport RT
+static IMaterial* pPrimaryScreenMaterial;
+static KeyValues* pPrimaryScreenKV;
+static CTextureReference nPrimaryScreenTextureRef;
+static int nPrimaryScreenTextureID;
+
+IMaterial* GetPrimaryScreenMaterial()
+{
+	if (pPrimaryScreenMaterial != NULL)
+		return pPrimaryScreenMaterial;
+	AllocatePrimaryViewport();
+	Assert(pPrimaryScreenMaterial != NULL);
+	return pPrimaryScreenMaterial;
+}
+
+KeyValues* GetPrimaryScreenKV()
+{
+	if (pPrimaryScreenKV != NULL)
+		return pPrimaryScreenKV;
+	AllocatePrimaryViewport();
+	Assert(pPrimaryScreenKV != NULL);
+	return pPrimaryScreenKV;
+}
+
+ITexture* GetPrimaryViewportTex()
+{
+	if (nPrimaryScreenTextureRef.IsValid())
+		return nPrimaryScreenTextureRef;
+	AllocatePrimaryViewport();
+	Assert(nPrimaryScreenTextureRef.IsValid());
+	return nPrimaryScreenTextureRef;
+}
+
+int GetPrimaryViewportTexID()
+{
+	if (nPrimaryScreenTextureID != -1)
+		return nPrimaryScreenTextureID;
+	AllocatePrimaryViewport();
+	Assert(nPrimaryScreenTextureID != -1);
+	return nPrimaryScreenTextureID;
+}
+
+void AllocatePrimaryViewport()
+{
+	// Create new RT
+	DeallocatePrimaryViewport();
+
+	int viewportWidth = DirectorsCutGameSystem().GetViewportWidth();
+	int viewportHeight = DirectorsCutGameSystem().GetViewportHeight();
+
+	g_pMaterialSystem->BeginRenderTargetAllocation();
+	nPrimaryScreenTextureRef.Init(g_pMaterialSystem->CreateNamedRenderTargetTextureEx2(
+		"_rt_DXPrimaryViewport",
+		viewportWidth, viewportHeight, RT_SIZE_OFFSCREEN,
+		g_pMaterialSystem->GetBackBufferFormat(),
+		MATERIAL_RT_DEPTH_SHARED,
+		0,
+		CREATERENDERTARGETFLAGS_HDR));
+	g_pMaterialSystem->EndRenderTargetAllocation();
+
+	pPrimaryScreenKV = new KeyValues("UnlitGeneric");
+	pPrimaryScreenKV->SetString("$basetexture", "_rt_DXPrimaryViewport");
+	pPrimaryScreenKV->SetInt("$ignorez", 1);
+	pPrimaryScreenKV->SetInt("$nofog", 1);
+
+	pPrimaryScreenMaterial = materials->CreateMaterial("__DXPrimaryViewport", pPrimaryScreenKV);
+	pPrimaryScreenMaterial->Refresh();
+	nPrimaryScreenTextureID = surface()->CreateNewTextureID();
+	g_pMatSystemSurface->DrawSetTextureMaterial(nPrimaryScreenTextureID, pPrimaryScreenMaterial);
+}
+
+void DeallocatePrimaryViewport()
+{
+	if (pPrimaryScreenMaterial != NULL)
+	{
+		pPrimaryScreenMaterial->Release();
+		pPrimaryScreenMaterial = NULL;
+	}
+
+	if (pPrimaryScreenKV != NULL)
+	{
+		pPrimaryScreenKV->Clear();
+		pPrimaryScreenKV = NULL;
+	}
+
+	if (nPrimaryScreenTextureRef.IsValid())
+	{
+		nPrimaryScreenTextureRef.Shutdown();
+		nPrimaryScreenTextureRef.Init(NULL);
+	}
+}
 
 // DMX
 void IterateDmxElement(CDmxElement* pRoot)
@@ -76,15 +186,27 @@ DXEditorHelper &DirectorsCutGameSystem()
 
 bool DXEditorHelper::Init()
 {
+	SetViewportWidth(viewportWidth.GetInt());
+	SetViewportHeight(viewportHeight.GetInt());
 	DXEditorPanel::ToggleEditor();
 	return true;
 }
+
+void DXEditorHelper::LevelInitPostEntity()
+{
+	AllocatePrimaryViewport();
+};
+
+void DXEditorHelper::LevelShutdownPostEntity()
+{
+	DeallocatePrimaryViewport();
+};
 
 void DXEditorHelper::LoadDocument( const char* pszDocumentName )
 {
 	//DECLARE_DMX_CONTEXT_NODECOMMIT();
 	CloseDocument();
-	CDmxElement* document = (CDmxElement*)DMXAlloc( 50000000 );
+	CDmxElement* document = (CDmxElement*)DMXAlloc( 100000000 );
 
 	// Mark timestamp so we can document how long it takes to load
 	double flStartTime = Plat_FloatTime();
@@ -151,7 +273,7 @@ void DXEditorHelper::LoadDocument( const char* pszDocumentName )
 	else
 		Warning("Could not read DMX file %s\n", pszDocumentName);
 	
-	DirectorsCutGameSystem().SetNeedsUpdate(true);
+	SetAllNeedsUpdate(true);
 }
 
 void DXEditorHelper::NewDocument()
@@ -176,7 +298,7 @@ void DXEditorHelper::NewDocument()
 	SetDocumentFocusedRoot(NULL);
 	SetFileOpen(true);
 	m_pszLoadedDocumentName = NULL;
-	DirectorsCutGameSystem().SetNeedsUpdate(true);
+	SetAllNeedsUpdate(true);
 }
 
 void DXEditorHelper::SaveDocument()
@@ -225,33 +347,111 @@ void DXEditorHelper::CloseDocument()
 {
 	//DECLARE_DMX_CONTEXT_NODECOMMIT();
 	m_dmxContextHelper = new CDMXContextHelper( false );
-	SetPropertyUpdated(false);
-	SetCurrentProperty(NULL);
 	SetDocument(NULL);
 	SetDocumentFocusedRoot(NULL);
 	SetFileOpen(false);
 	m_pszLoadedDocumentName = NULL;
-	DirectorsCutGameSystem().SetNeedsUpdate(true);
+	SetAllNeedsUpdate(true);
 }
-
-CON_COMMAND(dx_loaddocument, "Loads a DMX document")
-{
-	DirectorsCutGameSystem().LoadDocument(args[1]);
-}
-
-CON_COMMAND(dx_update, "Updates the DMX document")
-{
-	DirectorsCutGameSystem().SetNeedsUpdate(true);
-	Msg("Updated\n");
-}
-
-void DXEditorHelper::LevelShutdownPostEntity()
-{
-	//DXEditorPanel::DestroyEditor();
-};
 
 void DXEditorHelper::Update( float ft )
 {
+	float fps = 24;
+	CDmxElement* pRoot = GetDocument();
+	if( pRoot != NULL )
+	{
+		CDmxElement* pSettings = pRoot->GetValue<CDmxElement*>( "settings" );
+		if( pSettings != NULL )
+		{
+			CDmxElement* pRenderSettings = pSettings->GetValue<CDmxElement*>( "renderSettings" );
+			if( pRenderSettings != NULL )
+			{
+				float newFps = pRenderSettings->GetValue<float>( "frameRate" );
+				if(newFps > 0)
+					fps = newFps;
+			}
+		}
+		if(!IsWorkCameraActive())
+		{
+			bool setupCamera = false;
+			// Find clip in document at playhead position
+			CDmxElement* pClip = pRoot->GetValue<CDmxElement*>( "activeClip" );
+			if( pClip != NULL )
+			{
+				CDmxElement* pSubClipTrackGroup = pClip->GetValue<CDmxElement*>( "subClipTrackGroup" );
+				if( pSubClipTrackGroup != NULL )
+				{
+					const CUtlVector<CDmxElement*>& pTracks = pSubClipTrackGroup->GetArray<CDmxElement*>( "tracks" );
+					if( pTracks.Count() != 0 )
+					{
+						CDmxElement* pTrack = pTracks[0];
+						if( pTrack != NULL )
+						{
+							const CUtlVector<CDmxElement*>& pChildren = pTrack->GetArray<CDmxElement*>( "children" );
+							if( pChildren.Count() != 0)
+							{
+								// Find the shot that is currently playing (pChildren[i] -> timeFrame -> start, duration)
+								CDmxElement* pChild = NULL;
+								for (int i = 0; i < pChildren.Count(); i++)
+								{
+									CDmxElement* pTimeFrame = pChildren[i]->GetValue<CDmxElement*>( "timeFrame" );
+									if (pTimeFrame == NULL)
+										continue;
+									float flStart = pTimeFrame->GetValue<float>( "start" );
+									float flDuration = pTimeFrame->GetValue<float>( "duration" );
+									float flPlayhead = GetPlayhead();
+									if (flPlayhead >= flStart && flPlayhead <= flStart + flDuration)
+									{
+										pChild = pChildren[i];
+										break;
+									}
+								}
+								if (pChild != NULL)
+								{
+									// pChild -> camera -> transform -> position, orientation
+									CDmxElement* pCamera = pChild->GetValue<CDmxElement*>( "camera" );
+									if (pCamera != NULL)
+									{
+										CDmxElement* pTransform = pCamera->GetValue<CDmxElement*>( "transform" );
+										if (pTransform != NULL)
+										{
+											Vector vecPosition = pTransform->GetValue<Vector>( "position" );
+											Quaternion angOrientation = pTransform->GetValue<Quaternion>( "orientation" );
+											float flFov = pCamera->GetValue<float>( "fieldOfView" );
+											SetSceneCameraOrigin(vecPosition);
+											// Convert quaternion to angles
+											QAngle angOrientationEuler;
+											QuaternionAngles(angOrientation, angOrientationEuler);
+											SetSceneCameraAngles(angOrientationEuler);
+											SetSceneCameraFOV(flFov);
+											setupCamera = true;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			if(!setupCamera)
+			{
+				SetSceneCameraOrigin(Vector(0, 0, 0));
+				SetSceneCameraAngles(QAngle(0, 0, 0));
+			}
+		}
+	}
+
+	if (viewportWidth.GetInt() != GetViewportWidth())
+	{
+		SetViewportWidth(viewportWidth.GetInt());
+		AllocatePrimaryViewport();
+	}
+	if (viewportHeight.GetInt() != GetViewportHeight())
+	{
+		SetViewportHeight(viewportHeight.GetInt());
+		AllocatePrimaryViewport();
+	}
+
 	static bool bWasTabDown = false;
 	bool bIsTabDown = vgui::input()->IsKeyDown( KEY_TAB );
 
@@ -267,6 +467,7 @@ void DXEditorHelper::Update( float ft )
 	}
 
 	// Movement keys (m_bMouseCaptured) will move the work camera
+	static bool bDebounce = false;
 	if ( m_bMouseCaptured )
 	{
 		// If m_bHoldingMovementKey is false, set m_flCurrentCameraMovementSpeed to default
@@ -320,9 +521,24 @@ void DXEditorHelper::Update( float ft )
 			m_bHoldingMovementKey = true;
 		else
 			m_bHoldingMovementKey = false;
+	} else if(!bDebounce) {
+		// Arrow keys advance one frame
+		float frameToSeconds = 1.0f / fps;
+		// clamp to nearest 0.000 place
+		frameToSeconds = floorf(frameToSeconds * 1000.0f + 0.5f) / 1000.0f;
+		if ( vgui::input()->IsKeyDown( KEY_LEFT ) )
+		{
+			SetPlayhead( GetPlayhead() - frameToSeconds );
+			bDebounce = true;
+		}
+		if ( vgui::input()->IsKeyDown( KEY_RIGHT ) )
+		{
+			SetPlayhead( GetPlayhead() + frameToSeconds );
+			bDebounce = true;
+		}
+		// TODO: up and down
+	} else {
+		if (!vgui::input()->IsKeyDown( KEY_LEFT ) && !vgui::input()->IsKeyDown( KEY_RIGHT ))
+			bDebounce = false;
 	}
-};
-
-void DXEditorHelper::LevelInitPostEntity()
-{
 };

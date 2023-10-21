@@ -28,6 +28,10 @@ public:
 	DXEditorTimeline( Panel *pParent );
     virtual void ApplySchemeSettings( IScheme *scheme );
     virtual void OnThink();
+    virtual void Paint();
+
+protected:
+    HFont m_hFont;
 };
 
 #endif // DXEDITORTIMELINE

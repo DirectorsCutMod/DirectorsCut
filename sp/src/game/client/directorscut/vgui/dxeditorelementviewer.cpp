@@ -502,7 +502,7 @@ void DXEditorElementViewer::MakeRootButtonClick()
     {
         // Set new root
         DirectorsCutGameSystem().SetDocumentFocusedRoot(NULL);
-        DirectorsCutGameSystem().SetNeedsUpdate(true);
+        DirectorsCutGameSystem().SetNeedsUpdate(true, 0);
         return;
     }
 
@@ -572,7 +572,7 @@ void DXEditorElementViewer::MakeRootButtonClick()
 
     // Set new root
     DirectorsCutGameSystem().SetDocumentFocusedRoot(pNewRoot);
-    DirectorsCutGameSystem().SetNeedsUpdate(true);
+    DirectorsCutGameSystem().SetNeedsUpdate(true, 0);
 }
 
 void DXEditorElementViewer::OnThink()
@@ -705,7 +705,7 @@ void DXEditorElementViewer::OnThink()
                             pRoot->GetAttribute(pszText)->GetArrayForEdit<Color>().AddToTail(colorArray[i]);
                         }
                     }
-                    DirectorsCutGameSystem().SetNeedsUpdate(true);
+                    DirectorsCutGameSystem().SetAllNeedsUpdate(true);
                 }
             }
             else if (Q_strcmp(pszType, "bool") == 0)
@@ -727,7 +727,7 @@ void DXEditorElementViewer::OnThink()
                         return;
                     }
                     pRoot->SetValue<bool>(pszText, bSelected);
-                    DirectorsCutGameSystem().SetNeedsUpdate(true);
+                    DirectorsCutGameSystem().SetNeedsUpdate(true, 0);
                 }
             }
             else if (Q_strcmp(pszType, "color") == 0)
@@ -751,16 +751,16 @@ void DXEditorElementViewer::OnThink()
                         return;
                     }
                     pRoot->SetValue<Color>(pszText, clr);
-                    DirectorsCutGameSystem().SetNeedsUpdate(true);
+                    DirectorsCutGameSystem().SetAllNeedsUpdate(true);
                 }
             }
         }
     }
 
-    if(DirectorsCutGameSystem().NeedsUpdate() == true)
+    if(DirectorsCutGameSystem().NeedsUpdate(0) == true)
     {
         //Msg("Updating element viewer...\n");
-        DirectorsCutGameSystem().SetNeedsUpdate(false);
+        DirectorsCutGameSystem().SetNeedsUpdate(false, 0);
         RecursivePopulateTreeFromDocument(NULL, -1);
         // Expand all items
         CUtlVector <int> expandedItems;
@@ -789,7 +789,7 @@ void DXEditorElementViewer::OnThink()
     // TODO: layout?
 
     int x, y, w, h;
-    int offset = 4;
+    int offset = 8;
 
     GetBounds(x, y, w, h);
     m_pTree->SetBounds(offset, offset, w - offset * 2, h - offset * 2);
