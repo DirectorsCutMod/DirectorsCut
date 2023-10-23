@@ -36,6 +36,9 @@ ConVar mouseMoveButton( "dx_mousemovebutton", "1", 0, "1: Left mouse button, 2: 
 ConVar viewportWidth( "dx_viewportwidth", "1280", FCVAR_ARCHIVE, "Viewport width" );
 ConVar viewportHeight( "dx_viewportheight", "720", FCVAR_ARCHIVE, "Viewport height" );
 
+// Timeline zoom increment
+ConVar timelineZoomIncrement( "dx_timelinezoomincrement", "10", 0, "Timeline zoom increment" );
+
 CON_COMMAND(dx_loaddocument, "Loads a DMX document")
 {
 	DirectorsCutGameSystem().LoadDocument(args[1]);
@@ -441,6 +444,12 @@ void DXEditorHelper::Update( float ft )
 		}
 	}
 
+	// if playback speed is set, advance playhead
+	if (GetPlaybackSpeed() != 0)
+	{
+		SetPlayhead(GetPlayhead() + GetPlaybackSpeed() * ft);
+	}
+
 	if (viewportWidth.GetInt() != GetViewportWidth())
 	{
 		SetViewportWidth(viewportWidth.GetInt());
@@ -465,6 +474,10 @@ void DXEditorHelper::Update( float ft )
 		if(DXEditorPanel::IsEditorVisible())
 			DXEditorPanel::m_refInstance->bShowedWelcome = true;
 	}
+
+	// Editor must be visible to use any other keys
+	if ( !DXEditorPanel::IsEditorVisible() )
+		return;
 
 	// Movement keys (m_bMouseCaptured) will move the work camera
 	static bool bDebounce = false;
@@ -536,9 +549,112 @@ void DXEditorHelper::Update( float ft )
 			SetPlayhead( GetPlayhead() + frameToSeconds );
 			bDebounce = true;
 		}
-		// TODO: up and down
+		// space will play/pause
+		if (vgui::input()->IsKeyDown(KEY_SPACE))
+		{
+			float multiplier = 1;
+			// modifier key: shift (reverse)
+			if (vgui::input()->IsKeyDown(KEY_LSHIFT))
+				multiplier = -1;
+			// modifier key: ctrl (*2)
+			if (vgui::input()->IsKeyDown(KEY_LCONTROL))
+				multiplier *= 2;
+			// modiifer key: alt (stop)
+			if (vgui::input()->IsKeyDown(KEY_LALT))
+			{
+				SetPlaybackSpeed(0);
+				SetPlayhead(0);
+				bDebounce = true;
+				return;
+			}
+			if (GetPlaybackSpeed() == 0)
+				SetPlaybackSpeed(multiplier);
+			else
+				SetPlaybackSpeed(0);
+			bDebounce = true;
+			SetLastTime(GetPlayhead());
+		}
+		// p will lock/unlock the playhead
+		if (vgui::input()->IsKeyDown(KEY_P))
+		{
+			SetLockPlayhead(!GetLockPlayhead());
+			bDebounce = true;
+		}
+		// plus/minus increase/decrease zoom level
+		if (vgui::input()->IsKeyDown(KEY_MINUS) || vgui::input()->IsKeyDown(KEY_EQUAL))
+		{
+			int nZoomLevel = GetZoomLevel();
+			int nIncrement = timelineZoomIncrement.GetInt();
+			if (vgui::input()->IsKeyDown(KEY_MINUS))
+				nZoomLevel -= nIncrement;
+			else
+				nZoomLevel += nIncrement;
+			// max/min
+			if (nZoomLevel > 200)
+				nZoomLevel = 200;
+			if (nZoomLevel < 30)
+				nZoomLevel = 30;
+			SetZoomLevel(nZoomLevel);
+			bDebounce = true;
+		}
+		// up and down keys take you to the start time and start time + duration of the clip under the playhead
+		if (vgui::input()->IsKeyDown(KEY_UP) || vgui::input()->IsKeyDown(KEY_DOWN))
+		{
+			bDebounce = true;
+			CDmxElement* pRoot = GetDocument();
+			if (pRoot != NULL)
+			{
+				// Find clip in document at playhead position
+				CDmxElement* pClip = pRoot->GetValue<CDmxElement*>("activeClip");
+				if (pClip != NULL)
+				{
+					CDmxElement* pSubClipTrackGroup = pClip->GetValue<CDmxElement*>("subClipTrackGroup");
+					if (pSubClipTrackGroup != NULL)
+					{
+						const CUtlVector<CDmxElement*>& pTracks = pSubClipTrackGroup->GetArray<CDmxElement*>("tracks");
+						if (pTracks.Count() != 0)
+						{
+							CDmxElement* pTrack = pTracks[0];
+							if (pTrack != NULL)
+							{
+								const CUtlVector<CDmxElement*>& pChildren = pTrack->GetArray<CDmxElement*>("children");
+								if (pChildren.Count() != 0)
+								{
+									// Find the shot that is currently playing (pChildren[i] -> timeFrame -> start, duration)
+									for (int i = 0; i < pChildren.Count(); i++)
+									{
+										CDmxElement* pTimeFrame = pChildren[i]->GetValue<CDmxElement*>("timeFrame");
+										if (pTimeFrame == NULL)
+											continue;
+										float flStart = pTimeFrame->GetValue<float>("start");
+										float flDuration = pTimeFrame->GetValue<float>("duration");
+										float flPlayhead = GetPlayhead();
+										if (flPlayhead >= flStart && flPlayhead <= flStart + flDuration)
+										{
+											if (vgui::input()->IsKeyDown(KEY_UP))
+												SetPlayhead(flStart);
+											else
+												SetPlayhead(flStart + flDuration);
+											break;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			bDebounce = true;
+		}
 	} else {
-		if (!vgui::input()->IsKeyDown( KEY_LEFT ) && !vgui::input()->IsKeyDown( KEY_RIGHT ))
+		if (!vgui::input()->IsKeyDown( KEY_LEFT )
+			&& !vgui::input()->IsKeyDown( KEY_RIGHT )
+			&& !vgui::input()->IsKeyDown( KEY_SPACE )
+			&& !vgui::input()->IsKeyDown( KEY_UP )
+			&& !vgui::input()->IsKeyDown( KEY_DOWN )
+			&& !vgui::input()->IsKeyDown( KEY_P )
+			&& !vgui::input()->IsKeyDown( KEY_MINUS )
+			&& !vgui::input()->IsKeyDown( KEY_EQUAL ))
 			bDebounce = false;
 	}
 };

@@ -35,7 +35,7 @@ public:
 
 protected:
     void PopulateTreeFromDocument();
-    CDmxElement* m_pSelectedShot;
+    //CDmxElement* m_pSelectedShot;
     
     char m_selectedElement[ 256 ];
     TreeView* m_pTree = NULL;

@@ -135,8 +135,26 @@ public:
 	void SetViewportHeight( int nViewportHeight ) { m_nViewportHeight = nViewportHeight; };
 	int GetViewportHeight() { return m_nViewportHeight; };
 
-	void SetPlayhead( float fPlayhead ) { m_fPlayhead = fPlayhead; };
+	void SetPlayhead( float fPlayhead ) {
+		m_fPlayhead = fPlayhead;
+		SetAllNeedsUpdate(true);
+	};
 	float GetPlayhead() { return m_fPlayhead; };
+
+	void SetPlaybackSpeed( float fPlaybackSpeed ) { m_fPlaybackSpeed = fPlaybackSpeed; };
+	float GetPlaybackSpeed() { return m_fPlaybackSpeed; };
+
+	void SetLastTime( float fLastTime ) { m_fLastTime = fLastTime; };
+	float GetLastTime() { return m_fLastTime; };
+
+	void SetLockPlayhead( bool bLockPlayhead ) { m_bLockPlayhead = bLockPlayhead; };
+	bool GetLockPlayhead() { return m_bLockPlayhead; };
+
+	void SetZoomLevel( int nZoomLevel ) { m_nZoomLevel = nZoomLevel; };
+	int GetZoomLevel() { return m_nZoomLevel; };
+
+	void SetTimelineStart( float flTimelineStart ) { m_flTimelineStart = flTimelineStart; };
+	float GetTimelineStart() { return m_flTimelineStart; };
 
 protected:
 	CDMXContextHelper* m_dmxContextHelper;
@@ -158,6 +176,11 @@ protected:
 	int m_nViewportWidth = 1280;
 	int m_nViewportHeight = 720;
 	float m_fPlayhead = 0;
+	float m_fPlaybackSpeed = 0; // paused or stopped by default
+	float m_fLastTime = 0;
+	bool m_bLockPlayhead = false;
+	int m_nZoomLevel = 100;
+	float m_flTimelineStart = -1;
 };
 
 DXEditorHelper &DirectorsCutGameSystem();

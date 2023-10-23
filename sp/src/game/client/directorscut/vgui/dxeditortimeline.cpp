@@ -35,8 +35,9 @@ void DXEditorTimeline::ApplySchemeSettings(IScheme *pScheme)
 void DXEditorTimeline::Paint()
 {
 	// TODO: store as member variables
-	float startTime = -1; // seconds
-	int zoomLevel = 100; // pixels per second
+	float startTime = DirectorsCutGameSystem().GetTimelineStart(); // seconds
+	int zoomLevel = DirectorsCutGameSystem().GetZoomLevel(); // pixels per second
+	bool locked = DirectorsCutGameSystem().GetLockPlayhead();
 
 	int offset = 4;
 	int w, h;
@@ -48,6 +49,27 @@ void DXEditorTimeline::Paint()
 	int offsetH = h - offset * 2;
 	
 	float playhead = DirectorsCutGameSystem().GetPlayhead();
+
+	// if locked, lock view to center on playhead
+	if (locked)
+	{
+		startTime = playhead - offsetW / zoomLevel / 2;
+		DirectorsCutGameSystem().SetTimelineStart(startTime);
+	}
+
+	// catch up with the playhead
+	if (playhead > startTime + (offsetW / zoomLevel))
+	{
+		// shift the view by what's visible on screen
+		startTime += (offsetW / zoomLevel);
+		DirectorsCutGameSystem().SetTimelineStart(startTime);
+	}
+	else if (playhead < startTime)
+	{
+		// shift the view by what's visible on screen
+		startTime -= (offsetW / zoomLevel);
+		DirectorsCutGameSystem().SetTimelineStart(startTime);
+	}
 
 	// background
 	surface()->DrawSetColor(54, 54, 54, 255);
@@ -66,10 +88,14 @@ void DXEditorTimeline::Paint()
 	surface()->DrawFilledRect(x, y + offsetH - 20, x + offsetW, y + offsetH - 19);
 
 	// tick marks
-	for (float i = startTime; i < offsetW / zoomLevel; i += 0.1f)
+	for (float i = startTime; i < startTime + (offsetW / zoomLevel) + 1; i += 0.1f)
 	{
 		// Round to nearest 0.1
 		i = floor(i * 10 + 0.5f) / 10;
+
+		// if x + (i - startTime) * zoomLevel is outside of offsetW, stop drawing ticks
+		if (x + (i - startTime) * zoomLevel > x + offsetW)
+			break;
 
 		// for in-between intervals, draw 2 px tick
 		int hTick = 2;
@@ -215,6 +241,9 @@ void DXEditorTimeline::Paint()
 	}
 
 	// playhead
-	surface()->DrawSetColor(129, 150, 173, 255);
+	if(!locked) // blue
+		surface()->DrawSetColor(129, 150, 173, 255);
+	else // magenta
+		surface()->DrawSetColor(173, 129, 150, 255);
 	surface()->DrawFilledRect(x + (playhead - startTime) * zoomLevel, y, x + (playhead - startTime) * zoomLevel + 1, offsetH);
 }

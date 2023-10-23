@@ -61,34 +61,50 @@ void DXEditorAnimationSetEditor::ApplySchemeSettings(IScheme *pScheme)
 void DXEditorAnimationSetEditor::PopulateTreeFromDocument()
 {
     //DECLARE_DMX_CONTEXT_NODECOMMIT();
-    if( m_pSelectedShot == NULL)
-    {
-        // Find first clip in document
-        CDmxElement* pRoot = DirectorsCutGameSystem().GetDocument();
-		if( pRoot == NULL )
-			return;
-		// activeClip -> subClipTrackGroup -> tracks -> [0] -> children -> [0]
-		CDmxElement* pClip = pRoot->GetValue<CDmxElement*>( "activeClip" );
-		if( pClip == NULL )
-			return;
-		CDmxElement* pSubClipTrackGroup = pClip->GetValue<CDmxElement*>( "subClipTrackGroup" );
-		if( pSubClipTrackGroup == NULL )
-			return;
-		const CUtlVector<CDmxElement*>& pTracks = pSubClipTrackGroup->GetArray<CDmxElement*>( "tracks" );
-		if( pTracks.Count() == 0 )
-			return;
-		CDmxElement* pTrack = pTracks[0];
-		if( pTrack == NULL )
-			return;
-		const CUtlVector<CDmxElement*>& pChildren = pTrack->GetArray<CDmxElement*>( "children" );
-		if( pChildren.Count() == 0)
-			return;
-		CDmxElement* pChild = pChildren[0];
-		if( pChild == NULL )
-			return;
-		m_pSelectedShot = pChild;
-    }
-
+	CDmxElement* m_pSelectedShot = NULL;
+	
+    // Find first clip in document
+    CDmxElement* pRoot = DirectorsCutGameSystem().GetDocument();
+	if (pRoot != NULL)
+	{
+		// Find clip in document at playhead position
+		CDmxElement* pClip = pRoot->GetValue<CDmxElement*>("activeClip");
+		if (pClip != NULL)
+		{
+			CDmxElement* pSubClipTrackGroup = pClip->GetValue<CDmxElement*>("subClipTrackGroup");
+			if (pSubClipTrackGroup != NULL)
+			{
+				const CUtlVector<CDmxElement*>& pTracks = pSubClipTrackGroup->GetArray<CDmxElement*>("tracks");
+				if (pTracks.Count() != 0)
+				{
+					CDmxElement* pTrack = pTracks[0];
+					if (pTrack != NULL)
+					{
+						const CUtlVector<CDmxElement*>& pChildren = pTrack->GetArray<CDmxElement*>("children");
+						if (pChildren.Count() != 0)
+						{
+							// Find the shot that is currently playing (pChildren[i] -> timeFrame -> start, duration)
+							for (int i = 0; i < pChildren.Count(); i++)
+							{
+								CDmxElement* pTimeFrame = pChildren[i]->GetValue<CDmxElement*>("timeFrame");
+								if (pTimeFrame == NULL)
+									continue;
+								float flStart = pTimeFrame->GetValue<float>("start");
+								float flDuration = pTimeFrame->GetValue<float>("duration");
+								float flPlayhead = DirectorsCutGameSystem().GetPlayhead();
+								if (flPlayhead >= flStart && flPlayhead <= flStart + flDuration)
+								{
+									m_pSelectedShot = pChildren[i];
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	// Clear tree view
 	int selIndex = m_pTree->GetFirstSelectedItem();
 	if (selIndex != -1)
@@ -110,6 +126,9 @@ void DXEditorAnimationSetEditor::PopulateTreeFromDocument()
 
 	// Set tree view bounds
 	m_pTree->SetBounds(x, y, w, h);
+
+	if (m_pSelectedShot == NULL)
+		return;
 
 	// Populate tree view
 	KeyValues* kv = new KeyValues( "TVI" );
