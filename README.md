@@ -11,14 +11,13 @@
 # Director's Cut
 A community-driven filmmaking mod for the Source engine.
 
-Based upon [Source SDK 2013](https://github.com/ValveSoftware/source-sdk-2013).
-
 This software is in early production as development was recently reset.
 
 ## Links
 - [Director's Cut Github](https://github.com/KiwifruitDev/DirectorsCut)
 - [Director's Cut Discord](https://discord.gg/3X3teNecWs)
 - [Director's Cut YouTube](https://youtube.com/@DirectorsCutMod)
+- [r/DirectorsCut](https://www.reddit.com/r/DirectorsCut/)
 - [Director's Cut on X (Twitter)](https://x.com/DirectorsCutMod)
 - [Director's Cut on Bluesky](https://bsky.app/profile/directorscut.bsky.social)
 - [Director's Cut on Valve Developer Wiki](https://developer.valvesoftware.com/wiki/Director's_Cut)
@@ -68,6 +67,8 @@ If you would like to implement the Director's Cut animation system into your own
 ### Files
 - `mp/src/game/client/directorscut`
     - This folder contains all of the Director's Cut code. You must either include each file through VPC or otherwise add them to your project.
+- `mp/game/directorscut/materials/vgui/directorscut`
+    - This folder contains all of the Director's Cut VGUI materials. These files must be included in your mod's game directory.
 - `mp/game/directorscut/resource/directorscut`
     - This folder contains all of the Director's Cut resource files. These files must be included in your mod's game directory.
 
