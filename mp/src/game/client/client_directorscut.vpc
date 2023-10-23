@@ -1,0 +1,48 @@
+//-----------------------------------------------------------------------------
+//	CLIENT_DIRECTORSCUT.VPC
+//
+//	Project Script
+//-----------------------------------------------------------------------------
+
+$Configuration
+{
+	$Compiler
+	{
+		$PreprocessorDefinitions		"$BASE"
+	}
+}
+
+$Project
+{
+	$Folder	"Source Files"
+	{
+		$Folder	"DirectorsCut"
+		{
+			$File	"directorscut\directorscut.cpp"
+			$File	"directorscut\directorscut.h"
+			$File	"directorscut\dummyproxies.cpp"
+			$File	"directorscut\dummyproxies.h"
+			$File	"directorscut\dxproperties.cpp"
+			$File	"directorscut\dxproperties.h"
+			$Folder "VGUI"
+			{
+				$File	"directorscut\vgui\dxeditorpanel.cpp"
+				$File	"directorscut\vgui\dxeditorpanel.h"
+				$File	"directorscut\vgui\dxeditorelementviewer.cpp"
+				$File	"directorscut\vgui\dxeditorelementviewer.h"
+				$File	"directorscut\vgui\dxeditorviewport.cpp"
+				$File	"directorscut\vgui\dxeditorviewport.h"
+				$File	"directorscut\vgui\dxeditoranimationseteditor.cpp"
+				$File	"directorscut\vgui\dxeditoranimationseteditor.h"
+				$File	"directorscut\vgui\dxeditortimeline.cpp"
+				$File	"directorscut\vgui\dxeditortimeline.h"
+				$File	"directorscut\vgui\dxeditorproperties.cpp"
+				$File	"directorscut\vgui\dxeditorproperties.h"
+				$File	"directorscut\vgui\dxeditorassetbrowser.cpp"
+				$File	"directorscut\vgui\dxeditorassetbrowser.h"
+				$File	"directorscut\vgui\dxeditorwelcome.cpp"
+				$File	"directorscut\vgui\dxeditorwelcome.h"
+			}
+		}
+	}
+}

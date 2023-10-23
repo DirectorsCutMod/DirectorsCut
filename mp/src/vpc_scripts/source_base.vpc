@@ -20,7 +20,7 @@ $Configuration "Debug"
 	$Compiler
 	{
 		// Pass on appropriate branch define to preprocessor
-		$PreprocessorDefinitions		"VPC"
+		$PreprocessorDefinitions		"VPC;DIRECTORSCUT"
 		$PreprocessorDefinitions		"$BASE;STAGING_ONLY" [$STAGING_ONLY]
 		$PreprocessorDefinitions		"$BASE;TF_BETA" [$TF_BETA]
 		$PreprocessorDefinitions		"$BASE;RAD_TELEMETRY_DISABLED" [$SOURCESDK]
@@ -35,7 +35,7 @@ $Configuration "Release"
 	$Compiler
 	{
 		// Pass on appropriate branch define to preprocessor
-		$PreprocessorDefinitions		"VPC"
+		$PreprocessorDefinitions		"VPC;DIRECTORSCUT"
 		$PreprocessorDefinitions		"$BASE;STAGING_ONLY" [$STAGING_ONLY]
 		$PreprocessorDefinitions		"$BASE;TF_BETA" [$TF_BETA]
 		$PreprocessorDefinitions		"$BASE;RAD_TELEMETRY_DISABLED" [$SOURCESDK]

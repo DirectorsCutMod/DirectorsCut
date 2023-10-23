@@ -114,6 +114,10 @@ private:
 	bool _active;
 	Color _textColor;
 	Color _dimTextColor;
+#ifdef DIRECTORSCUT
+	Color _activeColor;
+	Color _inactiveColor;
+#endif
 	int m_bMaxTabWidth;
 	IBorder *m_pActiveBorder;
 	IBorder *m_pNormalBorder;
@@ -277,18 +281,38 @@ public:
 					ToolWindow *tw = dynamic_cast< ToolWindow * >( sheet->GetParent() );
 					if ( tw )
 					{
+						// Director's Cut requires tabs to be draggable, so this is overidden to allow non-tool window tabs to be draggable
+#ifndef DIRECTORSCUT
 						IToolWindowFactory *factory = tw->GetToolWindowFactory();
 						if ( factory )
 						{
+#endif
 							bool hasContextMenu = sheet->PageHasContextMenu( page );
 							sheet->RemovePage( page );
+#ifndef DIRECTORSCUT
 							factory->InstanceToolWindow( tw->GetParent(), sheet->ShouldShowContextButtons(), page, title, hasContextMenu );
-
-							if ( sheet->GetNumPages() == 0 )
+#endif
+							if ( tw->GetParent() )
 							{
-								tw->MarkForDeletion();
+#ifdef DIRECTORSCUT
+								ToolWindow *toolWindowInstance = new ToolWindow( tw->GetParent(), sheet->ShouldShowContextButtons(), 0, page, title, hasContextMenu );
+								Assert( toolWindowInstance );
+								toolWindowInstance->SetScheme("DXScheme"); // Director's Cut scheme
+
+								int mouseX;
+								int mouseY;
+								vgui::input()->GetCursorPos( mouseX, mouseY );
+								tw->GetParent()->ScreenToLocal( mouseX, mouseY );
+								toolWindowInstance->SetBounds( mouseX, mouseY, tw->GetWide(), tw->GetTall() );
+#endif
+								if ( sheet->GetNumPages() == 0 )
+								{
+									tw->MarkForDeletion();
+								}
 							}
+#ifndef DIRECTORSCUT
 						}
+#endif
 					}
 				}
 			}
@@ -314,6 +338,17 @@ public:
 
 		_textColor = GetSchemeColor("PropertySheet.SelectedTextColor", GetFgColor(), pScheme);
 		_dimTextColor = GetSchemeColor("PropertySheet.TextColor", GetFgColor(), pScheme);
+
+#ifdef DIRECTORSCUT
+		// Allow the tab to be themed for Director's Cut
+		_activeColor = GetSchemeColor("PageTab.ActiveColor", GetBgColor(), pScheme);
+		_inactiveColor = GetSchemeColor("PageTab.InactiveColor", GetBgColor(), pScheme);
+		SetSelectedColor( GetFgColor(), _activeColor );
+		SetArmedColor( GetFgColor(), _activeColor );
+		SetDepressedColor( GetFgColor(), _activeColor );
+		SetDefaultColor( GetFgColor(), _active ? _activeColor : _inactiveColor );
+#endif
+
 		m_pActiveBorder = pScheme->GetBorder("TabActiveBorder");
 		m_pNormalBorder = pScheme->GetBorder("TabBorder");
 
@@ -401,6 +436,9 @@ public:
 	virtual void SetActive(bool state)
 	{
 		_active = state;
+#ifdef DIRECTORSCUT
+		SetDefaultColor( GetFgColor(), _active ? _activeColor : _inactiveColor );
+#endif
 		SetZPos( state ? 100 : 0 );
 		InvalidateLayout();
 		Repaint();
@@ -1548,9 +1586,12 @@ void PropertySheet::OnPanelDropped( CUtlVector< KeyValues * >& msglist )
 	ToolWindow *tw = dynamic_cast< ToolWindow * >( sheet->GetParent() );
 	if ( tw )
 	{
+		// Director's cut supports dragging tabs between sheets for non-tool windows
+#ifndef DIRECTORSCUT
 		IToolWindowFactory *factory = tw->GetToolWindowFactory();
 		if ( factory )
 		{
+#endif
 			bool showContext = sheet->PageHasContextMenu( page );
 			sheet->RemovePage( page );
 			if ( sheet->GetNumPages() == 0 )
@@ -1559,7 +1600,9 @@ void PropertySheet::OnPanelDropped( CUtlVector< KeyValues * >& msglist )
 			}
 
 			AddPage( page, title, NULL, showContext );
+#ifndef DIRECTORSCUT
 		}
+#endif
 	}
 }
 
