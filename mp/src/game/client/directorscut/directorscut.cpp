@@ -15,9 +15,13 @@
 #include "iviewrender.h"
 #include <vgui_controls/Controls.h>
 #include <hl2_gamerules.h>
-
+#include "datacache/imdlcache.h"
+#include "networkstringtable_clientdll.h"
+#include "materialsystem/imaterial.h"
+#include "materialsystem/imaterialvar.h"
 #include <string>
 #include <regex>
+#include <beamdraw.h>
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -197,7 +201,27 @@ bool DXEditorHelper::Init()
 
 void DXEditorHelper::LevelInitPostEntity()
 {
-	AllocatePrimaryViewport();
+	//AllocatePrimaryViewport();
+	// Cache sprites
+	const char* modelName = "materials/sprites/light_glow02_add_noz.vmt";
+	model_t* model = (model_t*)engine->LoadModel(modelName);
+	if (model)
+	{
+		INetworkStringTable* precacheTable = networkstringtable->FindTable("modelprecache");
+		if (precacheTable)
+		{
+			modelinfo->FindOrLoadModel(modelName);
+			int idx = precacheTable->AddString(false, modelName);
+			if (idx == INVALID_STRING_INDEX)
+			{
+				Msg("Director's Cut: Failed to precache model %s\n", modelName);
+			}
+		}
+	}
+	else
+	{
+		Msg("Director's Cut: Failed to load model %s\n", modelName);
+	}
 };
 
 void DXEditorHelper::LevelShutdownPostEntity()
@@ -357,25 +381,164 @@ void DXEditorHelper::CloseDocument()
 	SetAllNeedsUpdate(true);
 }
 
+void DXEditorHelper::SetPlayhead( float fPlayhead )
+{
+	m_fPlayhead = fPlayhead;
+	SetAllNeedsUpdate(true);
+}
+
+DXDagType GetDagType( const char* pszDagType )
+{
+	if (Q_strcmp(pszDagType, "DmeCamera") == 0)
+		return DXDagType::DX_DME_CAMERA;
+	if (Q_strcmp(pszDagType, "DmeGameModel") == 0)
+		return DXDagType::DX_DME_GAMEMODEL;
+	if (Q_strcmp(pszDagType, "DmeGameParticleSystem") == 0)
+		return DXDagType::DX_DME_GAMEPARTICLESYSTEM;
+	if (Q_strcmp(pszDagType, "DmeGamePortal") == 0)
+		return DXDagType::DX_DME_GAMEPORTAL;
+	if (Q_strcmp(pszDagType, "DmeGameSprite") == 0)
+		return DXDagType::DX_DME_GAMESPRITE;
+	if (Q_strcmp(pszDagType, "DmeGameTempEnt") == 0)
+		return DXDagType::DX_DME_GAMETEMPENT;
+	if (Q_strcmp(pszDagType, "DmeJoint") == 0)
+		return DXDagType::DX_DME_JOINT;
+	if (Q_strcmp(pszDagType, "DmeLight") == 0)
+		return DXDagType::DX_DME_LIGHT;
+	if (Q_strcmp(pszDagType, "DmeAmbientLight") == 0)
+		return DXDagType::DX_DME_AMBIENTLIGHT;
+	if (Q_strcmp(pszDagType, "DmeDirectionalLight") == 0)
+		return DXDagType::DX_DME_DIRECTIONALLIGHT;
+	if (Q_strcmp(pszDagType, "DmePointLight") == 0)
+		return DXDagType::DX_DME_POINTLIGHT;
+	if (Q_strcmp(pszDagType, "DmeSpotLight") == 0)
+		return DXDagType::DX_DME_SPOTLIGHT;
+	if (Q_strcmp(pszDagType, "DmeProjectedLight") == 0)
+		return DXDagType::DX_DME_PROJECTEDLIGHT;
+	if (Q_strcmp(pszDagType, "DmeModel") == 0)
+		return DXDagType::DX_DME_MODEL;
+	if (Q_strcmp(pszDagType, "DmeParticleSystem") == 0)
+		return DXDagType::DX_DME_PARTICLESYSTEM;
+	if (Q_strcmp(pszDagType, "DmeRig") == 0)
+		return DXDagType::DX_DME_RIG;
+	if (Q_strcmp(pszDagType, "DmeRigHandle") == 0)
+		return DXDagType::DX_DME_RIGHANDLE;
+	return DXDagType::DX_DME_DAG;
+}
+
+void DXEditorHelper::RecursiveBuildScene(DXDag* dagParent, CDmxElement* pElementParent)
+{
+	if (!pElementParent)
+		return;
+
+	// Get children
+	const CUtlVector<CDmxElement*>& pChildren = pElementParent->GetArray<CDmxElement*>("children");
+	if (pChildren.Count() == 0)
+		return;
+
+	// Iterate through children
+	for (int i = 0; i < pChildren.Count(); i++)
+	{
+		CDmxElement* pChild = pChildren[i];
+		if (!pChild)
+			continue;
+
+		// Get dag type
+		const char* pszDagType = pChild->GetTypeString();
+		if (!pszDagType)
+			continue;
+		DXDagType dagType = GetDagType(pszDagType);
+
+		// Get transform
+		CDmxElement* pTransform = pChild->GetValue<CDmxElement*>("transform");
+		if (!pTransform)
+			continue;
+		Vector vecPosition = pTransform->GetValue<Vector>("position");
+		Quaternion angOrientation = pTransform->GetValue<Quaternion>("orientation");
+		float flScale = pTransform->GetValue<float>("scale", 1);
+		float flScaleX = pTransform->GetValue<float>("scale_x", 0);
+		float flScaleY = pTransform->GetValue<float>("scale_y", 0);
+		float flScaleZ = pTransform->GetValue<float>("scale_z", 0);
+		Vector vecScale;
+		if (flScaleX == 0 && flScaleY == 0 && flScaleZ == 0)
+			vecScale.Init(flScale, flScale, flScale);
+		else
+			vecScale.Init(flScaleX, flScaleY, flScaleZ);
+
+		// Offset
+		Vector vecPositionOffset = dagParent->GetOrigin() + vecPosition;
+		QAngle angEuler;
+		QuaternionAngles(angOrientation, angEuler);
+		QAngle angOrientationOffset = dagParent->GetAngles() + angEuler;
+		Vector vecScaleOffset = dagParent->GetScale() * vecScale;
+
+		// Create dag
+		DXDag* dag = new DXDag( dagType, vecPositionOffset, angOrientationOffset, vecScaleOffset );
+		dagParent->AddChild(dag);
+
+		// Recurse
+		RecursiveBuildScene(dag, pChild);
+	}
+}
+
+void DXEditorHelper::RecursiveDrawScene( DXDag* dagParent, CMatRenderContextPtr& renderContext)
+{
+	// Draw scene
+	switch (dagParent->GetDagType())
+	{
+		case DX_DME_CAMERA:
+		{
+			if(DXIsLayoff() && DXGetLayoffFlags() & DX_LAYOFF_NO_SPRITES)
+				break;
+			// Draw a sprite at the camera's position
+			const char* spriteName = "sprites/light_glow02_add_noz";
+			IMaterial *pMat = materials->FindMaterial( spriteName, TEXTURE_GROUP_CLIENT_EFFECTS );
+			color32 spriteColor = { 255, 255, 255, 255 };
+			renderContext->Bind( pMat, NULL );
+			DrawSprite( dagParent->GetOrigin(), 64, 64, spriteColor );
+		}
+	}
+	// Draw children
+	const CUtlVector<DXDag*>& pChildren = dagParent->GetChildren();
+	for (int i = 0; i < pChildren.Count(); i++)
+	{
+		DXDag* pChild = pChildren[i];
+		if (!pChild)
+			continue;
+		RecursiveDrawScene(pChild, renderContext);
+	}
+}
+
+void DXEditorHelper::PostRender()
+{
+	if(!engine->IsInGame())
+		return;
+	CMatRenderContextPtr renderContext(g_pMaterialSystem);
+	if(m_Dag != NULL)
+	{
+		// Draw scene
+		RecursiveDrawScene(m_Dag, renderContext);
+	}
+}
+
 void DXEditorHelper::Update( float ft )
 {
-	float fps = 24;
-	CDmxElement* pRoot = GetDocument();
-	if( pRoot != NULL )
+	if(NeedsUpdate(2))
 	{
-		CDmxElement* pSettings = pRoot->GetValue<CDmxElement*>( "settings" );
-		if( pSettings != NULL )
+		CDmxElement* pRoot = GetDocument();
+		if( pRoot != NULL )
 		{
-			CDmxElement* pRenderSettings = pSettings->GetValue<CDmxElement*>( "renderSettings" );
-			if( pRenderSettings != NULL )
+			CDmxElement* pSettings = pRoot->GetValue<CDmxElement*>( "settings" );
+			if( pSettings != NULL )
 			{
-				float newFps = pRenderSettings->GetValue<float>( "frameRate" );
-				if(newFps > 0)
-					fps = newFps;
+				CDmxElement* pRenderSettings = pSettings->GetValue<CDmxElement*>( "renderSettings" );
+				if( pRenderSettings != NULL )
+				{
+					float newFps = pRenderSettings->GetValue<float>( "frameRate" );
+					if(newFps > 0)
+						fps = newFps;
+				}
 			}
-		}
-		if(!IsWorkCameraActive())
-		{
 			bool setupCamera = false;
 			// Find clip in document at playhead position
 			CDmxElement* pClip = pRoot->GetValue<CDmxElement*>( "activeClip" );
@@ -429,6 +592,24 @@ void DXEditorHelper::Update( float ft )
 											SetSceneCameraFOV(flFov);
 											setupCamera = true;
 										}
+									}
+									// Build scene view
+									CDmxElement* pScene = pChild->GetValue<CDmxElement*>( "scene" );
+									if(pScene != NULL)
+									{
+										Vector vecOrigin = pScene->GetValue<Vector>( "origin" );
+										QAngle angAngles = pScene->GetValue<QAngle>( "angles" );
+										float flScale = pScene->GetValue<float>( "scale", 1 );
+										float flScaleX = pScene->GetValue<float>( "scale_x", 0 );
+										float flScaleY = pScene->GetValue<float>( "scale_y", 0 );
+										float flScaleZ = pScene->GetValue<float>( "scale_z", 0 );
+										Vector vecScale;
+										if(flScaleX == 0 && flScaleY == 0 && flScaleZ == 0)
+											vecScale.Init(flScale, flScale, flScale);
+										else
+											vecScale.Init(flScaleX, flScaleY, flScaleZ);
+										m_Dag = new DXDag(DX_DME_DAG, vecOrigin, angAngles, vecScale);
+										RecursiveBuildScene(m_Dag, pScene);
 									}
 								}
 							}

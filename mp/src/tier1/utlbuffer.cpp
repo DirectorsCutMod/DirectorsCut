@@ -615,7 +615,9 @@ void CUtlBuffer::GetStringInternal( char *pString, size_t maxLenInChars )
 		return;
 	}
 
+#ifndef DIRECTORSCUT
 	Assert( maxLenInChars != 0 );
+#endif
 
 	if ( maxLenInChars == 0 )
 	{

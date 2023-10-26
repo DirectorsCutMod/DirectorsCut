@@ -77,25 +77,6 @@ void DXEditorElementViewer::SetupProperties(bool reset)
 
     pProperties->ResetPanels(false);
 
-    if (pPreviewLabel == NULL
-        || m_pPropTextEntry == NULL
-        || m_pPropCheckButton == NULL
-        || m_pPropLabel == NULL
-        || m_pColorPickerButton == NULL
-        || m_pMakeRootButton == NULL)
-    {
-        if (!reset)
-        {
-            Msg("Warning: Could not get property controls. Resetting.\n");
-            reset = true;
-        }
-        else
-        {
-            Msg("Error: Could not get property controls.\n");
-            return;
-        }
-    }
-
     // Left view is the preview
     // Just show the name and type of the element for now
     int itemIndex = m_pTree->GetFirstSelectedItem();
@@ -115,13 +96,25 @@ void DXEditorElementViewer::SetupProperties(bool reset)
     const char* pszUniqueId = kv->GetString("UniqueId");
     const char* pszData = kv->GetString("Data");
 
-    // Create preview label
-    if(reset)
-        pPreviewLabel = new RichText(pSplitter->GetChild(0), "DXEditorElementViewerPreviewLabel");
-    char* pszPreviewText = new char[256];
-    Q_snprintf(pszPreviewText, 256, "Name: %s\nType: %s\nUnique ID: %s\nData: %s", pszText, pszType, pszUniqueId, pszData);
-    pPreviewLabel->SetText(pszPreviewText);
-    pPreviewLabel->SetVisible(true);
+    // TODO: nullptr exception!!!
+    if (pPreviewLabel == nullptr
+        || m_pPropTextEntry == nullptr
+        || m_pPropCheckButton == nullptr
+        || m_pPropLabel == nullptr
+        || m_pColorPickerButton == nullptr
+        || m_pMakeRootButton == nullptr)
+    {
+        if (!reset)
+        {
+            Msg("Warning: Could not get property controls. Resetting.\n");
+            reset = true;
+        }
+        else
+        {
+            Msg("Error: Could not get property controls.\n");
+            return;
+        }
+    }
 
     // Right view is the property view
     // Store text entries, checkboxes, etc. for each property type to switch between
@@ -132,6 +125,7 @@ void DXEditorElementViewer::SetupProperties(bool reset)
         m_pPropLabel = new RichText(pSplitter->GetChild(1), "DXEditorElementViewerPropLabel");
         m_pColorPickerButton = new CColorPickerButton(pSplitter->GetChild(1), "DXEditorElementViewerPropColorPickerButton", this);
         m_pMakeRootButton = new Button(pSplitter->GetChild(1), "DXEditorElementViewerMakeRootButton", "Make Root");
+        pPreviewLabel = new RichText(pSplitter->GetChild(0), "DXEditorElementViewerPreviewLabel");
 
         // Hide all property views
         m_pPropTextEntry->SetVisible(false);
@@ -139,7 +133,12 @@ void DXEditorElementViewer::SetupProperties(bool reset)
         m_pPropLabel->SetVisible(false);
         m_pColorPickerButton->SetVisible(false);
         m_pMakeRootButton->SetVisible(false);
+        pPreviewLabel->SetVisible(true);
     }
+
+    char* pszPreviewText = new char[256];
+    Q_snprintf(pszPreviewText, 256, "Name: %s\nType: %s\nUnique ID: %s\nData: %s", pszText, pszType, pszUniqueId, pszData);
+    pPreviewLabel->SetText(pszPreviewText);
 
     // Disable editing of properties
     //m_pPropTextEntry->SetEditable(false);

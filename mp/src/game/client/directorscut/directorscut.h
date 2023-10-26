@@ -13,6 +13,7 @@
 #include "dmxloader/dmxelement.h"
 #include "filesystem.h"
 #include "dxproperties.h"
+#include "materialsystem/imaterialsystem.h"
 
 IMaterial* GetPrimaryScreenMaterial();
 KeyValues* GetPrimaryScreenKV();
@@ -21,7 +22,82 @@ int GetPrimaryViewportTexID();
 void AllocatePrimaryViewport();
 void DeallocatePrimaryViewport();
 
-#define DX_MAX_NEEDS_UPDATE 2
+#define DX_MAX_NEEDS_UPDATE 3 // 0: element viewer, 1: animation set editor, 2: timeline
+
+enum DXDagType
+{
+	DX_DME_DAG = 0,
+	DX_DME_CAMERA,
+	DX_DME_GAMEMODEL,
+	DX_DME_GAMEPARTICLESYSTEM,
+	DX_DME_GAMEPORTAL,
+	DX_DME_GAMESPRITE,
+	DX_DME_GAMETEMPENT,
+	DX_DME_JOINT,
+	DX_DME_LIGHT,
+	DX_DME_AMBIENTLIGHT,
+	DX_DME_DIRECTIONALLIGHT,
+	DX_DME_POINTLIGHT,
+	DX_DME_PROJECTEDLIGHT,
+	DX_DME_SPOTLIGHT,
+	DX_DME_MODEL,
+	DX_DME_PARTICLESYSTEM,
+	DX_DME_RIG,
+	DX_DME_RIGHANDLE
+};
+
+DXDagType GetDagType( const char* pszDagType );
+
+enum DXLayoffFlags
+{
+	DX_LAYOFF_ALL = 0,
+	DX_LAYOFF_NO_SPRITES = 1,
+	DX_LAYOFF_NO_GIZMOS = 2,
+	DX_LAYOFF_NO_FRUSTRUM = 4,
+	DX_LAYOFF_NONE = DX_LAYOFF_NO_SPRITES | DX_LAYOFF_NO_GIZMOS | DX_LAYOFF_NO_FRUSTRUM
+};
+
+// LINKED LIST
+class DXDag
+{
+public:
+	DXDag(DXDagType dagType, Vector vecOrigin, QAngle angAngles, Vector vecScale)
+	{
+		m_nDagType = dagType;
+		m_vecOrigin = vecOrigin;
+		m_angAngles = angAngles;
+	};
+	Vector GetOrigin()
+	{
+		return m_vecOrigin;
+	};
+	QAngle GetAngles()
+	{
+		return m_angAngles;
+	};
+	Vector GetScale()
+	{
+		return m_vecScale;
+	};
+	DXDagType GetDagType()
+	{
+		return m_nDagType;
+	};
+	CUtlVector<DXDag*>& GetChildren()
+	{
+		return m_Children;
+	};
+	void AddChild(DXDag* pChild)
+	{
+		m_Children.AddToTail(pChild);
+	};
+protected:
+	DXDagType m_nDagType;
+	Vector m_vecOrigin;
+	QAngle m_angAngles;
+	Vector m_vecScale;
+	CUtlVector<DXDag*> m_Children;
+};
 
 class DXEditorHelper : public CAutoGameSystemPerFrame
 {
@@ -31,7 +107,10 @@ public:
 	void Update( float ft );
 	void LevelInitPostEntity();
 	//void PreRender();
-	//void PostRender();
+	void PostRender();
+
+	void RecursiveBuildScene( DXDag* dagParent, CDmxElement* pElementParent );
+	void RecursiveDrawScene( DXDag* dagParent, CMatRenderContextPtr& renderContext);
 
 	void SetMouseCaptured( bool bCaptured ) { m_bMouseCaptured = bCaptured; };
 	bool IsMouseCaptured() { return m_bMouseCaptured; };
@@ -135,10 +214,7 @@ public:
 	void SetViewportHeight( int nViewportHeight ) { m_nViewportHeight = nViewportHeight; };
 	int GetViewportHeight() { return m_nViewportHeight; };
 
-	void SetPlayhead( float fPlayhead ) {
-		m_fPlayhead = fPlayhead;
-		SetAllNeedsUpdate(true);
-	};
+	void SetPlayhead( float fPlayhead );
 	float GetPlayhead() { return m_fPlayhead; };
 
 	void SetPlaybackSpeed( float fPlaybackSpeed ) { m_fPlaybackSpeed = fPlaybackSpeed; };
@@ -155,6 +231,15 @@ public:
 
 	void SetTimelineStart( float flTimelineStart ) { m_flTimelineStart = flTimelineStart; };
 	float GetTimelineStart() { return m_flTimelineStart; };
+
+	void SetFPS( float fps ) { this->fps = fps; };
+	float GetFPS() { return fps; };
+	
+	void SetLayoff( bool bLayoff ) { m_bLayoff = bLayoff; };
+	bool GetLayoff() { return m_bLayoff; };
+
+	void SetLayoffFlags( DXLayoffFlags nLayoffFlags ) { m_nLayoffFlags = nLayoffFlags; };
+	DXLayoffFlags GetLayoffFlags() { return m_nLayoffFlags; };
 
 protected:
 	CDMXContextHelper* m_dmxContextHelper;
@@ -181,8 +266,22 @@ protected:
 	bool m_bLockPlayhead = false;
 	int m_nZoomLevel = 100;
 	float m_flTimelineStart = -1;
+	float fps = 24;
+	bool m_bLayoff;
+	DXLayoffFlags m_nLayoffFlags = DX_LAYOFF_NONE;
+	DXDag* m_Dag;
 };
 
 DXEditorHelper &DirectorsCutGameSystem();
+
+static bool DXIsLayoff()
+{
+	return DirectorsCutGameSystem().GetLayoff();
+}
+
+static DXLayoffFlags DXGetLayoffFlags()
+{
+	return DirectorsCutGameSystem().GetLayoffFlags();
+}
 
 #endif // DIRECTORSCUT_H
