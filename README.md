@@ -23,19 +23,7 @@ This software is in early production as development was recently reset.
 - [Director's Cut on Valve Developer Wiki](https://developer.valvesoftware.com/wiki/Director's_Cut)
 
 ## Usage
-- **Prerequisites:**
-  - Install *Source SDK Base 2013 Multiplayer* through Steam.
-
-- **Installing Director's Cut:**
-  - Delete any previous Director's Cut installations from your `sourcemods` directory.
-    - `sourcemods` is usually located in `C:\Program Files (x86)\Steam\steamapps`.
-  - Download the latest development build of Director's Cut from the [Releases](https://github.com/KiwifruitDev/DirectorsCut/releases) page as `directorscut.zip`.
-  - Extract the containing folder to your `sourcemods` directory.
-
-- **Finalizing Setup:**
-  - Restart Steam.
-  - Director's Cut should now be available in your Steam library.
-  - Use `Tab` to toggle the Director's Cut editor while in-app.
+An automated build system is currently in progress. For now, you must build DirectorsCut in order to use it with *Source SDK Base 2013 Multiplayer*.
 
 ## Building
 - **Prerequisites:**
