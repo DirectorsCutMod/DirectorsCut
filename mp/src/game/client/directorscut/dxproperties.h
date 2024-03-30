@@ -1,6 +1,8 @@
 //========= Director's Cut - https://github.com/KiwifruitDev/DirectorsCut =========//
 //
 // Purpose: Selected properties are edited in an all-in-one window.
+// Contributors:
+// - KiwifruitDev
 //
 // $NoKeywords: $
 //=================================================================================//

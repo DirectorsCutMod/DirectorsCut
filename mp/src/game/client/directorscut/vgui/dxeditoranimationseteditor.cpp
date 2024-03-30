@@ -1,6 +1,8 @@
 //========= Director's Cut - https://github.com/KiwifruitDev/DirectorsCut =========//
 //
 // Purpose: Editor window controls for Director's Cut.
+// Contributors:
+// - KiwifruitDev
 //
 // $NoKeywords: $
 //=================================================================================//
@@ -34,7 +36,7 @@ void DXEditorAnimationSetEditor::OnThink()
 {
 	if(DirectorsCutGameSystem().NeedsUpdate(1) == true)
     {
-		DirectorsCutGameSystem().SetNeedsUpdate(false, 1);
+		DirectorsCutGameSystem().SetNeedsUpdate(false, DX_NEEDS_UPDATE_ANIMSETEDITOR);
 		PopulateTreeFromDocument();
         m_pTree->ExpandItem(m_pTree->GetRootItemIndex(), true);
 	}

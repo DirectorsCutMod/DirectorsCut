@@ -1,6 +1,8 @@
 //========= Director's Cut - https://github.com/KiwifruitDev/DirectorsCut =========//
 //
 // Purpose: Editor window controls for Director's Cut.
+// Contributors:
+// - KiwifruitDev
 //
 // $NoKeywords: $
 //=================================================================================//
@@ -32,6 +34,7 @@
 // This file is currently a mess but it works
 // TODO: Move property editing to properties window and standardize how we wanna handle attributes
 // TODO: Do we need a tree view? It's only ever used for arrays and elements, unlike the animation set editor
+// TODO: Multi-threading? Some sort of segmented or deferred update system would really help...
 
 #define TREE_TEXT_COLOR Color( 200, 255, 200, 255 )
 #define LIST_TEXT_COLOR TREE_TEXT_COLOR
@@ -501,7 +504,7 @@ void DXEditorElementViewer::MakeRootButtonClick()
     {
         // Set new root
         DirectorsCutGameSystem().SetDocumentFocusedRoot(NULL);
-        DirectorsCutGameSystem().SetNeedsUpdate(true, 0);
+        DirectorsCutGameSystem().SetNeedsUpdate(true, DX_NEEDS_UPDATE_ELEMENTVIEWER);
         return;
     }
 
@@ -571,7 +574,7 @@ void DXEditorElementViewer::MakeRootButtonClick()
 
     // Set new root
     DirectorsCutGameSystem().SetDocumentFocusedRoot(pNewRoot);
-    DirectorsCutGameSystem().SetNeedsUpdate(true, 0);
+    DirectorsCutGameSystem().SetNeedsUpdate(true, DX_NEEDS_UPDATE_ELEMENTVIEWER);
 }
 
 void DXEditorElementViewer::OnThink()
@@ -726,7 +729,7 @@ void DXEditorElementViewer::OnThink()
                         return;
                     }
                     pRoot->SetValue<bool>(pszText, bSelected);
-                    DirectorsCutGameSystem().SetNeedsUpdate(true, 0);
+                    DirectorsCutGameSystem().SetNeedsUpdate(true, DX_NEEDS_UPDATE_ELEMENTVIEWER);
                 }
             }
             else if (Q_strcmp(pszType, "color") == 0)
@@ -759,7 +762,7 @@ void DXEditorElementViewer::OnThink()
     if(DirectorsCutGameSystem().NeedsUpdate(0) == true)
     {
         //Msg("Updating element viewer...\n");
-        DirectorsCutGameSystem().SetNeedsUpdate(false, 0);
+        DirectorsCutGameSystem().SetNeedsUpdate(false, DX_NEEDS_UPDATE_ELEMENTVIEWER);
         RecursivePopulateTreeFromDocument(NULL, -1);
         // Expand all items
         CUtlVector <int> expandedItems;

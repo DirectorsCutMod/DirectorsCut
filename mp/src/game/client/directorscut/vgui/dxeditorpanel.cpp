@@ -1,6 +1,8 @@
 //========= Director's Cut - https://github.com/KiwifruitDev/DirectorsCut =========//
 //
 // Purpose: Editor window for Director's Cut
+// Contributors:
+// - KiwifruitDev
 //
 // $NoKeywords: $
 //=================================================================================//

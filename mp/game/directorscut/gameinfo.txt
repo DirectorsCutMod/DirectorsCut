@@ -53,6 +53,26 @@
 			game+mod+mod_write+default_write_path		|gameinfo_path|.
 			gamebin				|gameinfo_path|bin
 
+			// Default TF2 installation directory
+
+			// tf_movies_min contains the SFM tf_movies models recompiled for SDK2013
+			game+mod			"C:\Program Files (x86)\Steam\steamapps\common\Team Fortress 2\tf_movies_min"
+
+			// Standard TF2 content
+			game+mod			"C:\Program Files (x86)\Steam\steamapps\common\Team Fortress 2\tf\tf2_textures.vpk"
+			game+mod			"C:\Program Files (x86)\Steam\steamapps\common\Team Fortress 2\tf\tf2_sound_vo_english.vpk"
+			game+mod			"C:\Program Files (x86)\Steam\steamapps\common\Team Fortress 2\tf\tf2_sound_misc.vpk"
+
+			// tf_min contains retail (2007) versions of the maps and particles with the latest versions' models/materials
+			game+mod			"C:\Program Files (x86)\Steam\steamapps\common\Team Fortress 2\tf_min"
+
+			// This is a local TF2 install and is used for testing purposes
+			game+mod			"D:\SteamLibrary\steamapps\common\team fortress 2\tf_movies_min"
+			game+mod			"D:\SteamLibrary\steamapps\common\team fortress 2\tf\tf2_textures.vpk"
+			game+mod			"D:\SteamLibrary\steamapps\common\team fortress 2\tf\tf2_sound_vo_english.vpk"
+			game+mod			"D:\SteamLibrary\steamapps\common\team fortress 2\tf\tf2_sound_misc.vpk"
+			game+mod			"D:\SteamLibrary\steamapps\common\team fortress 2\tf_min"
+
 			// We search VPK files before ordinary folders, because most files will be found in
 			// VPK and we can avoid making thousands of file system calls to attempt to open files
 			// in folders where they don't exist.  (Searching a VPK is much faster than making an operating

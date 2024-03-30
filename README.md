@@ -23,7 +23,62 @@ This software is in early production as development was recently reset.
 - [Director's Cut on Valve Developer Wiki](https://developer.valvesoftware.com/wiki/Director's_Cut)
 
 ## Usage
-An automated build system is currently in progress. For now, you must build DirectorsCut in order to use it with *Source SDK Base 2013 Multiplayer*.
+- **Prerequisites:**
+  - Director's Cut requires **Source SDK Base 2013 Multiplayer** to be installed on Steam.
+  - Director's Cut is currently only available for Windows.
+
+- **Installation:**
+  - Download the latest release from the [releases page](https://github.com/KiwifruitDev/DirectorsCut/releases/latest).
+  - Extract the `directorscut` directory to your `sourcemods` directory.
+    - For example, `C:\Program Files (x86)\Steam\steamapps\sourcemods\directorscut`.
+  - Restart Steam and launch Director's Cut from your library.
+
+- **Testing:**
+  - When in-game, open the Director's Cut editor by pressing `Tab`.
+  - Open sessions by clicking `File` > `Open`.
+    - SFM sessions must be converted using the following command:
+      ```bat
+      dmxconvert -i session.dmx -oe keyvalues2 -o session_kv2.dmx
+      ```
+    - Test sessions are located in the following directory:
+      ```
+      C:\Program Files (x86)\Steam\steamapps\sourcemods\directorscut\elements\sessions
+      ```
+
+- **Information:**
+  - Director's Cut is in early development and may contain bugs.
+  - Please report any issues you find on the [GitHub issues page](https://github.com/KiwifruitDev/DirectorsCut/issues)
+  - The timeline does not have any mouse controls yet, please use the keyboard controls below.
+  - Right clicking does not work for any context menus yet.
+  - The element viewer and inspector windows are unstable and may crash the game.
+  - Loading a map must be performed through the console using the `map` command.
+  - Saving a session may result in SFM no longer being able to open the file.
+  - Keyboard controls are not locked on a per-window basis yet.
+
+- **Team Fortress 2 Content:**
+  - While Director's Cut is compatible with Team Fortress 2, content does not work out of the box.
+  - Only the 2007 retail versions of the maps are supported.
+  - SFM-exclusive models (such as in `tf_movies`) are not supported.
+  - TF2 character models may have issues with their materials.
+  - See `gameinfo.txt` for a rundown on how support was added.
+
+## Controls
+- **Director's Cut**:
+  - `Tab` to toggle the Director's Cut editor.
+- **Timeline**:
+  - `Space` to play/pause the playback.
+    - `Ctrl` + `Space` to play in x2 speed.
+    - `Shift` + `Space` to play in reverse.
+    - `Alt` + `Space` to play from the start.
+  - `Left` and `Right` arrow keys to move the playhead by one frame.
+  - `Up` and `Down` arrow keys to move the playhead to the start or end of the current shot.
+  - `P` to lock the timeline view to the playhead.
+  - `=` and `-` to zoom in and out.
+- **Primary Viewport**:
+  - `W`, `A`, `S`, and `D` to move the camera.
+  - `Z` and `X` to move the camera up and down.
+  - `Shift` to move the camera faster.
+  - `Ctrl` to move the camera slower.
 
 ## Building
 - **Prerequisites:**

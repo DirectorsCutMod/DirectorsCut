@@ -1,6 +1,8 @@
 //========= Director's Cut - https://github.com/KiwifruitDev/DirectorsCut =========//
 //
 // Purpose: Director's Cut system.
+// Contributors:
+// - KiwifruitDev
 //
 // $NoKeywords: $
 //=================================================================================//
@@ -22,7 +24,10 @@ int GetPrimaryViewportTexID();
 void AllocatePrimaryViewport();
 void DeallocatePrimaryViewport();
 
-#define DX_MAX_NEEDS_UPDATE 3 // 0: element viewer, 1: animation set editor, 2: timeline
+#define DX_NEEDS_UPDATE_ELEMENTVIEWER 0
+#define DX_NEEDS_UPDATE_ANIMSETEDITOR 1
+#define DX_NEEDS_UPDATE_TIMELINE 2 // TODO: unused? will it ever be used?
+#define DX_MAX_NEEDS_UPDATE 3
 
 enum DXDagType
 {
@@ -61,23 +66,41 @@ enum DXLayoffFlags
 class DXDag
 {
 public:
-	DXDag(DXDagType dagType, Vector vecOrigin, QAngle angAngles, Vector vecScale)
+	DXDag(DXDagType dagType, Vector vecOrigin, QAngle angAngles, Vector vecScale, KeyValues* pKV)
 	{
 		m_nDagType = dagType;
 		m_vecOrigin = vecOrigin;
 		m_angAngles = angAngles;
+		m_vecScale = vecScale;
+		m_pKV = pKV;
+	};
+	void SetOrigin(Vector vecOrigin)
+	{
+		m_vecOrigin = vecOrigin;
 	};
 	Vector GetOrigin()
 	{
 		return m_vecOrigin;
 	};
+	void SetAngles(QAngle angAngles)
+	{
+		m_angAngles = angAngles;
+	};
 	QAngle GetAngles()
 	{
 		return m_angAngles;
 	};
+	void SetScale(Vector vecScale)
+	{
+		m_vecScale = vecScale;
+	};
 	Vector GetScale()
 	{
 		return m_vecScale;
+	};
+	void SetDagType(DXDagType nDagType)
+	{
+		m_nDagType = nDagType;
 	};
 	DXDagType GetDagType()
 	{
@@ -91,12 +114,21 @@ public:
 	{
 		m_Children.AddToTail(pChild);
 	};
+	void SetKeyValues(KeyValues* pKV)
+	{
+		m_pKV = pKV;
+	};
+	KeyValues* GetKeyValues()
+	{
+		return m_pKV;
+	};
 protected:
 	DXDagType m_nDagType;
 	Vector m_vecOrigin;
 	QAngle m_angAngles;
 	Vector m_vecScale;
 	CUtlVector<DXDag*> m_Children;
+	KeyValues* m_pKV;
 };
 
 class DXEditorHelper : public CAutoGameSystemPerFrame
@@ -108,6 +140,8 @@ public:
 	void LevelInitPostEntity();
 	//void PreRender();
 	void PostRender();
+
+	model_t* LoadModel(const char* modelName);
 
 	void RecursiveBuildScene( DXDag* dagParent, CDmxElement* pElementParent );
 	void RecursiveDrawScene( DXDag* dagParent, CMatRenderContextPtr& renderContext);
@@ -270,6 +304,8 @@ protected:
 	bool m_bLayoff;
 	DXLayoffFlags m_nLayoffFlags = DX_LAYOFF_NONE;
 	DXDag* m_Dag;
+	// map element ids to models
+	CUtlMap<const char*, C_BaseFlex*> m_pModels;
 };
 
 DXEditorHelper &DirectorsCutGameSystem();
