@@ -1108,9 +1108,12 @@ CStudioHdr *C_BaseAnimating::OnNewModel()
 			m_Attachments[i].m_bAnglesComputed = false;
 			m_Attachments[i].m_nLastFramecount = 0;
 #ifdef _DEBUG
+// Director's Cut
+#ifndef DIRECTORSCUT
 			m_Attachments[i].m_AttachmentToWorld.Invalidate();
 			m_Attachments[i].m_angRotation.Init( VEC_T_NAN, VEC_T_NAN, VEC_T_NAN );
 			m_Attachments[i].m_vOriginVelocity.Init( VEC_T_NAN, VEC_T_NAN, VEC_T_NAN );
+#endif
 #endif
 		}
 
@@ -1442,7 +1445,17 @@ void C_BaseAnimating::GetCachedBoneMatrix( int boneIndex, matrix3x4_t &out )
 //-----------------------------------------------------------------------------
 // Purpose:	move position and rotation transforms into global matrices
 //-----------------------------------------------------------------------------
-void C_BaseAnimating::BuildTransformations( CStudioHdr *hdr, Vector *pos, Quaternion *q, const matrix3x4_t &cameraTransform, int boneMask, CBoneBitList &boneComputed )
+void C_BaseAnimating::BuildTransformations(CStudioHdr* hdr, Vector* pos, Quaternion* q, const matrix3x4_t& cameraTransform, int boneMask, CBoneBitList& boneComputed)
+// Director's Cut requires additional parameters in order to move bones.
+// https://steamcommunity.com/app/211/discussions/1/540739319616280118/
+#ifdef DIRECTORSCUT
+{
+	Vector dummyVec[MAXSTUDIOBONES];
+	Quaternion dummyQuat[MAXSTUDIOBONES];
+	BuildTransformations(hdr, pos, q, cameraTransform, boneMask, boneComputed, false, dummyVec, dummyQuat);
+}
+void C_BaseAnimating::BuildTransformations( CStudioHdr *hdr, Vector *pos, Quaternion *q, const matrix3x4_t &cameraTransform, int boneMask, CBoneBitList &boneComputed, bool leaveoutbonecalc, Vector* addpos, Quaternion* addq)
+#endif
 {
 	VPROF_BUDGET( "C_BaseAnimating::BuildTransformations", VPROF_BUDGETGROUP_CLIENT_ANIMATION );
 
@@ -1520,8 +1533,30 @@ void C_BaseAnimating::BuildTransformations( CStudioHdr *hdr, Vector *pos, Quater
 			// dummy operation, just used to verify in debug that this should have happened
 			GetBoneForWrite( i );
 		}
+// Director's Cut requires bone matrices to always be calculated.
+#ifndef DIRECTORSCUT
 		else
+#endif
 		{
+// Director's Cut overrides bone positions and rotations.
+#ifdef DIRECTORSCUT
+			if (leaveoutbonecalc)
+			{
+				// use override bone positions
+				pos[i].x = addpos[i].x;
+				pos[i].y = addpos[i].y;
+				pos[i].z = addpos[i].z;
+				q[i] = addq[i];
+			}
+			else
+			{
+				// set bone overrides so they're ready when needed
+				addpos[i].x = pos[i].x;
+				addpos[i].y = pos[i].y;
+				addpos[i].z = pos[i].z;
+				addq[i] = q[i];
+			}
+#endif
 			QuaternionMatrix( q[i], pos[i], bonematrix );
 
 			Assert( fabs( pos[i].x ) < 100000 );
@@ -2031,7 +2066,10 @@ bool C_BaseAnimating::PutAttachment( int number, const matrix3x4_t &attachmentTo
 	pAtt->m_AttachmentToWorld = attachmentToWorld;
 
 #ifdef _DEBUG
+// Director's Cut must not allow further bone rotations.
+#ifndef DIRECTORSCUT
 	pAtt->m_angRotation.Init( VEC_T_NAN, VEC_T_NAN, VEC_T_NAN );
+#endif
 #endif
 
 	return true;
@@ -2758,7 +2796,17 @@ void C_BaseAnimating::ThreadedBoneSetup()
 	g_PreviousBoneSetups.RemoveAll();
 }
 
-bool C_BaseAnimating::SetupBones( matrix3x4_t *pBoneToWorldOut, int nMaxBones, int boneMask, float currentTime )
+bool C_BaseAnimating::SetupBones(matrix3x4_t* pBoneToWorldOut, int nMaxBones, int boneMask, float currentTime)
+// Director's Cut applies offsets to bones, so we need to pass them in.
+#ifdef DIRECTORSCUT
+{
+	Vector dummyVec[MAXSTUDIOBONES];
+	Quaternion dummyQuat[MAXSTUDIOBONES];
+	return SetupBones(pBoneToWorldOut, nMaxBones, boneMask, currentTime, false, dummyVec, dummyQuat);
+}
+
+bool C_BaseAnimating::SetupBones( matrix3x4_t *pBoneToWorldOut, int nMaxBones, int boneMask, float currentTime, bool leaveoutbonecalc, Vector* addpos, Quaternion* addq)
+#endif
 {
 	VPROF_BUDGET( "C_BaseAnimating::SetupBones", VPROF_BUDGETGROUP_CLIENT_ANIMATION );
 
@@ -2963,7 +3011,12 @@ bool C_BaseAnimating::SetupBones( matrix3x4_t *pBoneToWorldOut, int nMaxBones, i
 				m_pIk->SolveDependencies( pos, q, m_BoneAccessor.GetBoneArrayForWrite(), boneComputed );
 			}
 
+// Director's Cut requires bone offsets to be passed in.
+#ifdef DIRECTORSCUT
+			BuildTransformations(hdr, pos, q, parentTransform, bonesMaskNeedRecalc, boneComputed, leaveoutbonecalc, addpos, addq);
+#else
 			BuildTransformations( hdr, pos, q, parentTransform, bonesMaskNeedRecalc, boneComputed );
+#endif
 			
 			RemoveFlag( EFL_SETTING_UP_BONES );
 			ControlMouth( hdr );

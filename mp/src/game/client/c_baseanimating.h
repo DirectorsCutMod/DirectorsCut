@@ -139,11 +139,19 @@ public:
 	float		  ClampCycle( float cycle, bool isLooping );
 	virtual void GetPoseParameters( CStudioHdr *pStudioHdr, float poseParameter[MAXSTUDIOPOSEPARAM] );
 	virtual void BuildTransformations( CStudioHdr *pStudioHdr, Vector *pos, Quaternion q[], const matrix3x4_t& cameraTransform, int boneMask, CBoneBitList &boneComputed );
+// Director's Cut
+#ifdef DIRECTORSCUT
+	virtual void BuildTransformations(CStudioHdr* pStudioHdr, Vector* pos, Quaternion q[], const matrix3x4_t& cameraTransform, int boneMask, CBoneBitList& boneComputed, bool leaveoutbonecalc, Vector* addpos, Quaternion* addq);
+#endif
 	virtual void ApplyBoneMatrixTransform( matrix3x4_t& transform );
  	virtual int	VPhysicsGetObjectList( IPhysicsObject **pList, int listMax );
 
 	// model specific
 	virtual bool SetupBones( matrix3x4_t *pBoneToWorldOut, int nMaxBones, int boneMask, float currentTime );
+// Director's Cut
+#ifdef DIRECTORSCUT
+	virtual bool SetupBones(matrix3x4_t* pBoneToWorldOut, int nMaxBones, int boneMask, float currentTime, bool leaveoutbonecalc, Vector* addpos, Quaternion* addq);
+#endif
 	virtual void UpdateIKLocks( float currentTime );
 	virtual void CalculateIKLocks( float currentTime );
 	virtual bool ShouldDraw();

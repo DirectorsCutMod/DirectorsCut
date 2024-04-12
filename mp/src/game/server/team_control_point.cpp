@@ -71,7 +71,7 @@ BEGIN_DATADESC(CTeamControlPoint)
 	DEFINE_THINKFUNC( AnimThink ),
 END_DATADESC();
 
-LINK_ENTITY_TO_CLASS( team_control_point, CTeamControlPoint );
+LINK_ENTITY_TO_CLASS( team_control_point_hl2mp, CTeamControlPoint );
 
 //-----------------------------------------------------------------------------
 // Purpose: 

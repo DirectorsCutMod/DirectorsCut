@@ -92,10 +92,10 @@ This software is in early production as development was recently reset.
       ```
 
   - **Creating Visual Studio Solution:**
-    - After cloning the repository, run `mp/src/createdirectorscutproject.bat` to create the Visual Studio solution.
+    - After cloning the repository, run `mp/src/creategameprojects.bat` to create the Visual Studio solution.
 
   - **Building the Solution:**
-    - Open `mp/src/directorscut.sln` in Visual Studio and build the solution.
+    - Open `mp/src/games.sln` in Visual Studio and build the solution.
 
 ## Implementation
 If you would like to implement the Director's Cut animation system into your own mod, please note the following changes and files required:
@@ -106,7 +106,10 @@ If you would like to implement the Director's Cut animation system into your own
         - Pages can now be dropped out to create new `ToolWindow` instances without requiring a tool factory.
     - `void PropertySheet::OnPanelDropped(CUtlVector<KeyValues*>& msglist)`
         - Pages can now be dropped onto existing `ToolWindow` instances without requiring a tool factory.
-
+- `mp/src/game/client/c_baseanimating.cpp`
+  - `CStudioHdr *C_BaseAnimating::OnNewModel()`
+  - `void C_BaseAnimating::BuildTransformations(CStudioHdr* hdr, Vector* pos, Quaternion* q, const matrix3x4_t& cameraTransform, int boneMask, CBoneBitList& boneComputed)`
+  - `bool C_BaseAnimating::SetupBones(matrix3x4_t* pBoneToWorldOut, int nMaxBones, int boneMask, float currentTime)`
 ### Files
 - `mp/src/game/client/directorscut`
     - This folder contains all of the Director's Cut code. You must either include each file through VPC or otherwise add them to your project.
@@ -129,9 +132,6 @@ Director's Cut shares code from the following projects:
 - [Source SDK 2013](https://github.com/ValveSoftware/source-sdk-2013)
 - [Source Shader Editor](https://github.com/Biohazard90/source-shader-editor/)
 - [directorscut-swarm](https://github.com/KiwifruitDev/directorscut-swarm)
-
-### Mapbase Information
-Please view [mapbase-readme.txt](mapbase-readme.txt) for more information.
 
 ### Third-Party Legal Notices
 Please view [thirdpartylegalnotices.txt](thirdpartylegalnotices.txt) for more information.

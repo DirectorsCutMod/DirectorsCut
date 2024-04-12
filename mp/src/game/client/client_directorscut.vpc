@@ -24,6 +24,11 @@ $Project
 			$File	"directorscut\dummyproxies.h"
 			$File	"directorscut\dxproperties.cpp"
 			$File	"directorscut\dxproperties.h"
+			$Folder "Entities"
+			{
+				$File	"directorscut\entities\dxpuppet.cpp"
+				$File	"directorscut\entities\dxpuppet.h"
+			}
 			$Folder "VGUI"
 			{
 				$File	"directorscut\vgui\dxeditorpanel.cpp"

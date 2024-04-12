@@ -187,14 +187,26 @@ bool CGameRules::CanHaveAmmo( CBaseCombatCharacter *pPlayer, const char *szName 
 CBaseEntity *CGameRules::GetPlayerSpawnSpot( CBasePlayer *pPlayer )
 {
 	CBaseEntity *pSpawnSpot = pPlayer->EntSelectSpawnPoint();
-	Assert( pSpawnSpot );
 
-	pPlayer->SetLocalOrigin( pSpawnSpot->GetAbsOrigin() + Vector(0,0,1) );
-	pPlayer->SetAbsVelocity( vec3_origin );
-	pPlayer->SetLocalAngles( pSpawnSpot->GetLocalAngles() );
+	Vector vSpawnPos = Vector(0, 0, 0);
+	QAngle vSpawnAngles = QAngle(0, 0, 0);
+
+	if ( pSpawnSpot )
+	{
+		vSpawnPos = pSpawnSpot->GetAbsOrigin();
+		vSpawnAngles = pSpawnSpot->GetAbsAngles();
+	}
+	else
+	{
+		pSpawnSpot = pPlayer;
+	}
+
+	pPlayer->SetLocalOrigin(vSpawnPos + Vector(0, 0, 1));
+	pPlayer->SetAbsVelocity(vec3_origin);
+	pPlayer->SetLocalAngles(vSpawnAngles);
 	pPlayer->m_Local.m_vecPunchAngle = vec3_angle;
 	pPlayer->m_Local.m_vecPunchAngleVel = vec3_angle;
-	pPlayer->SnapEyeAngles( pSpawnSpot->GetLocalAngles() );
+	pPlayer->SnapEyeAngles(vSpawnAngles);
 
 	return pSpawnSpot;
 }

@@ -255,7 +255,7 @@ void DXEditorHelper::LoadDocument( const char* pszDocumentName )
 {
 	//DECLARE_DMX_CONTEXT_NODECOMMIT();
 	CloseDocument();
-	CDmxElement* document = (CDmxElement*)DMXAlloc( 100000000 );
+	CDmxElement* document = (CDmxElement*)DMXAlloc( 1000000000 );
 
 	// Mark timestamp so we can document how long it takes to load
 	double flStartTime = Plat_FloatTime();
@@ -405,8 +405,10 @@ void DXEditorHelper::CloseDocument()
 
 void DXEditorHelper::SetPlayhead( float fPlayhead )
 {
-	m_fPlayhead = fPlayhead;
+	if(m_fPlayhead == fPlayhead)
+		return;
 	SetAllNeedsUpdate(true);
+	m_fPlayhead = fPlayhead;
 }
 
 DXDagType GetDagType( const char* pszDagType )
@@ -506,6 +508,55 @@ void DXEditorHelper::RecursiveBuildScene(DXDag* dagParent, CDmxElement* pElement
 				{
 					kvExtra->SetString("modelName", pszModelName);
 				}
+				KeyValues* kvBones = new KeyValues("bones");
+				// Get bones
+				const CUtlVector<CDmxElement*>& pBones = pChild->GetArray<CDmxElement*>("bones");
+				if (pBones.Count() > 0)
+				{
+					for (int i = 0; i < pBones.Count(); i++)
+					{
+						// name the bone by its index
+						const char* pszBoneName = VarArgs("bone_%i", i);
+						KeyValues* kvBone = new KeyValues(pszBoneName);
+						kvBone->SetFloat("position_x", 0);
+						kvBone->SetFloat("position_y", 0);
+						kvBone->SetFloat("position_z", 0);
+						kvBone->SetFloat("orientation_x", 0);
+						kvBone->SetFloat("orientation_y", 0);
+						kvBone->SetFloat("orientation_z", 0);
+						kvBone->SetFloat("orientation_w", 1);
+						kvBone->SetFloat("scale_x", 1);
+						kvBone->SetFloat("scale_y", 1);
+						kvBone->SetFloat("scale_z", 1);
+						kvBones->AddSubKey(kvBone);
+						CDmxElement* pBone = pBones[i];
+						if (!pBone)
+							continue;
+						Vector vecPosition = pBone->GetValue<Vector>("position");
+						Quaternion angOrientation = pBone->GetValue<Quaternion>("orientation");
+						float flScale = pBone->GetValue<float>("scale", 1);
+						float flScaleX = pBone->GetValue<float>("scale_x", 0);
+						float flScaleY = pBone->GetValue<float>("scale_y", 0);
+						float flScaleZ = pBone->GetValue<float>("scale_z", 0);
+						Vector vecScale;
+						if (flScaleX == 0 && flScaleY == 0 && flScaleZ == 0)
+							vecScale.Init(flScale, flScale, flScale);
+						else
+							vecScale.Init(flScaleX, flScaleY, flScaleZ);
+						kvBone->SetFloat("position_x", vecPosition.x);
+						kvBone->SetFloat("position_y", vecPosition.y);
+						kvBone->SetFloat("position_z", vecPosition.z);
+						kvBone->SetFloat("orientation_x", angOrientation.x);
+						kvBone->SetFloat("orientation_y", angOrientation.y);
+						kvBone->SetFloat("orientation_z", angOrientation.z);
+						kvBone->SetFloat("orientation_w", angOrientation.w);
+						kvBone->SetFloat("scale_x", vecScale.x);
+						kvBone->SetFloat("scale_y", vecScale.y);
+						kvBone->SetFloat("scale_z", vecScale.z);
+					}
+				}
+				kvExtra->AddSubKey(kvBones);
+				kvExtra->SetInt("_numbones", pBones.Count());
 				break;
 			}
 		}
@@ -625,8 +676,9 @@ void DXEditorHelper::RecursiveDrawScene( DXDag* dagParent, CMatRenderContextPtr&
 				// we can't render a new model every frame
 				// so m_pModels uses the element id as the key
 				const char* nElementId = kvExtra->GetString("_elementid");
-				// see if element is already in the list (tree)
 				int found = m_pModels.Find(nElementId);
+				CDirectorsCutPuppet* pModelEntity = nullptr;
+
 				if (!m_pModels.IsValidIndex(found))
 				{
 					// print name
@@ -639,23 +691,44 @@ void DXEditorHelper::RecursiveDrawScene( DXDag* dagParent, CMatRenderContextPtr&
 						model_t* pModel = LoadModel(pszModelName);
 						if (pModel != nullptr)
 						{
-							C_BaseFlex* pModelEntity = new C_BaseFlex();
+							pModelEntity = new CDirectorsCutPuppet();
 							pModelEntity->SetModelPointer(pModel);
-							pModelEntity->SetAbsOrigin(dagParent->GetOrigin());
-							pModelEntity->SetAbsAngles(dagParent->GetAngles());
-							int curindex = m_pModels.Insert(nElementId, pModelEntity);
-							// print index
-							Msg("Model index: %i\n", curindex);
+							m_pModels.Insert(nElementId, pModelEntity);
 						}
 					}
 				}
 				else
 				{
-					C_BaseFlex* pModelEntity = m_pModels.Element(found);
-					if (pModelEntity != nullptr)
+					pModelEntity = m_pModels.Element(found);
+				}
+
+				if (pModelEntity != nullptr)
+				{
+					sModels.AddToTail(nElementId);
+					pModelEntity->SetAbsOrigin(dagParent->GetOrigin());
+					pModelEntity->SetAbsAngles(dagParent->GetAngles());
+					int boneCount = kvExtra->GetInt("_numbones");
+					if(boneCount > MAXSTUDIOBONES)
+						boneCount = MAXSTUDIOBONES;
+					KeyValues* kvBones = kvExtra->FindKey("bones");
+					if(kvBones != nullptr)
 					{
-						pModelEntity->SetAbsOrigin(dagParent->GetOrigin());
-						pModelEntity->SetAbsAngles(dagParent->GetAngles());
+						for (int i = 0; i < boneCount; i++)
+						{
+							const char* pszBoneName = VarArgs("bone_%i", i);
+							KeyValues* kvBone = kvBones->FindKey(pszBoneName);
+							if (kvBone != nullptr)
+							{
+								Vector newPos(kvBone->GetFloat("position_x"), kvBone->GetFloat("position_y"), kvBone->GetFloat("position_z"));
+								Quaternion newQuat(kvBone->GetFloat("orientation_x"), kvBone->GetFloat("orientation_y"), kvBone->GetFloat("orientation_z"), kvBone->GetFloat("orientation_w"));
+								QAngle newAng;
+								QuaternionAngles(newQuat, newAng);
+								//Vector vecScale(kvBone->GetFloat("scale_x"), kvBone->GetFloat("scale_y"), kvBone->GetFloat("scale_z"));
+								pModelEntity->PushAllowBoneAccess(true, true, "DirectorsCut");
+								pModelEntity->PoseBones(i, newPos, newAng);
+								pModelEntity->PopBoneAccess("DirectorsCut");
+							}
+						}
 					}
 				}
 
@@ -686,12 +759,27 @@ void DXEditorHelper::PostRender()
 	{
 		// Draw scene
 		RecursiveDrawScene(m_Dag, renderContext);
+		// Trim models (if they are not in the scene)
+		for (unsigned int i = 0; i < m_pModels.Count(); i++)
+		{
+			const char* nElementId = m_pModels.Key(i);
+			int found = sModels.Find(nElementId);
+			if (found == -1)
+			{
+				CDirectorsCutPuppet* pModelEntity = m_pModels.Element(i);
+				if (pModelEntity != nullptr)
+				{
+					delete pModelEntity;
+					m_pModels.RemoveAt(i);
+				}
+			}
+		}
 	}
 }
 
 void DXEditorHelper::Update( float ft )
 {
-	if(NeedsUpdate(2))
+	if(NeedsUpdate(DX_NEEDS_UPDATE_TIMELINE))
 	{
 		CDmxElement* pRoot = GetDocument();
 		if( pRoot != NULL )
@@ -930,6 +1018,7 @@ void DXEditorHelper::Update( float ft )
 				SetSceneCameraAngles(QAngle(0, 0, 0));
 			}
 		}
+		SetNeedsUpdate(false, DX_NEEDS_UPDATE_TIMELINE);
 	}
 
 	// if playback speed is set, advance playhead

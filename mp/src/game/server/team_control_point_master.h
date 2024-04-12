@@ -36,7 +36,7 @@ public:
 	CTeamControlPointMaster();
 
 	// Used to find game specific entities
-	virtual const char *GetControlPointName( void ) { return "team_control_point"; }
+	virtual const char *GetControlPointName( void ) { return "team_control_point_hl2mp"; }
 	virtual const char *GetControlPointRoundName( void ) { return "team_control_point_round"; }
 
 public:

@@ -16,6 +16,7 @@
 #include "filesystem.h"
 #include "dxproperties.h"
 #include "materialsystem/imaterialsystem.h"
+#include "entities/dxpuppet.h"
 
 IMaterial* GetPrimaryScreenMaterial();
 KeyValues* GetPrimaryScreenKV();
@@ -305,7 +306,8 @@ protected:
 	DXLayoffFlags m_nLayoffFlags = DX_LAYOFF_NONE;
 	DXDag* m_Dag;
 	// map element ids to models
-	CUtlMap<const char*, C_BaseFlex*> m_pModels;
+	CUtlMap<const char*, CDirectorsCutPuppet*> m_pModels;
+	CUtlVector<const char*>& sModels = *(new CUtlVector<const char*>);
 };
 
 DXEditorHelper &DirectorsCutGameSystem();
