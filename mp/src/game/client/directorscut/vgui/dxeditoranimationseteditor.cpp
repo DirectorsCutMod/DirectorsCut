@@ -34,7 +34,7 @@ DXEditorAnimationSetEditor::DXEditorAnimationSetEditor(Panel* pParent)
 
 void DXEditorAnimationSetEditor::OnThink()
 {
-	if(DirectorsCutGameSystem().NeedsUpdate(1) == true)
+	if(DirectorsCutGameSystem().NeedsUpdate(DX_NEEDS_UPDATE_ANIMSETEDITOR) == true)
     {
 		DirectorsCutGameSystem().SetNeedsUpdate(false, DX_NEEDS_UPDATE_ANIMSETEDITOR);
 		PopulateTreeFromDocument();

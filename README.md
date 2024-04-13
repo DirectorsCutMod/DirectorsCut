@@ -110,6 +110,10 @@ If you would like to implement the Director's Cut animation system into your own
   - `CStudioHdr *C_BaseAnimating::OnNewModel()`
   - `void C_BaseAnimating::BuildTransformations(CStudioHdr* hdr, Vector* pos, Quaternion* q, const matrix3x4_t& cameraTransform, int boneMask, CBoneBitList& boneComputed)`
   - `bool C_BaseAnimating::SetupBones(matrix3x4_t* pBoneToWorldOut, int nMaxBones, int boneMask, float currentTime)`
+    - Allow dynamic bone positions and rotations to be set.
+- `mp/src/public/tier1/KeyValues.h`
+  - `KeyValues::~KeyValues();`
+    - Allow `KeyValues` type to be derived from.
 ### Files
 - `mp/src/game/client/directorscut`
     - This folder contains all of the Director's Cut code. You must either include each file through VPC or otherwise add them to your project.

@@ -44,6 +44,7 @@ public:
 	static bool IsEditorVisible();
 	void PopulateEditor();
 	void OpenDocumentFileDialog(bool bSave);
+	void OpenKeyValuesDocumentFileDialog(bool bSave);
 	
 	MESSAGE_FUNC_PARAMS( OnFileSelected, "FileSelected", pKV );
 

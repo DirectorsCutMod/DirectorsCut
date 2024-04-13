@@ -240,6 +240,12 @@ DXEditorPanel::DXEditorPanel( VPANEL pParent )
 	pMenu_File->AddMenuItem( "Save As", "Save As", "savefileas", this );
 	pMenu_File->AddMenuItem( "Close", "Close", "closefile", this );
 	pMenu_File->AddSeparator();
+	pMenu_File->AddMenuItem( "New (KeyValues)", "New (KeyValues)", "newfilekv", this );
+	pMenu_File->AddMenuItem( "Open (KeyValues)", "Open (KeyValues)", "openfilekv", this );
+	pMenu_File->AddMenuItem( "Save (KeyValues)", "Save (KeyValues)", "savefilekv", this );
+	pMenu_File->AddMenuItem( "Save As (KeyValues)", "Save As (KeyValues)", "savefileaskv", this );
+	pMenu_File->AddMenuItem( "Close (KeyValues)", "Close (KeyValues)", "closefilekv", this );
+	pMenu_File->AddSeparator();
 	pMenu_File->AddMenuItem( "Toggle Work Camera", "Toggle Work Camera", "toggleworkcamera", this );
 	m_pMBut_File->SetMenu( pMenu_File );
 	m_pMenuBar->AddButton( m_pMBut_File );
@@ -282,6 +288,26 @@ void DXEditorPanel::OpenDocumentFileDialog(bool bSave)
 	}
 }
 
+void DXEditorPanel::OpenKeyValuesDocumentFileDialog(bool bSave)
+{
+	if ( m_hFileOpenDialog.Get() )
+		m_hFileOpenDialog.Get()->MarkForDeletion();
+
+	m_hFileOpenDialog = new FileOpenDialog( this,
+		bSave ? "Save session (KeyValues)" : "Load session (KeyValues)",
+		bSave ? FOD_SAVE : FOD_OPEN,
+		new KeyValues("FileOpenContext", "context",
+		bSave ? "saveckv" : "openckv" )
+		);
+	m_hFileOpenDialog->AddActionSignalTarget( this );
+
+	if ( m_hFileOpenDialog.Get() )
+	{
+		m_hFileOpenDialog->AddFilter( "*.vdf", "KeyValues (*.vdf)", true );
+		m_hFileOpenDialog->DoModal( true );
+	}
+}
+
 void DXEditorPanel::OnCommand(char const *cmd )
 {
 	if ( !Q_stricmp( cmd, "newfile" ) )
@@ -311,6 +337,33 @@ void DXEditorPanel::OnCommand(char const *cmd )
 	{
 		DirectorsCutGameSystem().CloseDocument();
 	}
+	else if ( !Q_stricmp( cmd, "newfilekv" ) )
+	{
+		DirectorsCutGameSystem().NewKeyValuesDocument();
+	}
+	else if ( !Q_stricmp( cmd, "openfilekv" ) )
+	{
+		OpenKeyValuesDocumentFileDialog(false);
+	}
+	else if ( !Q_stricmp( cmd, "savefilekv" ) )
+	{
+		if(DirectorsCutGameSystem().GetFileOpen() == false)
+			return;
+		if(DirectorsCutGameSystem().GetLoadedDocumentName() == NULL)
+			OpenKeyValuesDocumentFileDialog(true);
+		else
+			DirectorsCutGameSystem().SaveKeyValuesDocument();
+	}
+	else if ( !Q_stricmp( cmd, "savefileaskv" ) )
+	{
+		if(DirectorsCutGameSystem().GetFileOpen() == false)
+			return;
+		OpenKeyValuesDocumentFileDialog(true);
+	}
+	else if ( !Q_stricmp( cmd, "closefilekv" ) )
+	{
+		DirectorsCutGameSystem().CloseKeyValuesDocument();
+	}
 	else if ( !Q_stricmp( cmd, "toggleworkcamera" ) )
 	{
 		DirectorsCutGameSystem().SetWorkCameraActive(!DirectorsCutGameSystem().IsWorkCameraActive());
@@ -327,21 +380,32 @@ void DXEditorPanel::OnFileSelected(KeyValues* pKV)
 	if (!pContext)
 		return;
 	const char* __c = pContext->GetString("context");
+
+	bool bKeyValues = false;
+	if (!Q_stricmp(__c, "openckv") || !Q_stricmp(__c, "saveckv"))
+		bKeyValues = true;
+
 	bool bSaving = true;
-	if (!Q_stricmp(__c, "openc"))
+	if (!Q_stricmp(__c, "openc") || !Q_stricmp(__c, "openckv"))
 		bSaving = false;
 
 	const char* pathIn = pKV->GetString("fullpath");
 	if (Q_strlen(pathIn) <= 1)
 		return;
 
-	if (!bSaving)
+	if(!bKeyValues)
 	{
-		DirectorsCutGameSystem().LoadDocument(pathIn);
+		if (!bSaving)
+			DirectorsCutGameSystem().LoadDocument(pathIn);
+		else
+			DirectorsCutGameSystem().SaveDocument(pathIn);
 	}
 	else
 	{
-		DirectorsCutGameSystem().SaveDocument(pathIn);
+		if (!bSaving)
+			DirectorsCutGameSystem().LoadKeyValuesDocument(pathIn);
+		else
+			DirectorsCutGameSystem().SaveKeyValuesDocument(pathIn);
 	}
 }
 

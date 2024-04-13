@@ -17,6 +17,9 @@
 #include "dxproperties.h"
 #include "materialsystem/imaterialsystem.h"
 #include "entities/dxpuppet.h"
+#include "data/dxelement.h"
+#include "data/dxe_usersettings.h"
+#include "data/dxe_filmclip.h"
 
 IMaterial* GetPrimaryScreenMaterial();
 KeyValues* GetPrimaryScreenKV();
@@ -25,6 +28,7 @@ int GetPrimaryViewportTexID();
 void AllocatePrimaryViewport();
 void DeallocatePrimaryViewport();
 
+#define DX_EDITOR_VERSION 1
 #define DX_NEEDS_UPDATE_ELEMENTVIEWER 0
 #define DX_NEEDS_UPDATE_ANIMSETEDITOR 1
 #define DX_NEEDS_UPDATE_TIMELINE 2 // TODO: unused? will it ever be used?
@@ -276,6 +280,28 @@ public:
 	void SetLayoffFlags( DXLayoffFlags nLayoffFlags ) { m_nLayoffFlags = nLayoffFlags; };
 	DXLayoffFlags GetLayoffFlags() { return m_nLayoffFlags; };
 
+	// new keyvalues system
+	void LoadKeyValuesDocument( const char* pszDocumentName );
+	void NewKeyValuesDocument();
+	void SaveKeyValuesDocument();
+	void SaveKeyValuesDocument( const char* pszDocumentName );
+	void CloseKeyValuesDocument();
+
+	const char* GetLoadedKeyValuesDocumentName() { return m_pszLoadedDocumentName; };
+
+	void SetKeyValuesDocument( DxElement* pDocument )
+	{
+		m_pSession = pDocument;
+	};
+	DxElement* GetKeyValuesDocument()
+	{
+		return m_pSession;
+	};
+
+	// SFM API-like functions
+	DxeFilmClip* GetMovie();
+	DxeFilmClip* GetShotAtCurrentTime();
+
 protected:
 	CDMXContextHelper* m_dmxContextHelper;
 	bool m_bFileOpen = false;
@@ -308,6 +334,9 @@ protected:
 	// map element ids to models
 	CUtlMap<const char*, CDirectorsCutPuppet*> m_pModels;
 	CUtlVector<const char*>& sModels = *(new CUtlVector<const char*>);
+	// new keyvalues system
+	DxElement* m_pSession;
+	DxeUserSettings* m_pUserSettings;
 };
 
 DXEditorHelper &DirectorsCutGameSystem();

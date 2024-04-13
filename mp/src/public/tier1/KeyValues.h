@@ -265,8 +265,14 @@ private:
 	KeyValues( KeyValues& );	// prevent copy constructor being used
 
 	// prevent delete being called except through deleteThis()
+#if DIRECTORSCUT
+public:
+#endif
 	~KeyValues();
 
+#if DIRECTORSCUT
+private:
+#endif
 	KeyValues* CreateKey( const char *keyName );
 
 	/// Create a child key, given that we know which child is currently the last child.

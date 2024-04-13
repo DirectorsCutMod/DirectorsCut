@@ -182,3 +182,6 @@ mp/src/lib/public/*.pdb
 # Build support files
 mp/src/devtools/gcc9+support.o
 
+# VS Code
+.vscode/
+

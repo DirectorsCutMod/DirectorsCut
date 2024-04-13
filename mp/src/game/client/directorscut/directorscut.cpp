@@ -29,6 +29,11 @@
 #include <icommandline.h>
 #include "datamodel/idatamodel.h"
 
+#include "data/dxe_filmclip.h"
+#include "data/dxe_track.h"
+#include "data/dxe_bookmarkset.h"
+#include "data/kvhelpers.h"
+
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
@@ -409,6 +414,149 @@ void DXEditorHelper::SetPlayhead( float fPlayhead )
 		return;
 	SetAllNeedsUpdate(true);
 	m_fPlayhead = fPlayhead;
+}
+
+void DXEditorHelper::LoadKeyValuesDocument( const char* pszDocumentName )
+{
+	CloseKeyValuesDocument();
+	DxElement* document = new DxElement("session");
+
+	// Mark timestamp so we can document how long it takes to load
+	double flStartTime = Plat_FloatTime();
+
+	if (document->LoadFromFile(g_pFullFileSystem, pszDocumentName, NULL))
+	{
+		SetKeyValuesDocument(document);
+		SetFileOpen(true);
+		m_pszLoadedDocumentName = pszDocumentName;
+
+		// Get timestamp and print how long it took to load
+		double flEndTime = Plat_FloatTime();
+		double flTimeTaken = flEndTime - flStartTime;
+		Msg("Finished loading keyvalues session in %f seconds\n", flTimeTaken);
+	}
+	else
+		Warning("Could not read keyvalues file %s\n", pszDocumentName);
+	
+	SetAllNeedsUpdate(true);
+}
+
+void DXEditorHelper::NewKeyValuesDocument()
+{
+	CloseKeyValuesDocument();
+
+	const char* currentMap = engine->GetLevelName();
+	// remove maps/ prefix
+	if (Q_strstr(currentMap, "maps/") == currentMap)
+		currentMap += 5;
+	
+	DxElement* document = new DxElement("session");
+	document->SetElementName("session");
+	DxeFilmClip* movie = new DxeFilmClip("activeClip");
+	movie->SetElementName("session1");
+	movie->GetTimeFrame()->SetDuration(60.0f);
+	DxeTrackGroup* soundTrackGroup = new DxeTrackGroup("Sound");
+	soundTrackGroup->SetElementName("Sound");
+	DxeTrack* dialogTrack = new DxeTrack("Dialog");
+	dialogTrack->SetElementName("Dialog");
+	dialogTrack->SetClipType(1);
+	DxeTrack* musicTrack = new DxeTrack("Music");
+	musicTrack->SetElementName("Music");
+	musicTrack->SetClipType(1);
+	DxeTrack* soundEffectsTrack = new DxeTrack("Effects");
+	soundEffectsTrack->SetElementName("Effects");
+	soundEffectsTrack->SetClipType(1);
+	soundTrackGroup->GetTracks()->AddElement(dialogTrack);
+	soundTrackGroup->GetTracks()->AddElement(musicTrack);
+	soundTrackGroup->GetTracks()->AddElement(soundEffectsTrack);
+	movie->GetTrackGroups()->AddElement(soundTrackGroup);
+	movie->SetMapName(currentMap);
+	DxeTrackGroup* overlayTrackGroup = new DxeTrackGroup("Overlay");
+	overlayTrackGroup->SetElementName("Overlay");
+	DxeTrack* overlayEffectsTrack = new DxeTrack("Effects");
+	overlayEffectsTrack->SetElementName("Effects");
+	overlayEffectsTrack->SetClipType(2);
+	overlayTrackGroup->GetTracks()->AddElement(overlayEffectsTrack);
+	movie->GetTrackGroups()->AddElement(overlayTrackGroup);
+	DxeBookmarkSet* bookmarkSet = new DxeBookmarkSet("Default Set");
+	bookmarkSet->SetElementName("Default Set");
+	movie->GetBookmarkSets()->AddElement(bookmarkSet);
+	DxeTrackGroup* subClipTrackGroup = new DxeTrackGroup("subClipTrackGroup");
+	subClipTrackGroup->SetElementName("subClipTrackGroup");
+	DxeTrack* filmTrack = new DxeTrack("Film");
+	filmTrack->SetElementName("Film");
+	filmTrack->SetClipType(3);
+	DxeFilmClip* shot = new DxeFilmClip("shot1");
+	shot->GetTimeFrame()->SetDuration(60.0f);
+	filmTrack->GetChildren()->AddElement(shot);
+	subClipTrackGroup->GetTracks()->AddElement(filmTrack);
+	movie->AddSubKey(subClipTrackGroup);
+    document->AddSubKey(movie);
+    document->AddSubKey(new KvDxElementArray("miscBin"));
+    document->AddSubKey(new KvDxElementArray("clipBin"));
+    document->AddSubKey(new DxElement("settings"));
+
+	SetKeyValuesDocument(document);
+	SetFileOpen(true);
+	m_pszLoadedDocumentName = NULL;
+	SetAllNeedsUpdate(true);
+}
+
+void DXEditorHelper::SaveKeyValuesDocument()
+{
+	if(m_pszLoadedDocumentName)
+		SaveKeyValuesDocument(m_pszLoadedDocumentName);
+}
+
+void DXEditorHelper::SaveKeyValuesDocument( const char* pszDocumentName )
+{
+	DxElement* document = GetKeyValuesDocument();
+	if (!document)
+		return;
+
+	// Mark timestamp so we can document how long it takes to save
+	double flStartTime = Plat_FloatTime();
+
+	if(document->SaveToFile(g_pFullFileSystem, pszDocumentName, NULL))
+	{
+		// Get timestamp and print how long it took to save
+		double flEndTime = Plat_FloatTime();
+		double flTimeTaken = flEndTime - flStartTime;
+		Msg("Finished saving keyvalues session in %f seconds\n", flTimeTaken);
+	}
+	else
+		Warning("Could not write keyvalues file %s\n", pszDocumentName);
+}
+
+void DXEditorHelper::CloseKeyValuesDocument()
+{
+	DxElement* document = GetKeyValuesDocument();
+	if(!document)
+		return;
+	document->deleteThis();
+	SetKeyValuesDocument(NULL);
+	SetFileOpen(false);
+	m_pszLoadedDocumentName = NULL;
+	SetAllNeedsUpdate(true);
+}
+
+DxeFilmClip* DXEditorHelper::GetMovie()
+{
+	if(!GetFileOpen())
+		return NULL;
+	DxeFilmClip* movie = (DxeFilmClip*)GetKeyValuesDocument()->FindKey("activeClip");
+	if(!movie)
+		return NULL;
+	return movie;
+}
+
+DxeFilmClip* DXEditorHelper::GetShotAtCurrentTime()
+{
+	DxeFilmClip* movie = GetMovie();
+	if(!movie)
+		return NULL;
+	return NULL;
+	//return movie->GetShotAtTime(GetPlayhead());
 }
 
 DXDagType GetDagType( const char* pszDagType )
