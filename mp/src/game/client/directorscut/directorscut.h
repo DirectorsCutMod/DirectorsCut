@@ -11,8 +11,6 @@
 #define DIRECTORSCUT_H
 
 #include "igamesystem.h"
-#include "dmxloader/dmxloader.h"
-#include "dmxloader/dmxelement.h"
 #include "filesystem.h"
 #include "dxproperties.h"
 #include "materialsystem/imaterialsystem.h"
@@ -20,6 +18,8 @@
 #include "data/dxelement.h"
 #include "data/dxe_usersettings.h"
 #include "data/dxe_filmclip.h"
+#include "data/dxe_dag.h"
+#include "data/dxe_camera.h"
 
 IMaterial* GetPrimaryScreenMaterial();
 KeyValues* GetPrimaryScreenKV();
@@ -34,30 +34,6 @@ void DeallocatePrimaryViewport();
 #define DX_NEEDS_UPDATE_TIMELINE 2 // TODO: unused? will it ever be used?
 #define DX_MAX_NEEDS_UPDATE 3
 
-enum DXDagType
-{
-	DX_DME_DAG = 0,
-	DX_DME_CAMERA,
-	DX_DME_GAMEMODEL,
-	DX_DME_GAMEPARTICLESYSTEM,
-	DX_DME_GAMEPORTAL,
-	DX_DME_GAMESPRITE,
-	DX_DME_GAMETEMPENT,
-	DX_DME_JOINT,
-	DX_DME_LIGHT,
-	DX_DME_AMBIENTLIGHT,
-	DX_DME_DIRECTIONALLIGHT,
-	DX_DME_POINTLIGHT,
-	DX_DME_PROJECTEDLIGHT,
-	DX_DME_SPOTLIGHT,
-	DX_DME_MODEL,
-	DX_DME_PARTICLESYSTEM,
-	DX_DME_RIG,
-	DX_DME_RIGHANDLE
-};
-
-DXDagType GetDagType( const char* pszDagType );
-
 enum DXLayoffFlags
 {
 	DX_LAYOFF_ALL = 0,
@@ -65,75 +41,6 @@ enum DXLayoffFlags
 	DX_LAYOFF_NO_GIZMOS = 2,
 	DX_LAYOFF_NO_FRUSTRUM = 4,
 	DX_LAYOFF_NONE = DX_LAYOFF_NO_SPRITES | DX_LAYOFF_NO_GIZMOS | DX_LAYOFF_NO_FRUSTRUM
-};
-
-// LINKED LIST
-class DXDag
-{
-public:
-	DXDag(DXDagType dagType, Vector vecOrigin, QAngle angAngles, Vector vecScale, KeyValues* pKV)
-	{
-		m_nDagType = dagType;
-		m_vecOrigin = vecOrigin;
-		m_angAngles = angAngles;
-		m_vecScale = vecScale;
-		m_pKV = pKV;
-	};
-	void SetOrigin(Vector vecOrigin)
-	{
-		m_vecOrigin = vecOrigin;
-	};
-	Vector GetOrigin()
-	{
-		return m_vecOrigin;
-	};
-	void SetAngles(QAngle angAngles)
-	{
-		m_angAngles = angAngles;
-	};
-	QAngle GetAngles()
-	{
-		return m_angAngles;
-	};
-	void SetScale(Vector vecScale)
-	{
-		m_vecScale = vecScale;
-	};
-	Vector GetScale()
-	{
-		return m_vecScale;
-	};
-	void SetDagType(DXDagType nDagType)
-	{
-		m_nDagType = nDagType;
-	};
-	DXDagType GetDagType()
-	{
-		return m_nDagType;
-	};
-	CUtlVector<DXDag*>& GetChildren()
-	{
-		return m_Children;
-	};
-	void AddChild(DXDag* pChild)
-	{
-		m_Children.AddToTail(pChild);
-	};
-	void SetKeyValues(KeyValues* pKV)
-	{
-		m_pKV = pKV;
-	};
-	KeyValues* GetKeyValues()
-	{
-		return m_pKV;
-	};
-protected:
-	DXDagType m_nDagType;
-	Vector m_vecOrigin;
-	QAngle m_angAngles;
-	Vector m_vecScale;
-	CUtlVector<DXDag*> m_Children;
-	KeyValues* m_pKV;
 };
 
 class DXEditorHelper : public CAutoGameSystemPerFrame
@@ -148,13 +55,10 @@ public:
 
 	model_t* LoadModel(const char* modelName);
 
-	void RecursiveBuildScene( DXDag* dagParent, CDmxElement* pElementParent );
-	void RecursiveDrawScene( DXDag* dagParent, CMatRenderContextPtr& renderContext);
-
 	void SetMouseCaptured( bool bCaptured ) { m_bMouseCaptured = bCaptured; };
 	bool IsMouseCaptured() { return m_bMouseCaptured; };
 
-	void SetWorkCameraActive( bool bActive ) { m_bIsWorkCameraActive = bActive; };
+	void SetWorkCameraActive( bool bActive ) { m_bIsWorkCameraActive = bActive; SetAllNeedsUpdate(true); };
 	bool IsWorkCameraActive() { return m_bIsWorkCameraActive; };
 
 	void SetWorkCameraOrigin( const Vector& vecOrigin ) { m_vecWorkCameraOrigin = vecOrigin; };
@@ -199,28 +103,8 @@ public:
 			return m_flSceneCameraFOV;
 	};
 
-	void LoadDocument( const char* pszDocumentName );
-	void NewDocument();
-	void SaveDocument();
-	void SaveDocument( const char* pszDocumentName );
-	void CloseDocument();
-
-	const char* GetLoadedDocumentName() { return m_pszLoadedDocumentName; };
-
 	bool GetFileOpen() { return m_bFileOpen; };
 	void SetFileOpen( bool bFileOpen ) { m_bFileOpen = bFileOpen; };
-
-	void SetDocument( CDmxElement* pDocument )
-	{
-		m_pDocument = pDocument;
-	};
-	CDmxElement* GetDocument()
-	{
-		return m_pDocument;
-	};
-
-	void SetDocumentFocusedRoot( CDmxElement* pDocumentFocusedRoot ) { m_pDocumentFocusedRoot = pDocumentFocusedRoot; };
-	CDmxElement* GetDocumentFocusedRoot() { return m_pDocumentFocusedRoot; };
 
 	void SetNeedsUpdate( bool needsUpdate, int index )
 	{
@@ -280,20 +164,25 @@ public:
 	void SetLayoffFlags( DXLayoffFlags nLayoffFlags ) { m_nLayoffFlags = nLayoffFlags; };
 	DXLayoffFlags GetLayoffFlags() { return m_nLayoffFlags; };
 
+	DxeDag* RecursiveFindDag(DxeDag* parent, const char* name);
+	void RecursiveRenderCurrentScene(DxeDag* parent);
+	void RecursiveReleaseSceneHierarchy(DxeDag* parent);
+	DxeCamera* GetCurrentCamera();
+
 	// new keyvalues system
-	void LoadKeyValuesDocument( const char* pszDocumentName );
-	void NewKeyValuesDocument();
-	void SaveKeyValuesDocument();
-	void SaveKeyValuesDocument( const char* pszDocumentName );
-	void CloseKeyValuesDocument();
+	void LoadDocument( const char* pszDocumentName );
+	void NewDocument();
+	void SaveDocument();
+	void SaveDocument( const char* pszDocumentName );
+	void CloseDocument();
 
-	const char* GetLoadedKeyValuesDocumentName() { return m_pszLoadedDocumentName; };
+	const char* GetLoadedDocumentName() { return m_pszLoadedDocumentName; };
 
-	void SetKeyValuesDocument( DxElement* pDocument )
+	void SetDocument( DxElement* pDocument )
 	{
 		m_pSession = pDocument;
 	};
-	DxElement* GetKeyValuesDocument()
+	DxElement* GetDocument()
 	{
 		return m_pSession;
 	};
@@ -316,8 +205,6 @@ protected:
 	float m_flSceneCameraFOV = 75.0f;
 	float m_flCurrentCameraMovementSpeed = 100.0f;
 	bool m_bHoldingMovementKey = false;
-	CDmxElement* m_pDocument = NULL;
-	CDmxElement* m_pDocumentFocusedRoot = NULL;
 	CUtlVector<bool>& bNeedsUpdate = *(new CUtlVector<bool>);
 	int m_nViewportWidth = 1280;
 	int m_nViewportHeight = 720;
@@ -330,13 +217,8 @@ protected:
 	float fps = 24;
 	bool m_bLayoff;
 	DXLayoffFlags m_nLayoffFlags = DX_LAYOFF_NONE;
-	DXDag* m_Dag;
-	// map element ids to models
-	CUtlMap<const char*, CDirectorsCutPuppet*> m_pModels;
-	CUtlVector<const char*>& sModels = *(new CUtlVector<const char*>);
-	// new keyvalues system
-	DxElement* m_pSession;
-	DxeUserSettings* m_pUserSettings;
+	DxElement* m_pSession = NULL;
+	DxeUserSettings* m_pUserSettings = NULL;
 };
 
 DXEditorHelper &DirectorsCutGameSystem();

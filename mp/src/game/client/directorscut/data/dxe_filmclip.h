@@ -24,8 +24,8 @@ public:
 	DxElement* GetMaterialOverlay() { return (DxElement*)FindKey("materialOverlay"); }
 	void SetMapName(const char* mapName) { SetString("mapname", mapName); }
 	const char* GetMapName() { return GetString("mapname"); }
-	//DxeCamera* GetCamera() { return (DxeCamera*)FindKey("camera"); }
-	DxElement* GetCamera() { return (DxElement*)FindKey("camera"); }
+	void SetActiveCamera(const char* activeCamera) { SetString("activeCamera", activeCamera); }
+	const char* GetActiveCamera() { return GetString("activeCamera"); }
 	KvDxElementArray* GetMonitorCameras() { return (KvDxElementArray*)FindKey("monitorCameras"); }
 	void SetActiveMonitor(int activeMonitorCamera) { SetInt("activeMonitor", activeMonitorCamera); }
 	int GetActiveMonitor() { return GetInt("activeMonitor", -1); }

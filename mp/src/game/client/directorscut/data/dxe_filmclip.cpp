@@ -30,7 +30,7 @@ void DxeFilmClip::InitElement()
     // Initial values
     //AddSubKey(new DxeMaterialOverlayFXClip("materialOverlay"));
     SetMapName("");
-    //AddSubKey(new DxeCamera("camera"));
+    SetActiveCamera("");
     AddSubKey(new KvDxElementArray("monitorCameras"));
     SetActiveMonitor(-1);
     //AddSubKey(new DxeScene("scene"));
@@ -50,7 +50,7 @@ void DxeFilmClip::InitElement()
     // Factory attributes
     AddFactoryAttribute("materialOverlay");
     AddFactoryAttribute("mapname");
-    AddFactoryAttribute("camera");
+    AddFactoryAttribute("activeCamera");
     AddFactoryAttribute("monitorCameras");
     AddFactoryAttribute("activeMonitor");
     AddFactoryAttribute("scene");

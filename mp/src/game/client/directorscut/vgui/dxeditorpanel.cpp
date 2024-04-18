@@ -132,6 +132,7 @@ void DXEditorPanel::PopulateEditor()
 		{
 			ToolWindow* pToolWindow = toolWindows[i];
 			Panel* page = pToolWindow->GetActivePage();
+			/*
 			if (page == m_vecPanels[0] || page == m_vecPanels[1]) // Animation set editor + element viewer
 			{
 				pToolWindow->SetBounds(0, 24, w / 3, (h / 2) + (h / 8) - 24);
@@ -148,6 +149,8 @@ void DXEditorPanel::PopulateEditor()
 			{
 				pToolWindow->SetBounds(0, (h / 2) + (h / 8) - (24/2) + (padding * 2), w / 3, (h / 2) - (h / 8) + padding);
 			}
+			*/
+			pToolWindow->SetBounds((w / 3) - padding, 24, w - (w / 3) + padding, (h / 2) + (h / 8) - 24);
 			// Apply padding to all sides
 			int x, y, wide, tall;
 			pToolWindow->GetBounds(x, y, wide, tall);
@@ -240,12 +243,6 @@ DXEditorPanel::DXEditorPanel( VPANEL pParent )
 	pMenu_File->AddMenuItem( "Save As", "Save As", "savefileas", this );
 	pMenu_File->AddMenuItem( "Close", "Close", "closefile", this );
 	pMenu_File->AddSeparator();
-	pMenu_File->AddMenuItem( "New (KeyValues)", "New (KeyValues)", "newfilekv", this );
-	pMenu_File->AddMenuItem( "Open (KeyValues)", "Open (KeyValues)", "openfilekv", this );
-	pMenu_File->AddMenuItem( "Save (KeyValues)", "Save (KeyValues)", "savefilekv", this );
-	pMenu_File->AddMenuItem( "Save As (KeyValues)", "Save As (KeyValues)", "savefileaskv", this );
-	pMenu_File->AddMenuItem( "Close (KeyValues)", "Close (KeyValues)", "closefilekv", this );
-	pMenu_File->AddSeparator();
 	pMenu_File->AddMenuItem( "Toggle Work Camera", "Toggle Work Camera", "toggleworkcamera", this );
 	m_pMBut_File->SetMenu( pMenu_File );
 	m_pMenuBar->AddButton( m_pMBut_File );
@@ -257,13 +254,13 @@ DXEditorPanel::DXEditorPanel( VPANEL pParent )
 	m_pLabel->SetZPos( 1000 );
 
 	// Add windows
-	m_vecPanels.AddToTail( new DXEditorElementViewer( this ) );
-	m_vecPanels.AddToTail( new DXEditorAnimationSetEditor( this ) );
+	//m_vecPanels.AddToTail( new DXEditorElementViewer( this ) );
+	//m_vecPanels.AddToTail( new DXEditorAnimationSetEditor( this ) );
 	m_vecPanels.AddToTail( new DXEditorViewport( this ) );
 	m_vecPanels.AddToTail( new DXEditorWelcome( this ) );
-	m_vecPanels.AddToTail( new DXEditorAssetBrowser( this ) );
-	m_vecPanels.AddToTail( new DXEditorTimeline( this ) );
-	m_vecPanels.AddToTail( new DXEditorProperties( this ) );
+	//m_vecPanels.AddToTail( new DXEditorAssetBrowser( this ) );
+	//m_vecPanels.AddToTail( new DXEditorTimeline( this ) );
+	//m_vecPanels.AddToTail( new DXEditorProperties( this ) );
 
 	PopulateEditor();
 }
@@ -278,26 +275,6 @@ void DXEditorPanel::OpenDocumentFileDialog(bool bSave)
 		bSave ? FOD_SAVE : FOD_OPEN,
 		new KeyValues("FileOpenContext", "context",
 		bSave ? "savec" : "openc" )
-		);
-	m_hFileOpenDialog->AddActionSignalTarget( this );
-
-	if ( m_hFileOpenDialog.Get() )
-	{
-		m_hFileOpenDialog->AddFilter( "*.dmx", "Datamodel (*.dmx)", true );
-		m_hFileOpenDialog->DoModal( true );
-	}
-}
-
-void DXEditorPanel::OpenKeyValuesDocumentFileDialog(bool bSave)
-{
-	if ( m_hFileOpenDialog.Get() )
-		m_hFileOpenDialog.Get()->MarkForDeletion();
-
-	m_hFileOpenDialog = new FileOpenDialog( this,
-		bSave ? "Save session (KeyValues)" : "Load session (KeyValues)",
-		bSave ? FOD_SAVE : FOD_OPEN,
-		new KeyValues("FileOpenContext", "context",
-		bSave ? "saveckv" : "openckv" )
 		);
 	m_hFileOpenDialog->AddActionSignalTarget( this );
 
@@ -337,33 +314,6 @@ void DXEditorPanel::OnCommand(char const *cmd )
 	{
 		DirectorsCutGameSystem().CloseDocument();
 	}
-	else if ( !Q_stricmp( cmd, "newfilekv" ) )
-	{
-		DirectorsCutGameSystem().NewKeyValuesDocument();
-	}
-	else if ( !Q_stricmp( cmd, "openfilekv" ) )
-	{
-		OpenKeyValuesDocumentFileDialog(false);
-	}
-	else if ( !Q_stricmp( cmd, "savefilekv" ) )
-	{
-		if(DirectorsCutGameSystem().GetFileOpen() == false)
-			return;
-		if(DirectorsCutGameSystem().GetLoadedDocumentName() == NULL)
-			OpenKeyValuesDocumentFileDialog(true);
-		else
-			DirectorsCutGameSystem().SaveKeyValuesDocument();
-	}
-	else if ( !Q_stricmp( cmd, "savefileaskv" ) )
-	{
-		if(DirectorsCutGameSystem().GetFileOpen() == false)
-			return;
-		OpenKeyValuesDocumentFileDialog(true);
-	}
-	else if ( !Q_stricmp( cmd, "closefilekv" ) )
-	{
-		DirectorsCutGameSystem().CloseKeyValuesDocument();
-	}
 	else if ( !Q_stricmp( cmd, "toggleworkcamera" ) )
 	{
 		DirectorsCutGameSystem().SetWorkCameraActive(!DirectorsCutGameSystem().IsWorkCameraActive());
@@ -381,32 +331,18 @@ void DXEditorPanel::OnFileSelected(KeyValues* pKV)
 		return;
 	const char* __c = pContext->GetString("context");
 
-	bool bKeyValues = false;
-	if (!Q_stricmp(__c, "openckv") || !Q_stricmp(__c, "saveckv"))
-		bKeyValues = true;
-
 	bool bSaving = true;
-	if (!Q_stricmp(__c, "openc") || !Q_stricmp(__c, "openckv"))
+	if (!Q_stricmp(__c, "openc"))
 		bSaving = false;
 
 	const char* pathIn = pKV->GetString("fullpath");
 	if (Q_strlen(pathIn) <= 1)
 		return;
 
-	if(!bKeyValues)
-	{
-		if (!bSaving)
-			DirectorsCutGameSystem().LoadDocument(pathIn);
-		else
-			DirectorsCutGameSystem().SaveDocument(pathIn);
-	}
+	if (!bSaving)
+		DirectorsCutGameSystem().LoadDocument(pathIn);
 	else
-	{
-		if (!bSaving)
-			DirectorsCutGameSystem().LoadKeyValuesDocument(pathIn);
-		else
-			DirectorsCutGameSystem().SaveKeyValuesDocument(pathIn);
-	}
+		DirectorsCutGameSystem().SaveDocument(pathIn);
 }
 
 DXEditorPanel::~DXEditorPanel()

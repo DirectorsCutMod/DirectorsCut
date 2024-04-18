@@ -32,11 +32,6 @@ DxElement::DxElement(const char* attributeName) : KeyValues(attributeName)
 	SetElementName("unnamed");
     InitElement();
 }
-DxElement::~DxElement()
-{
-	ClearFactoryAttributes();
-	deleteThis();
-}
 void DxElement::InitElement()
 {
 	// This is where children are populated in derived classes

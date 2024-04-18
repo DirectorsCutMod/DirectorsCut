@@ -285,7 +285,14 @@ private:
 	void CopyKeyValuesFromRecursive( const KeyValues& src );
 	void CopyKeyValue( const KeyValues& src, size_t tmpBufferSizeB, char* tmpBuffer );
 
+#if DIRECTORSCUT
+public:
+#endif
 	void RemoveEverything();
+
+#if DIRECTORSCUT
+private:
+#endif
 //	void RecursiveSaveToFile( IBaseFileSystem *filesystem, CUtlBuffer &buffer, int indentLevel );
 //	void WriteConvertedString( CUtlBuffer &buffer, const char *pszString );
 	

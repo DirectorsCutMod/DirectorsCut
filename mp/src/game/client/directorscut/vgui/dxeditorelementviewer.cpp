@@ -295,9 +295,7 @@ void DXEditorElementViewer::RecursivePopulateTreeFromDocument( CDmxElement* pEle
     if( pElement == NULL)
     {
         // Find root element
-        CDmxElement* pRoot = DirectorsCutGameSystem().GetDocumentFocusedRoot();
-        if (pRoot == NULL)
-            pRoot = DirectorsCutGameSystem().GetDocument();
+        CDmxElement* pRoot = NULL;
 
         // Clear tree view
         int selIndex = m_pTree->GetFirstSelectedItem();
@@ -503,7 +501,7 @@ void DXEditorElementViewer::MakeRootButtonClick()
     if (itemIndex == m_pTree->GetRootItemIndex())
     {
         // Set new root
-        DirectorsCutGameSystem().SetDocumentFocusedRoot(NULL);
+        //DirectorsCutGameSystem().SetDocumentFocusedRoot(NULL);
         DirectorsCutGameSystem().SetNeedsUpdate(true, DX_NEEDS_UPDATE_ELEMENTVIEWER);
         return;
     }
@@ -526,9 +524,10 @@ void DXEditorElementViewer::MakeRootButtonClick()
     }
 
     // Loop through attributes
-    CDmxElement* pRoot = DirectorsCutGameSystem().GetDocumentFocusedRoot();
-    if (pRoot == NULL)
-        pRoot = DirectorsCutGameSystem().GetDocument();
+    CDmxElement * pRoot = NULL;
+    //CDmxElement* pRoot = DirectorsCutGameSystem().GetDocumentFocusedRoot();
+    //if (pRoot == NULL)
+    //    pRoot = DirectorsCutGameSystem().GetDocument();
     if (pRoot == NULL)
     {
         //Msg("No document loaded.\n");
@@ -573,7 +572,7 @@ void DXEditorElementViewer::MakeRootButtonClick()
     }
 
     // Set new root
-    DirectorsCutGameSystem().SetDocumentFocusedRoot(pNewRoot);
+    //DirectorsCutGameSystem().SetDocumentFocusedRoot(pNewRoot);
     DirectorsCutGameSystem().SetNeedsUpdate(true, DX_NEEDS_UPDATE_ELEMENTVIEWER);
 }
 
@@ -623,9 +622,7 @@ void DXEditorElementViewer::OnThink()
                     kv->SetString("Data", pszTextEntry);
                     const char* pszText = kv->GetString("Text");
                     //Msg("Updating %s to %s\n", pszText, pszTextEntry);
-                    CDmxElement* pRoot = DirectorsCutGameSystem().GetDocumentFocusedRoot();
-                    if (pRoot == NULL)
-                        pRoot = DirectorsCutGameSystem().GetDocument();
+                    CDmxElement* pRoot = NULL;
                     if (pRoot == NULL)
                     {
                         //Msg("No document loaded.\n");
@@ -720,9 +717,7 @@ void DXEditorElementViewer::OnThink()
                     kv->SetString("Data", bSelected ? "true" : "false");
                     const char* pszText = kv->GetString("Text");
                     //Msg("Updating %s to %s\n", pszText, bSelected ? "true" : "false");
-                    CDmxElement* pRoot = DirectorsCutGameSystem().GetDocumentFocusedRoot();
-                    if (pRoot == NULL)
-                        pRoot = DirectorsCutGameSystem().GetDocument();
+                    CDmxElement* pRoot = NULL;
                     if (pRoot == NULL)
                     {
                         //Msg("No document loaded.\n");
@@ -744,9 +739,7 @@ void DXEditorElementViewer::OnThink()
                     const char* pszText = kv->GetString("Text");
                     //Msg("Updating %s from %s to %s\n", pszText, kv->GetString("Data"), pszTextEntry);
                     kv->SetString("Data", pszTextEntry);
-                    CDmxElement* pRoot = DirectorsCutGameSystem().GetDocumentFocusedRoot();
-                    if (pRoot == NULL)
-                        pRoot = DirectorsCutGameSystem().GetDocument();
+                    CDmxElement* pRoot = NULL;
                     if (pRoot == NULL)
                     {
                         //Msg("No document loaded.\n");

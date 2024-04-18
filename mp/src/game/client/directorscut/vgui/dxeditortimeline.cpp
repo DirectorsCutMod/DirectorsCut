@@ -13,6 +13,7 @@
 #include "dxeditortimeline.h"
 #include "vgui/ISurface.h"
 #include "vgui/ILocalize.h"
+#include "../data/dxe_track.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include <tier0/memdbgon.h>
@@ -128,6 +129,9 @@ void DXEditorTimeline::Paint()
 		}
 	}
 
+	if(!DirectorsCutGameSystem().GetFileOpen())
+		return;
+
 	// document data
 	int trackGroupHeaderBarHeight = 19;
 	int trackGroupFooterBarHeight = 4;
@@ -135,108 +139,90 @@ void DXEditorTimeline::Paint()
 	int trackGroupCurOffset = 19;
 	int trackOffsetX = 0;
 	int clipHeight = 46;
-	CDmxElement* pRoot = DirectorsCutGameSystem().GetDocument();
-	
-	// TODO: trackGroups attribute
-	if( pRoot != NULL )
+	DxeFilmClip* pMovie = DirectorsCutGameSystem().GetMovie();
+	DxeTimeFrame* pTimeFrame = pMovie->GetTimeFrame();
+	if( pTimeFrame != NULL )
 	{
-		CDmxElement* pClip = pRoot->GetValue<CDmxElement*>( "activeClip" );
-		if( pClip != NULL )
-		{
-			CDmxElement* pTimeFrame = pClip->GetValue<CDmxElement*>( "timeFrame" );
-			if( pTimeFrame != NULL )
-			{
-				trackOffsetX = (pTimeFrame->GetValue<float>( "start" ) - startTime) * zoomLevel;
-			}
-			CDmxElement* pSubClipTrackGroup = pClip->GetValue<CDmxElement*>( "subClipTrackGroup" );
-			if( pSubClipTrackGroup != NULL )
-			{
-				// Create "Picture" track group
-				surface()->DrawSetColor(40, 40, 45, 255);
-				surface()->DrawFilledRect(x, y + trackGroupCurOffset, x + offsetW, y + trackGroupCurOffset + trackGroupHeaderBarHeight);
-				surface()->DrawSetTextColor(182, 182, 182, 255);
-				surface()->DrawSetTextFont(m_hFont);
-				surface()->DrawSetTextPos(x + trackGroupTextX, y + trackGroupCurOffset + 2);
-				surface()->DrawPrintText(L"Picture", wcslen(L"Picture"));
-				trackGroupCurOffset += trackGroupHeaderBarHeight;
+		trackOffsetX = (pTimeFrame->GetStart() - startTime) * zoomLevel;
+	}
+	DxeTrackGroup* pSubClipTrackGroup = pMovie->GetSubClipTrackGroup();
+	if( pSubClipTrackGroup != NULL )
+	{
+		// Create "Picture" track group
+		surface()->DrawSetColor(40, 40, 45, 255);
+		surface()->DrawFilledRect(x, y + trackGroupCurOffset, x + offsetW, y + trackGroupCurOffset + trackGroupHeaderBarHeight);
+		surface()->DrawSetTextColor(182, 182, 182, 255);
+		surface()->DrawSetTextFont(m_hFont);
+		surface()->DrawSetTextPos(x + trackGroupTextX, y + trackGroupCurOffset + 2);
+		surface()->DrawPrintText(L"Picture", wcslen(L"Picture"));
+		trackGroupCurOffset += trackGroupHeaderBarHeight;
 
-				if(pSubClipTrackGroup->GetValue<bool>("minimized") == false)
+		if(pSubClipTrackGroup->GetMinimized() == false)
+		{
+			for( int i = 0; i < pSubClipTrackGroup->GetTracks()->GetSize(); i++)
+			{
+				DxeTrack* pTrack = (DxeTrack*)pSubClipTrackGroup->GetTracks()->GetElement(i);
+				if( pTrack != NULL )
 				{
-					const CUtlVector<CDmxElement*>& pTracks = pSubClipTrackGroup->GetArray<CDmxElement*>( "tracks" );
-					if( pTracks.Count() != 0 )
+					// Create track at current offset
+					surface()->DrawSetColor(62, 62, 107, 255);
+					surface()->DrawFilledRect(x, y + trackGroupCurOffset, x + offsetW, y + trackGroupCurOffset + trackGroupHeaderBarHeight);
+
+					// Draw name
+					const char* name = pTrack->GetElementName();
+					wchar_t wname[256];
+					V_swprintf_safe(wname, L"%hs", name);
+					surface()->DrawSetTextColor(182, 182, 182, 255);
+					surface()->DrawSetTextFont(m_hFont);
+					surface()->DrawSetTextPos(x + trackGroupTextX, y + trackGroupCurOffset + 2);
+					surface()->DrawPrintText(wname, wcslen(wname));
+
+					// Draw clips
+					trackGroupCurOffset += trackGroupHeaderBarHeight;
+					if(pTrack->GetCollapsed() == false)
 					{
-						for( int i = 0; i < pTracks.Count(); i++ )
+						if(pTrack->GetChildren()->GetSize() > 0)
 						{
-							CDmxElement* pTrack = pTracks[i];
-							if( pTrack != NULL )
+							// Draw background
+							surface()->DrawSetColor(46, 46, 54, 255);
+							surface()->DrawFilledRect(x, y + trackGroupCurOffset, x + offsetW, y + trackGroupCurOffset + clipHeight);
+							for( int j = 0; j < pTrack->GetChildren()->GetSize(); j++)
 							{
-								// Create track at current offset
-								surface()->DrawSetColor(62, 62, 107, 255);
-								surface()->DrawFilledRect(x, y + trackGroupCurOffset, x + offsetW, y + trackGroupCurOffset + trackGroupHeaderBarHeight);
-								if( pTrack->GetValueString( "name" ) != NULL )
-								{
-									const char* name = pTrack->GetValueString( "name" );
-									wchar_t wname[256];
-									V_swprintf_safe(wname, L"%hs", name);
-									surface()->DrawSetTextColor(182, 182, 182, 255);
-									surface()->DrawSetTextFont(m_hFont);
-									surface()->DrawSetTextPos(x + trackGroupTextX, y + trackGroupCurOffset + 2);
-									surface()->DrawPrintText(wname, wcslen(wname));
-								}
-								trackGroupCurOffset += trackGroupHeaderBarHeight;
-								if(pTrack->GetValue<bool>("minimized") == false)
-								{
-									const CUtlVector<CDmxElement*>& pChildren = pTrack->GetArray<CDmxElement*>( "children" );
-									if( pChildren.Count() != 0 )
-									{
-										// Draw background
-										surface()->DrawSetColor(46, 46, 54, 255);
-										surface()->DrawFilledRect(x, y + trackGroupCurOffset, x + offsetW, y + trackGroupCurOffset + clipHeight);
-										for( int j = 0; j < pChildren.Count(); j++ )
-										{
-											CDmxElement* pChild = pChildren[j];
-											if( pChild != NULL )
-											{
-												// Create clip
-												CDmxElement* pTimeFrameChild = pChild->GetValue<CDmxElement*>( "timeFrame" );
-												float start = 0;
-												float duration = 0; //, offset; , scale;
-												if( pTimeFrameChild != NULL )
-												{
-													start = pTimeFrameChild->GetValue<float>( "start" );
-													duration = pTimeFrameChild->GetValue<float>( "duration" );
-													//offset = pTimeFrameChild->GetValue<float>( "offset" );
-													//scale = pTimeFrameChild->GetValue<float>( "scale" );
-												}
-												surface()->DrawSetColor(63, 61, 128, 255);
-												int minX = x + start * zoomLevel + trackOffsetX;
-												int maxX = x + (start + duration) * zoomLevel + trackOffsetX;
-												// make sure when drawing rect, maxX doesn't reach outside of offsetW
-												if (maxX > x + offsetW)
-													maxX = x + offsetW;
-												surface()->DrawFilledRect(minX, y + trackGroupCurOffset, maxX, y + trackGroupCurOffset + clipHeight);
-												if( pChild->GetValueString( "name" ) != NULL )
-												{
-													const char* name = pChild->GetValueString( "name" );
-													wchar_t wname[256];
-													V_swprintf_safe(wname, L"%hs", name);
-													surface()->DrawSetTextColor(182, 182, 182, 255);
-													surface()->DrawSetTextFont(m_hFont);
-													surface()->DrawSetTextPos(x + start * zoomLevel + trackOffsetX + 2, y + trackGroupCurOffset + 2);
-													surface()->DrawPrintText(wname, wcslen(wname));
-												}
-											}
-										}
-										trackGroupCurOffset += clipHeight;
-									}
-								}
-								// Create footer bar
-								surface()->DrawSetColor(40, 40, 45, 255);
-								surface()->DrawFilledRect(x, y + trackGroupCurOffset, x + offsetW, y + trackGroupCurOffset + trackGroupFooterBarHeight);
-								trackGroupCurOffset += trackGroupFooterBarHeight + 2;
+								DxeFilmClip* pChild = (DxeFilmClip*)pTrack->GetChildren()->GetElement(j);
+								if(pChild == NULL)
+									continue;
+								// Create clip
+								DxeTimeFrame* pTimeFrameChild = pChild->GetTimeFrame();
+								float start = 0;
+								float duration = 0; //, offset; , scale;
+								start = pTimeFrameChild->GetStart();
+								duration = pTimeFrameChild->GetDuration();
+								//offset = pTimeFrameChild->GetValue<float>( "offset" );
+								//scale = pTimeFrameChild->GetValue<float>( "scale" );
+								surface()->DrawSetColor(63, 61, 128, 255);
+								int minX = x + start * zoomLevel + trackOffsetX;
+								int maxX = x + (start + duration) * zoomLevel + trackOffsetX;
+								// make sure when drawing rect, maxX doesn't reach outside of offsetW
+								if (maxX > x + offsetW)
+									maxX = x + offsetW;
+								surface()->DrawFilledRect(minX, y + trackGroupCurOffset, maxX, y + trackGroupCurOffset + clipHeight);
+
+								// Draw name
+								const char* name = pChild->GetElementName();
+								wchar_t wname[256];
+								V_swprintf_safe(wname, L"%hs", name);
+								surface()->DrawSetTextColor(182, 182, 182, 255);
+								surface()->DrawSetTextFont(m_hFont);
+								surface()->DrawSetTextPos(x + start * zoomLevel + trackOffsetX + 2, y + trackGroupCurOffset + 2);
+								surface()->DrawPrintText(wname, wcslen(wname));
 							}
+							trackGroupCurOffset += clipHeight;
 						}
 					}
+					// Create footer bar
+					surface()->DrawSetColor(40, 40, 45, 255);
+					surface()->DrawFilledRect(x, y + trackGroupCurOffset, x + offsetW, y + trackGroupCurOffset + trackGroupFooterBarHeight);
+					trackGroupCurOffset += trackGroupFooterBarHeight + 2;
 				}
 			}
 		}

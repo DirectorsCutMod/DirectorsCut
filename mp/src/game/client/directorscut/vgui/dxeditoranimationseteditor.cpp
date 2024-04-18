@@ -10,6 +10,7 @@
 #include "cbase.h"
 
 #include "dxeditoranimationseteditor.h"
+#include "../data/dxe_animationset.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include <tier0/memdbgon.h>
@@ -62,51 +63,8 @@ void DXEditorAnimationSetEditor::ApplySchemeSettings(IScheme *pScheme)
 
 void DXEditorAnimationSetEditor::PopulateTreeFromDocument()
 {
-    //DECLARE_DMX_CONTEXT_NODECOMMIT();
-	CDmxElement* m_pSelectedShot = NULL;
-	
-    // Find first clip in document
-    CDmxElement* pRoot = DirectorsCutGameSystem().GetDocument();
-	if (pRoot != NULL)
-	{
-		// Find clip in document at playhead position
-		CDmxElement* pClip = pRoot->GetValue<CDmxElement*>("activeClip");
-		if (pClip != NULL)
-		{
-			CDmxElement* pSubClipTrackGroup = pClip->GetValue<CDmxElement*>("subClipTrackGroup");
-			if (pSubClipTrackGroup != NULL)
-			{
-				const CUtlVector<CDmxElement*>& pTracks = pSubClipTrackGroup->GetArray<CDmxElement*>("tracks");
-				if (pTracks.Count() != 0)
-				{
-					CDmxElement* pTrack = pTracks[0];
-					if (pTrack != NULL)
-					{
-						const CUtlVector<CDmxElement*>& pChildren = pTrack->GetArray<CDmxElement*>("children");
-						if (pChildren.Count() != 0)
-						{
-							// Find the shot that is currently playing (pChildren[i] -> timeFrame -> start, duration)
-							for (int i = 0; i < pChildren.Count(); i++)
-							{
-								CDmxElement* pTimeFrame = pChildren[i]->GetValue<CDmxElement*>("timeFrame");
-								if (pTimeFrame == NULL)
-									continue;
-								float flStart = pTimeFrame->GetValue<float>("start");
-								float flDuration = pTimeFrame->GetValue<float>("duration");
-								float flPlayhead = DirectorsCutGameSystem().GetPlayhead();
-								if (flPlayhead >= flStart && flPlayhead <= flStart + flDuration)
-								{
-									m_pSelectedShot = pChildren[i];
-									break;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	
+	DxeFilmClip* selectedShot = DirectorsCutGameSystem().GetShotAtCurrentTime();
+
 	// Clear tree view
 	int selIndex = m_pTree->GetFirstSelectedItem();
 	if (selIndex != -1)
@@ -129,68 +87,50 @@ void DXEditorAnimationSetEditor::PopulateTreeFromDocument()
 	// Set tree view bounds
 	m_pTree->SetBounds(x, y, w, h);
 
-	if (m_pSelectedShot == NULL)
+	//if (m_pSelectedShot == NULL)
+	if (selectedShot == NULL)
 		return;
 
 	// Populate tree view
 	KeyValues* kv = new KeyValues( "TVI" );
-	kv->SetString("Text", m_pSelectedShot->GetName());
+	kv->SetString("Text", selectedShot->GetName());
+	//kv->SetString("Text", m_pSelectedShot->GetName());
 	kv->SetString( "Data", "" );
 	kv->SetString( "Type", "animationsets" );
-	kv->SetString( "UniqueId", "" );
 	int rootIndex = m_pTree->AddItem( kv, -1 );
 
 	// Add a tree view item for each animation set in m_pSelectedShot -> animationSets
-	const CUtlVector<CDmxElement*>& pAnimationSets = m_pSelectedShot->GetArray<CDmxElement*>( "animationSets" );
-	if( pAnimationSets.Count() == 0)
-		return;
-	for( int i = 0; i < pAnimationSets.Count(); i++ )
+	for( int i = 0; i < selectedShot->GetAnimationSets()->GetSize(); i++ )
 	{
-		CDmxElement* pAnimationSet = pAnimationSets[i];
+		DxeAnimationSet* pAnimationSet = (DxeAnimationSet*)selectedShot->GetAnimationSets()->GetElement(i);
 		if( pAnimationSet == NULL )
 			continue;
 		KeyValues* kv = new KeyValues( "TVI" );
 		kv->SetString( "Text", pAnimationSet->GetName() );
 		kv->SetString( "Data", "" );
 		kv->SetString( "Type", "dag" );
-		char uniqueId[40];
-		UniqueIdToString(pAnimationSet->GetId(), uniqueId, 40);
-		kv->SetString("UniqueId", uniqueId);
 
 		// if animation set contains an attribute named "camera", "gameModel" or "particle system" then set its type to that
 		int type = -1;
-		if(pAnimationSet->AttributeCount() > 0)
+		if( pAnimationSet->FindKey("camera") != NULL )
 		{
-			for( int j = 0; j < pAnimationSet->AttributeCount(); j++ )
-			{
-				CDmxAttribute* pAttribute = pAnimationSet->GetAttribute( j );
-				if( pAttribute == NULL )
-					continue;
-				if( Q_strcmp( pAttribute->GetName(), "camera" ) == 0 )
-				{
-					kv->SetString( "Type", "camera" );
-					type = 1;
-					break;
-				}
-				else if( Q_strcmp( pAttribute->GetName(), "gameModel" ) == 0 )
-				{
-					kv->SetString( "Type", "gameModel" );
-					type = 0;
-					break;
-				}
-				else if( Q_strcmp( pAttribute->GetName(), "particle system" ) == 0 )
-				{
-					kv->SetString( "Type", "particle system" );
-					type = 2;
-					break;
-				}
-				else if( Q_strcmp( pAttribute->GetName(), "light" ) == 0 )
-				{
-					kv->SetString( "Type", "light" );
-					type = 3;
-					break;
-				}
-			}
+			kv->SetString( "Type", "camera" );
+			type = 1;
+		}
+		else if( pAnimationSet->FindKey("gameModel") != NULL )
+		{
+			kv->SetString( "Type", "gameModel" );
+			type = 0;
+		}
+		else if( pAnimationSet->FindKey("particle system") != NULL )
+		{
+			kv->SetString( "Type", "particle system" );
+			type = 2;
+		}
+		else if( pAnimationSet->FindKey("light") != NULL )
+		{
+			kv->SetString( "Type", "light" );
+			type = 3;
 		}
 
 		int animationSetIndex = m_pTree->AddItem( kv, rootIndex );
@@ -212,39 +152,33 @@ void DXEditorAnimationSetEditor::PopulateTreeFromDocument()
 
 		// for each pAnimationSet -> rootControlGroup -> children -> [i], add a tree view item
 		// TODO: recursion, rootControlGroup children can also have children
-		CDmxElement* pRootControlGroup = pAnimationSet->GetValue<CDmxElement*>( "rootControlGroup" );
+		DxeControlGroup* pRootControlGroup = pAnimationSet->GetRootControlGroup();
 		if( pRootControlGroup == NULL )
 			continue;
-		const CUtlVector<CDmxElement*>& pChildren = pRootControlGroup->GetArray<CDmxElement*>( "children" );
-		if( pChildren.Count() == 0 )
-			continue;
-		for( int j = 0; j < pChildren.Count(); j++ )
+		for( int j = 0; j < pRootControlGroup->GetChildren()->GetSize(); j++ )
 		{
-			const char* pChildName = pChildren[j]->GetName();
+			DxeControlGroup* pChild = (DxeControlGroup*)pRootControlGroup->GetChildren()->GetElement(j);
+			if(!pChild)
+				continue;
+			const char* pChildName = pChild->GetElementName();
 			if( pChildName == NULL )
 				continue;
 			KeyValues* kv = new KeyValues( "TVI" );
 			kv->SetString( "Text", pChildName );
 			kv->SetString( "Data", "" );
 			kv->SetString( "Type", "controlGroup" );
-			UniqueIdToString(pChildren[j]->GetId(), uniqueId, 40);
-			kv->SetString("UniqueId", uniqueId);
 			int controlGroupIndex = m_pTree->AddItem( kv, animationSetIndex );
 			// Add each pChildren[j] -> controls attribute
-			const CUtlVector<CDmxElement*>& pControls = pChildren[j]->GetArray<CDmxElement*>( "controls" );
-			if( pControls.Count() == 0 )
-				continue;
-			for( int k = 0; k < pControls.Count(); k++ )
+			for( int k = 0; k < pChild->GetControls()->GetSize(); k++ )
 			{
-				const char* pControlName = pControls[k]->GetName();
+				DxElement* pControl = pChild->GetControls()->GetElement(k);
+				const char* pControlName = pControl->GetElementName();
 				if( pControlName == NULL )
 					continue;
 				KeyValues* kv = new KeyValues( "TVI" );
 				kv->SetString( "Text", pControlName );
 				kv->SetString( "Data", "" );
 				kv->SetString( "Type", "control" );
-				UniqueIdToString(pControls[k]->GetId(), uniqueId, 40);
-				kv->SetString("UniqueId", uniqueId);
 				m_pTree->AddItem( kv, controlGroupIndex );
 				// TODO: If type is "DmeTransformControl", add pos, x, y, z, rot, x, y, and z tree view items
 			}

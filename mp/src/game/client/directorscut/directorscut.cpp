@@ -33,6 +33,10 @@
 #include "data/dxe_track.h"
 #include "data/dxe_bookmarkset.h"
 #include "data/kvhelpers.h"
+#include "data/dxe_dag.h"
+#include "data/dxe_camera.h"
+#include "data/dxe_animationset.h"
+#include "data/dxe_gamemodel.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -54,12 +58,12 @@ ConVar viewportHeight( "dx_viewportheight", "720", FCVAR_ARCHIVE, "Viewport heig
 // Timeline zoom increment
 ConVar timelineZoomIncrement( "dx_timelinezoomincrement", "10", 0, "Timeline zoom increment" );
 
-CON_COMMAND(dx_loaddocument, "Loads a DMX document")
+CON_COMMAND(dx_loaddocument, "Loads a session document")
 {
 	DirectorsCutGameSystem().LoadDocument(args[1]);
 }
 
-CON_COMMAND(dx_update, "Updates the DMX document")
+CON_COMMAND(dx_update, "Updates the session document")
 {
 	DirectorsCutGameSystem().SetAllNeedsUpdate(true);
 	Msg("Updated\n");
@@ -157,44 +161,6 @@ void DeallocatePrimaryViewport()
 	}
 }
 
-// DMX
-void IterateDmxElement(CDmxElement* pRoot)
-{
-	for (int i=0;i<pRoot->AttributeCount();i++)
-	{
-		CDmxAttribute* pCur = pRoot->GetAttribute(i);
-		CDmxElement* subElem;
-		
-		Warning( "%s: ",pCur->GetName() );
-
-		switch (pCur->GetType())
-		{
-		case AT_ELEMENT:
-			subElem = pCur->GetValue<CDmxElement*>();
-			if (subElem)
-				IterateDmxElement(subElem);
-			break;
-
-		case AT_STRING:
-			Msg( "STRING | %s\n",pCur->GetValue<CUtlString>().Get() );
-			break;
-		case AT_INT:
-			Msg( "INT | %i\n",pCur->GetValue<int>() );
-			break;
-		case AT_FLOAT:
-			Msg( "FLOAT | %f\n",pCur->GetValue<float>() );
-			break;
-		case AT_BOOL:
-			Msg( "BOOL | %s\n",pCur->GetValue<bool>() ? "true" : "false" );
-			break;
-		
-		default:
-			Msg("Unknown type %i\n",pCur->GetType());
-			break;
-		}
-	}
-}
-
 // DXEditorHelper
 DXEditorHelper g_DirectorsCutSystem;
 DXEditorHelper &DirectorsCutGameSystem()
@@ -204,7 +170,7 @@ DXEditorHelper &DirectorsCutGameSystem()
 
 bool DXEditorHelper::Init()
 {
-	SetDefLessFunc(m_pModels);
+	//SetDefLessFunc(m_pModels);
 	SetViewportWidth(viewportWidth.GetInt());
 	SetViewportHeight(viewportHeight.GetInt());
 	// Launch option "-nodxeditor" to prevent the editor from opening immediately
@@ -256,158 +222,6 @@ void DXEditorHelper::LevelShutdownPostEntity()
 	DeallocatePrimaryViewport();
 };
 
-void DXEditorHelper::LoadDocument( const char* pszDocumentName )
-{
-	//DECLARE_DMX_CONTEXT_NODECOMMIT();
-	CloseDocument();
-	CDmxElement* document = (CDmxElement*)DMXAlloc( 1000000000 );
-
-	// Mark timestamp so we can document how long it takes to load
-	double flStartTime = Plat_FloatTime();
-
-	// Read for a bit to find "keyvalues2" or "binary"
-	FileHandle_t fh = filesystem->Open(pszDocumentName, "r", "DEFAULT_WRITE_PATH");
-	char buf[64];
-	filesystem->Read(buf, 64, fh);
-	filesystem->Close(fh);
-
-	bool bBinary = false;
-	if (strstr(buf, "binary"))
-	{
-		bBinary = true;
-	}
-
-	fh = filesystem->Open(pszDocumentName, "r", "DEFAULT_WRITE_PATH");
-	CUtlBuffer::BufferFlags_t flags = bBinary ? CUtlBuffer::READ_ONLY : CUtlBuffer::TEXT_BUFFER;
-	CUtlBuffer buffer = CUtlBuffer(0, 0, flags);
-	filesystem->ReadToBuffer(fh, buffer);
-	filesystem->Close(fh);
-
-	// If text, find all mentions of "time" and "time_array" and replace them with "float" and "float_array"
-	Msg("Converting session format: \"time\" -> \"float\", \"time_array\" -> \"float_array\"\n");
-	if (!bBinary)
-	{
-		Msg("Text session format detected, continuing...\n");
-		// Replace all "time" with "float" and "time_array" with "float_array"
-		// This is because the DMX parser doesn't support "time" and "time_array" types
-		const char * pszBuffer = buffer.String();
-		const char * pszTime = "\"time\"";
-		const char * pszTimeArray = "\"time_array\"";
-		const char * pszFloat = "\"float\"";
-		const char * pszFloatArray = "\"float_array\"";
-		std::string strBuffer = pszBuffer;
-		std::regex rgxTime(pszTime);
-		std::regex rgxTimeArray(pszTimeArray);
-		std::regex rgxFloat(pszFloat);
-		std::regex rgxFloatArray(pszFloatArray);
-		std::string strReplaced = std::regex_replace(strBuffer, rgxTime, pszFloat);
-		strReplaced = std::regex_replace(strReplaced, rgxTimeArray, pszFloatArray);
-		buffer.Clear();
-		buffer.PutString(strReplaced.c_str());
-	}
-	else
-	{
-		Warning("Binary session format detected, failed to convert!\nPlease run the following command in the origin mod's bin folder:\n");
-		Warning("dmxconvert -i session.dmx -oe keyvalues2 -o session_kv2.dmx\n");
-	}
-
-	if (UnserializeDMX(buffer, &document, pszDocumentName))
-	{
-		//IterateDmxElement(document);
-		SetDocument(document);
-		SetFileOpen(true);
-		SetDocumentFocusedRoot(NULL);
-		m_pszLoadedDocumentName = pszDocumentName;
-
-		// Get timestamp and print how long it took to load
-		double flEndTime = Plat_FloatTime();
-		double flTimeTaken = flEndTime - flStartTime;
-		Msg("Finished loading session in %f seconds\n", flTimeTaken);
-	}
-	else
-		Warning("Could not read DMX file %s\n", pszDocumentName);
-	
-	SetAllNeedsUpdate(true);
-}
-
-void DXEditorHelper::NewDocument()
-{
-	//DECLARE_DMX_CONTEXT_NODECOMMIT();
-	CloseDocument();
-	
-	CDmxElement* DMX = CreateDmxElement("DmElement");
-	DMX->AddAttribute("name")->SetValue("session");
-	DMX->AddAttribute("editorType")->SetValue("directorscut");
-	CDmxElement* clip = CreateDmxElement("DmeFilmClip");
-	clip->AddAttribute("name")->SetValue("sequence");
-	DMX->AddAttribute("activeClip")->SetValue<CDmxElement*>(clip);
-	DMX->AddAttribute("miscBin")->GetArrayForEdit<CDmxElement*>(); // empty array
-	DMX->AddAttribute("cameraBin")->GetArrayForEdit<CDmxElement*>(); // empty array	
-	DMX->AddAttribute("clipBin")->GetArrayForEdit<CDmxElement*>().AddToTail(clip);
-	CDmxElement* settings = CreateDmxElement("DmSettings");
-	settings->AddAttribute("name")->SetValue("sessionSettings");
-	DMX->AddAttribute("settings")->SetValue<CDmxElement*>(settings);
-
-	SetDocument(DMX);
-	SetDocumentFocusedRoot(NULL);
-	SetFileOpen(true);
-	m_pszLoadedDocumentName = NULL;
-	SetAllNeedsUpdate(true);
-}
-
-void DXEditorHelper::SaveDocument()
-{
-	if(m_pszLoadedDocumentName)
-		SaveDocument(m_pszLoadedDocumentName);
-}
-
-void DXEditorHelper::SaveDocument( const char* pszDocumentName )
-{
-	//DECLARE_DMX_CONTEXT_NODECOMMIT();
-	CDmxElement* document = GetDocument();
-	if (!document)
-		return;
-
-	// Mark timestamp so we can document how long it takes to save
-	double flStartTime = Plat_FloatTime();
-
-	CUtlBuffer buf = CUtlBuffer(0, 0, CUtlBuffer::TEXT_BUFFER);
-	SerializeDMX(buf, document);
-
-	// Replace all "\"unknown\" \"\"" with "\"element_array\"\n[\n]\n"
-	// This is because future mods do not support the "unknown" attribute type
-	Msg("Converting session format: \"unknown\" -> \"element_array\"\n");
-	const char * pszBuffer = buf.String();
-	const char * pszUnknown = "\"unknown\"";
-	const char * pszElementArray = "\"element_array\"";
-	std::string strBuffer = pszBuffer;
-	std::regex rgxUnknown(pszUnknown);
-	std::string strReplaced = std::regex_replace(strBuffer, rgxUnknown, pszElementArray);
-	buf.Clear();
-	buf.PutString(strReplaced.c_str());
-
-	FileHandle_t fh = filesystem->Open(pszDocumentName, "w", "DEFAULT_WRITE_PATH");
-	filesystem->Write(buf.Base(), buf.TellPut(), fh);
-	filesystem->Close(fh);
-	m_pszLoadedDocumentName = pszDocumentName;
-
-	// Get timestamp and print how long it took to save
-	double flEndTime = Plat_FloatTime();
-	double flTimeTaken = flEndTime - flStartTime;
-	Msg("Finished saving session in %f seconds\n", flTimeTaken);
-}
-
-void DXEditorHelper::CloseDocument()
-{
-	//DECLARE_DMX_CONTEXT_NODECOMMIT();
-	m_dmxContextHelper = new CDMXContextHelper( false );
-	SetDocument(NULL);
-	SetDocumentFocusedRoot(NULL);
-	SetFileOpen(false);
-	m_pszLoadedDocumentName = NULL;
-	SetAllNeedsUpdate(true);
-}
-
 void DXEditorHelper::SetPlayhead( float fPlayhead )
 {
 	if(m_fPlayhead == fPlayhead)
@@ -416,9 +230,9 @@ void DXEditorHelper::SetPlayhead( float fPlayhead )
 	m_fPlayhead = fPlayhead;
 }
 
-void DXEditorHelper::LoadKeyValuesDocument( const char* pszDocumentName )
+void DXEditorHelper::LoadDocument( const char* pszDocumentName )
 {
-	CloseKeyValuesDocument();
+	CloseDocument();
 	DxElement* document = new DxElement("session");
 
 	// Mark timestamp so we can document how long it takes to load
@@ -426,7 +240,7 @@ void DXEditorHelper::LoadKeyValuesDocument( const char* pszDocumentName )
 
 	if (document->LoadFromFile(g_pFullFileSystem, pszDocumentName, NULL))
 	{
-		SetKeyValuesDocument(document);
+		SetDocument(document);
 		SetFileOpen(true);
 		m_pszLoadedDocumentName = pszDocumentName;
 
@@ -441,9 +255,9 @@ void DXEditorHelper::LoadKeyValuesDocument( const char* pszDocumentName )
 	SetAllNeedsUpdate(true);
 }
 
-void DXEditorHelper::NewKeyValuesDocument()
+void DXEditorHelper::NewDocument()
 {
-	CloseKeyValuesDocument();
+	CloseDocument();
 
 	const char* currentMap = engine->GetLevelName();
 	// remove maps/ prefix
@@ -487,7 +301,39 @@ void DXEditorHelper::NewKeyValuesDocument()
 	filmTrack->SetElementName("Film");
 	filmTrack->SetClipType(3);
 	DxeFilmClip* shot = new DxeFilmClip("shot1");
+	shot->SetElementName("shot1");
 	shot->GetTimeFrame()->SetDuration(60.0f);
+	shot->SetActiveCamera("camera1");
+	DxeDag* sceneDag = new DxeDag("scene");
+	sceneDag->SetElementName("scene");
+	DxeDag* camerasDag = new DxeDag("Cameras");
+	camerasDag->SetElementName("Cameras");
+	DxeCamera* cameraDag = new DxeCamera("camera1");
+	cameraDag->SetElementName("camera1");
+	DxeTransform* cameraTransform = cameraDag->GetTransform();
+	cameraTransform->GetPosition()->SetVector(Vector(0, 0, 100));
+	DxeDag* modelDag = new DxeDag("model1");
+	modelDag->SetElementName("model1");
+	DxeGameModel* gameModel = new DxeGameModel("model_GameModel");
+	gameModel->SetElementName("model_GameModel");
+	gameModel->SetModelName("models/alyx.mdl");
+	DxeTransform* modelTransform = gameModel->GetTransform();
+	modelTransform->GetPosition()->SetVector(Vector(10, 10, 10));
+	modelTransform->GetOrientation()->SetQuaternion(Quaternion(0, 0, 0, 1));
+	modelDag->GetChildren()->AddElement(gameModel);
+	sceneDag->GetChildren()->AddElement(modelDag);
+	QAngle angOrientation = QAngle(15, 15, 15);
+	Quaternion rOrientation;
+	AngleQuaternion(angOrientation, rOrientation);
+	cameraTransform->GetOrientation()->SetQuaternion(rOrientation);
+	camerasDag->GetChildren()->AddElement(cameraDag);
+	sceneDag->GetChildren()->AddElement(camerasDag);
+	shot->AddSubKey(sceneDag);
+	DxeAnimationSet* animationSet = new DxeAnimationSet("camera1");
+	animationSet->SetElementName("camera1");
+	// TODO: Populate controls
+	animationSet->AddSubKey(new DxElement("camera")); // recursion doesn't exist, so add a dummy element
+	shot->GetAnimationSets()->AddElement(animationSet);
 	filmTrack->GetChildren()->AddElement(shot);
 	subClipTrackGroup->GetTracks()->AddElement(filmTrack);
 	movie->AddSubKey(subClipTrackGroup);
@@ -496,21 +342,21 @@ void DXEditorHelper::NewKeyValuesDocument()
     document->AddSubKey(new KvDxElementArray("clipBin"));
     document->AddSubKey(new DxElement("settings"));
 
-	SetKeyValuesDocument(document);
+	SetDocument(document);
 	SetFileOpen(true);
 	m_pszLoadedDocumentName = NULL;
 	SetAllNeedsUpdate(true);
 }
 
-void DXEditorHelper::SaveKeyValuesDocument()
+void DXEditorHelper::SaveDocument()
 {
 	if(m_pszLoadedDocumentName)
-		SaveKeyValuesDocument(m_pszLoadedDocumentName);
+		SaveDocument(m_pszLoadedDocumentName);
 }
 
-void DXEditorHelper::SaveKeyValuesDocument( const char* pszDocumentName )
+void DXEditorHelper::SaveDocument( const char* pszDocumentName )
 {
-	DxElement* document = GetKeyValuesDocument();
+	DxElement* document = GetDocument();
 	if (!document)
 		return;
 
@@ -528,13 +374,22 @@ void DXEditorHelper::SaveKeyValuesDocument( const char* pszDocumentName )
 		Warning("Could not write keyvalues file %s\n", pszDocumentName);
 }
 
-void DXEditorHelper::CloseKeyValuesDocument()
+void DXEditorHelper::CloseDocument()
 {
-	DxElement* document = GetKeyValuesDocument();
+	DxElement* document = GetDocument();
 	if(!document)
 		return;
+	DxeFilmClip* shot = GetShotAtCurrentTime();
+	if(shot != NULL)
+	{
+		DxeDag* scene = (DxeDag*)shot->FindKey("scene");
+		if(scene != NULL)
+		{
+			RecursiveReleaseSceneHierarchy(scene);
+		}
+	}
 	document->deleteThis();
-	SetKeyValuesDocument(NULL);
+	SetDocument(NULL);
 	SetFileOpen(false);
 	m_pszLoadedDocumentName = NULL;
 	SetAllNeedsUpdate(true);
@@ -544,7 +399,7 @@ DxeFilmClip* DXEditorHelper::GetMovie()
 {
 	if(!GetFileOpen())
 		return NULL;
-	DxeFilmClip* movie = (DxeFilmClip*)GetKeyValuesDocument()->FindKey("activeClip");
+	DxeFilmClip* movie = (DxeFilmClip*)GetDocument()->FindKey("activeClip");
 	if(!movie)
 		return NULL;
 	return movie;
@@ -555,346 +410,106 @@ DxeFilmClip* DXEditorHelper::GetShotAtCurrentTime()
 	DxeFilmClip* movie = GetMovie();
 	if(!movie)
 		return NULL;
+	DxeTrackGroup* subClipTrackGroup = (DxeTrackGroup*)movie->FindKey("subClipTrackGroup");
+	if(!subClipTrackGroup)
+		return NULL;
+	for (int i = 0; i < subClipTrackGroup->GetTracks()->GetSize(); i++)
+	{
+		DxeTrack* currentTrack = (DxeTrack*)subClipTrackGroup->GetTracks()->GetElement(i);
+		if (currentTrack != NULL)
+		{
+			for (int j = 0; j < subClipTrackGroup->GetTracks()->GetSize(); j++)
+			{
+				DxeFilmClip* currentShot = (DxeFilmClip*)currentTrack->GetChildren()->GetElement(j);
+				if (currentShot != NULL)
+				{
+					DxeTimeFrame* timeFrame = currentShot->GetTimeFrame();
+					if (timeFrame == NULL)
+						continue;
+					float flStart = timeFrame->GetStart();
+					float flDuration = timeFrame->GetDuration();
+					float flPlayhead = GetPlayhead();
+					if (flPlayhead >= flStart && flPlayhead <= flStart + flDuration)
+					{
+						return currentShot;
+					}
+				}
+			}
+		}
+	}
 	return NULL;
-	//return movie->GetShotAtTime(GetPlayhead());
 }
 
-DXDagType GetDagType( const char* pszDagType )
+DxeCamera* DXEditorHelper::GetCurrentCamera()
 {
-	if (Q_strcmp(pszDagType, "DmeCamera") == 0)
-		return DXDagType::DX_DME_CAMERA;
-	if (Q_strcmp(pszDagType, "DmeGameModel") == 0)
-		return DXDagType::DX_DME_GAMEMODEL;
-	if (Q_strcmp(pszDagType, "DmeGameParticleSystem") == 0)
-		return DXDagType::DX_DME_GAMEPARTICLESYSTEM;
-	if (Q_strcmp(pszDagType, "DmeGamePortal") == 0)
-		return DXDagType::DX_DME_GAMEPORTAL;
-	if (Q_strcmp(pszDagType, "DmeGameSprite") == 0)
-		return DXDagType::DX_DME_GAMESPRITE;
-	if (Q_strcmp(pszDagType, "DmeGameTempEnt") == 0)
-		return DXDagType::DX_DME_GAMETEMPENT;
-	if (Q_strcmp(pszDagType, "DmeJoint") == 0)
-		return DXDagType::DX_DME_JOINT;
-	if (Q_strcmp(pszDagType, "DmeLight") == 0)
-		return DXDagType::DX_DME_LIGHT;
-	if (Q_strcmp(pszDagType, "DmeAmbientLight") == 0)
-		return DXDagType::DX_DME_AMBIENTLIGHT;
-	if (Q_strcmp(pszDagType, "DmeDirectionalLight") == 0)
-		return DXDagType::DX_DME_DIRECTIONALLIGHT;
-	if (Q_strcmp(pszDagType, "DmePointLight") == 0)
-		return DXDagType::DX_DME_POINTLIGHT;
-	if (Q_strcmp(pszDagType, "DmeSpotLight") == 0)
-		return DXDagType::DX_DME_SPOTLIGHT;
-	if (Q_strcmp(pszDagType, "DmeProjectedLight") == 0)
-		return DXDagType::DX_DME_PROJECTEDLIGHT;
-	if (Q_strcmp(pszDagType, "DmeModel") == 0)
-		return DXDagType::DX_DME_MODEL;
-	if (Q_strcmp(pszDagType, "DmeParticleSystem") == 0)
-		return DXDagType::DX_DME_PARTICLESYSTEM;
-	if (Q_strcmp(pszDagType, "DmeRig") == 0)
-		return DXDagType::DX_DME_RIG;
-	if (Q_strcmp(pszDagType, "DmeRigHandle") == 0)
-		return DXDagType::DX_DME_RIGHANDLE;
-	return DXDagType::DX_DME_DAG;
+	DxeFilmClip* shot = GetShotAtCurrentTime();
+	if(!shot)
+		return NULL;
+	const char* activeCamera = shot->GetActiveCamera();
+	if(!activeCamera)
+		return NULL;
+	DxeDag* scene = (DxeDag*)shot->FindKey("scene");
+	if (!scene)
+		return NULL;
+	DxeCamera* camera = (DxeCamera*)RecursiveFindDag(scene, activeCamera);
+	if (!camera)
+		return NULL;
+	return camera;
 }
 
-void DXEditorHelper::RecursiveBuildScene(DXDag* dagParent, CDmxElement* pElementParent)
+DxeDag* DXEditorHelper::RecursiveFindDag(DxeDag* parent, const char* name)
 {
-	if (!pElementParent)
-		return;
-
-	// Get children
-	const CUtlVector<CDmxElement*>& pChildren = pElementParent->GetArray<CDmxElement*>("children");
-	if (pChildren.Count() == 0)
-		return;
-
-	// Iterate through children
-	for (int i = 0; i < pChildren.Count(); i++)
+	if (parent == NULL)
+		return NULL;
+	if (Q_strcmp(parent->GetElementName(), name) == 0)
+		return parent;
+	for (int i = 0; i < parent->GetChildren()->GetSize(); i++)
 	{
-		CDmxElement* pChild = pChildren[i];
-		if (!pChild)
+		DxeDag* child = (DxeDag*)parent->GetChildren()->GetElement(i);
+		if (child == NULL)
 			continue;
+		DxeDag* found = RecursiveFindDag(child, name);
+		if (found != NULL)
+			return found;
+	}
+	return NULL;
+}
 
-		// Get dag type
-		const char* pszDagType = pChild->GetTypeString();
-		if (!pszDagType)
+void DXEditorHelper::RecursiveRenderCurrentScene(DxeDag* parent)
+{
+	if (parent == NULL)
+		return;
+	for (int i = 0; i < parent->GetChildren()->GetSize(); i++)
+	{
+		DxeDag* child = (DxeDag*)parent->GetChildren()->GetElement(i);
+		if (child == NULL)
 			continue;
-		DXDagType dagType = GetDagType(pszDagType);
-
-		// Get extra KV
-		KeyValues* kvExtra = new KeyValues("data");
-
-		// Set ID
-		DmObjectId_t id = pChild->GetId();
-		char pszId[64];
-		Q_snprintf(pszId, sizeof(pszId), "%u", id.m_Value);
-		kvExtra->SetString("_elementid", pszId);
-
-		// Set name
-		const char* pszName = pChild->GetValueString("name");
-		if (pszName)
-			kvExtra->SetString("name", pszName);
-
-		switch(dagType)
+		// Check type of child
+		if (Q_strcmp(child->GetTypeName(), "DxeGameModel") == 0)
 		{
-			case DX_DME_CAMERA:
-			{
-				// These KVs are used to draw the camera frustum
-				float strFieldOfView = pChild->GetValue<float>("fieldOfView");
-				kvExtra->SetFloat("fieldOfView", strFieldOfView);
-				float strZNear = pChild->GetValue<float>("znear");
-				kvExtra->SetFloat("znear", strZNear);
-				float strZFar = pChild->GetValue<float>("zfar");
-				kvExtra->SetFloat("zfar", strZFar);
-				break;
-			}
-			case DX_DME_GAMEMODEL:
-			{
-				// Load model
-				const char* pszModelName = pChild->GetValueString("modelName");
-				if (pszModelName)
-				{
-					kvExtra->SetString("modelName", pszModelName);
-				}
-				KeyValues* kvBones = new KeyValues("bones");
-				// Get bones
-				const CUtlVector<CDmxElement*>& pBones = pChild->GetArray<CDmxElement*>("bones");
-				if (pBones.Count() > 0)
-				{
-					for (int i = 0; i < pBones.Count(); i++)
-					{
-						// name the bone by its index
-						const char* pszBoneName = VarArgs("bone_%i", i);
-						KeyValues* kvBone = new KeyValues(pszBoneName);
-						kvBone->SetFloat("position_x", 0);
-						kvBone->SetFloat("position_y", 0);
-						kvBone->SetFloat("position_z", 0);
-						kvBone->SetFloat("orientation_x", 0);
-						kvBone->SetFloat("orientation_y", 0);
-						kvBone->SetFloat("orientation_z", 0);
-						kvBone->SetFloat("orientation_w", 1);
-						kvBone->SetFloat("scale_x", 1);
-						kvBone->SetFloat("scale_y", 1);
-						kvBone->SetFloat("scale_z", 1);
-						kvBones->AddSubKey(kvBone);
-						CDmxElement* pBone = pBones[i];
-						if (!pBone)
-							continue;
-						Vector vecPosition = pBone->GetValue<Vector>("position");
-						Quaternion angOrientation = pBone->GetValue<Quaternion>("orientation");
-						float flScale = pBone->GetValue<float>("scale", 1);
-						float flScaleX = pBone->GetValue<float>("scale_x", 0);
-						float flScaleY = pBone->GetValue<float>("scale_y", 0);
-						float flScaleZ = pBone->GetValue<float>("scale_z", 0);
-						Vector vecScale;
-						if (flScaleX == 0 && flScaleY == 0 && flScaleZ == 0)
-							vecScale.Init(flScale, flScale, flScale);
-						else
-							vecScale.Init(flScaleX, flScaleY, flScaleZ);
-						kvBone->SetFloat("position_x", vecPosition.x);
-						kvBone->SetFloat("position_y", vecPosition.y);
-						kvBone->SetFloat("position_z", vecPosition.z);
-						kvBone->SetFloat("orientation_x", angOrientation.x);
-						kvBone->SetFloat("orientation_y", angOrientation.y);
-						kvBone->SetFloat("orientation_z", angOrientation.z);
-						kvBone->SetFloat("orientation_w", angOrientation.w);
-						kvBone->SetFloat("scale_x", vecScale.x);
-						kvBone->SetFloat("scale_y", vecScale.y);
-						kvBone->SetFloat("scale_z", vecScale.z);
-					}
-				}
-				kvExtra->AddSubKey(kvBones);
-				kvExtra->SetInt("_numbones", pBones.Count());
-				break;
-			}
+			DxeGameModel* gameModel = (DxeGameModel*)child;
+			gameModel->UpdatePuppet();
 		}
-
-		// Get transform
-		CDmxElement* pTransform = pChild->GetValue<CDmxElement*>("transform");
-		if (!pTransform)
-			continue;
-		Vector vecPosition = pTransform->GetValue<Vector>("position");
-		Quaternion angOrientation = pTransform->GetValue<Quaternion>("orientation");
-		float flScale = pTransform->GetValue<float>("scale", 1);
-		float flScaleX = pTransform->GetValue<float>("scale_x", 0);
-		float flScaleY = pTransform->GetValue<float>("scale_y", 0);
-		float flScaleZ = pTransform->GetValue<float>("scale_z", 0);
-		Vector vecScale;
-		if (flScaleX == 0 && flScaleY == 0 && flScaleZ == 0)
-			vecScale.Init(flScale, flScale, flScale);
-		else
-			vecScale.Init(flScaleX, flScaleY, flScaleZ);
-
-		// Offset
-		Vector vecPositionOffset = dagParent->GetOrigin() + vecPosition;
-		QAngle angEuler;
-		QuaternionAngles(angOrientation, angEuler);
-		QAngle angOrientationOffset = dagParent->GetAngles() + angEuler;
-		Vector vecScaleOffset = dagParent->GetScale() * vecScale;
-
-		// Create dag
-		DXDag* dag = new DXDag( dagType, vecPositionOffset, angOrientationOffset, vecScaleOffset, kvExtra );
-		dagParent->AddChild(dag);
-
-		// Recurse
-		RecursiveBuildScene(dag, pChild);
+		RecursiveRenderCurrentScene(child);
 	}
 }
 
-void DXEditorHelper::RecursiveDrawScene( DXDag* dagParent, CMatRenderContextPtr& renderContext)
+void DXEditorHelper::RecursiveReleaseSceneHierarchy(DxeDag* parent)
 {
-	// Draw scene
-	switch (dagParent->GetDagType())
+	if (parent == NULL)
+		return;
+	for (int i = 0; i < parent->GetChildren()->GetSize(); i++)
 	{
-		case DX_DME_CAMERA:
-		{
-			if(DXIsLayoff() && DXGetLayoffFlags() & DX_LAYOFF_NO_GIZMOS) //DX_LAYOFF_NO_SPRITES
-				break;
-			// Draw a sprite at the camera's position
-			//const char* spriteName = "sprites/light_glow02_add_noz";
-			//IMaterial *pMat = materials->FindMaterial( spriteName, TEXTURE_GROUP_CLIENT_EFFECTS );
-			//color32 spriteColor = { 255, 255, 255, 255 };
-			//renderContext->Bind( pMat, NULL );
-			//DrawSprite( dagParent->GetOrigin(), 64, 64, spriteColor );
-			// Draw camera frustum
-			KeyValues* kvExtra = dagParent->GetKeyValues();
-			if (kvExtra != nullptr)
-			{
-				// virtual void AddLineOverlay(const Vector& origin, const Vector& dest, int r, int g, int b,bool noDepthTest, float duration) = 0;
-				float flFieldOfView = kvExtra->GetFloat("fieldOfView");
-				float flZNear = kvExtra->GetFloat("znear");
-				float flZFar = kvExtra->GetFloat("zfar");
-				int nColRed = 255;
-				int nColGreen = 255;
-				int nColBlue = 255;
-				bool bNoDepthTest = false;
-				// TODO: delta time? time since last frame?
-				float flDuration = 0.1f;
-				Vector vecForward, vecRight, vecUp;
-				AngleVectors(dagParent->GetAngles(), &vecForward, &vecRight, &vecUp);
-				// Draw frustum from znear to zfar using fov and the aspect ratio of the viewport
-				// So it stretches from one corner of the viewport (near) to the other (far)
-				float flAspectRatio = (float)DirectorsCutGameSystem().GetViewportWidth() / (float)DirectorsCutGameSystem().GetViewportHeight();
-				// Rotate aspect ratio by 90 degrees (quick fix because it's sideways)
-				flAspectRatio = 1 / flAspectRatio;
-				Vector vecOrigin = dagParent->GetOrigin();
-				//Vector vecTopLeft = vecOrigin + vecForward * flZNear + vecUp * tan(flFieldOfView * M_PI / 360) * flZNear - vecRight * tan(flFieldOfView * M_PI / 360) * flZNear;
-				//Vector vecTopRight = vecOrigin + vecForward * flZNear + vecUp * tan(flFieldOfView * M_PI / 360) * flZNear + vecRight * tan(flFieldOfView * M_PI / 360) * flZNear;
-				//Vector vecBottomLeft = vecOrigin + vecForward * flZNear - vecUp * tan(flFieldOfView * M_PI / 360) * flZNear - vecRight * tan(flFieldOfView * M_PI / 360) * flZNear;
-				//Vector vecBottomRight = vecOrigin + vecForward * flZNear - vecUp * tan(flFieldOfView * M_PI / 360) * flZNear + vecRight * tan(flFieldOfView * M_PI / 360) * flZNear;
-				//Vector vecTopLeftFar = vecOrigin + vecForward * flZFar + vecUp * tan(flFieldOfView * M_PI / 360) * flZFar - vecRight * tan(flFieldOfView * M_PI / 360) * flZFar;
-				//Vector vecTopRightFar = vecOrigin + vecForward * flZFar + vecUp * tan(flFieldOfView * M_PI / 360) * flZFar + vecRight * tan(flFieldOfView * M_PI / 360) * flZFar;
-				//Vector vecBottomLeftFar = vecOrigin + vecForward * flZFar - vecUp * tan(flFieldOfView * M_PI / 360) * flZFar - vecRight * tan(flFieldOfView * M_PI / 360) * flZFar;
-				//Vector vecBottomRightFar = vecOrigin + vecForward * flZFar - vecUp * tan(flFieldOfView * M_PI / 360) * flZFar + vecRight * tan(flFieldOfView * M_PI / 360) * flZFar;
-				// Apply aspect ratio
-				Vector vecTopLeft = vecOrigin + vecForward * flZNear + vecUp * tan(flFieldOfView * M_PI / 360) * flZNear * flAspectRatio - vecRight * tan(flFieldOfView * M_PI / 360) * flZNear;
-				Vector vecTopRight = vecOrigin + vecForward * flZNear + vecUp * tan(flFieldOfView * M_PI / 360) * flZNear * flAspectRatio + vecRight * tan(flFieldOfView * M_PI / 360) * flZNear;
-				Vector vecBottomLeft = vecOrigin + vecForward * flZNear - vecUp * tan(flFieldOfView * M_PI / 360) * flZNear * flAspectRatio - vecRight * tan(flFieldOfView * M_PI / 360) * flZNear;
-				Vector vecBottomRight = vecOrigin + vecForward * flZNear - vecUp * tan(flFieldOfView * M_PI / 360) * flZNear * flAspectRatio + vecRight * tan(flFieldOfView * M_PI / 360) * flZNear;
-				Vector vecTopLeftFar = vecOrigin + vecForward * flZFar + vecUp * tan(flFieldOfView * M_PI / 360) * flZFar * flAspectRatio - vecRight * tan(flFieldOfView * M_PI / 360) * flZFar;
-				Vector vecTopRightFar = vecOrigin + vecForward * flZFar + vecUp * tan(flFieldOfView * M_PI / 360) * flZFar * flAspectRatio + vecRight * tan(flFieldOfView * M_PI / 360) * flZFar;
-				Vector vecBottomLeftFar = vecOrigin + vecForward * flZFar - vecUp * tan(flFieldOfView * M_PI / 360) * flZFar * flAspectRatio - vecRight * tan(flFieldOfView * M_PI / 360) * flZFar;
-				Vector vecBottomRightFar = vecOrigin + vecForward * flZFar - vecUp * tan(flFieldOfView * M_PI / 360) * flZFar * flAspectRatio + vecRight * tan(flFieldOfView * M_PI / 360) * flZFar;
-				debugoverlay->AddLineOverlay(vecTopLeft, vecTopRight, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
-				debugoverlay->AddLineOverlay(vecTopRight, vecBottomRight, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
-				debugoverlay->AddLineOverlay(vecBottomRight, vecBottomLeft, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
-				debugoverlay->AddLineOverlay(vecBottomLeft, vecTopLeft, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
-				debugoverlay->AddLineOverlay(vecTopLeftFar, vecTopRightFar, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
-				debugoverlay->AddLineOverlay(vecTopRightFar, vecBottomRightFar, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
-				debugoverlay->AddLineOverlay(vecBottomRightFar, vecBottomLeftFar, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
-				debugoverlay->AddLineOverlay(vecBottomLeftFar, vecTopLeftFar, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
-				debugoverlay->AddLineOverlay(vecTopLeft, vecTopLeftFar, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
-				debugoverlay->AddLineOverlay(vecTopRight, vecTopRightFar, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
-				debugoverlay->AddLineOverlay(vecBottomRight, vecBottomRightFar, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
-				debugoverlay->AddLineOverlay(vecBottomLeft, vecBottomLeftFar, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
-				// Draw lines from origin to near
-				debugoverlay->AddLineOverlay(vecOrigin, vecTopLeft, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
-				debugoverlay->AddLineOverlay(vecOrigin, vecTopRight, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
-				debugoverlay->AddLineOverlay(vecOrigin, vecBottomRight, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
-				debugoverlay->AddLineOverlay(vecOrigin, vecBottomLeft, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
-			}
-			break;
-		}
-		case DX_DME_GAMEMODEL:
-		{
-			// Draw model
-			KeyValues* kvExtra = dagParent->GetKeyValues();
-			if (kvExtra != nullptr)
-			{
-				// we can't render a new model every frame
-				// so m_pModels uses the element id as the key
-				const char* nElementId = kvExtra->GetString("_elementid");
-				int found = m_pModels.Find(nElementId);
-				CDirectorsCutPuppet* pModelEntity = nullptr;
-
-				if (!m_pModels.IsValidIndex(found))
-				{
-					// print name
-					const char* pszName = kvExtra->GetString("name");
-					Msg("Model name: %s\n", pszName);
-					const char* pszModelName = kvExtra->GetString("modelName");
-					if (pszModelName != nullptr)
-					{
-						// Load model
-						model_t* pModel = LoadModel(pszModelName);
-						if (pModel != nullptr)
-						{
-							pModelEntity = new CDirectorsCutPuppet();
-							pModelEntity->SetModelPointer(pModel);
-							m_pModels.Insert(nElementId, pModelEntity);
-						}
-					}
-				}
-				else
-				{
-					pModelEntity = m_pModels.Element(found);
-				}
-
-				if (pModelEntity != nullptr)
-				{
-					sModels.AddToTail(nElementId);
-					pModelEntity->SetAbsOrigin(dagParent->GetOrigin());
-					pModelEntity->SetAbsAngles(dagParent->GetAngles());
-					int boneCount = kvExtra->GetInt("_numbones");
-					if(boneCount > MAXSTUDIOBONES)
-						boneCount = MAXSTUDIOBONES;
-					KeyValues* kvBones = kvExtra->FindKey("bones");
-					if(kvBones != nullptr)
-					{
-						for (int i = 0; i < boneCount; i++)
-						{
-							const char* pszBoneName = VarArgs("bone_%i", i);
-							KeyValues* kvBone = kvBones->FindKey(pszBoneName);
-							if (kvBone != nullptr)
-							{
-								Vector newPos(kvBone->GetFloat("position_x"), kvBone->GetFloat("position_y"), kvBone->GetFloat("position_z"));
-								Quaternion newQuat(kvBone->GetFloat("orientation_x"), kvBone->GetFloat("orientation_y"), kvBone->GetFloat("orientation_z"), kvBone->GetFloat("orientation_w"));
-								QAngle newAng;
-								QuaternionAngles(newQuat, newAng);
-								//Vector vecScale(kvBone->GetFloat("scale_x"), kvBone->GetFloat("scale_y"), kvBone->GetFloat("scale_z"));
-								pModelEntity->PushAllowBoneAccess(true, true, "DirectorsCut");
-								pModelEntity->PoseBones(i, newPos, newAng);
-								pModelEntity->PopBoneAccess("DirectorsCut");
-							}
-						}
-					}
-				}
-
-				// TODO: bones (just model for now)
-				// bones -> element_array of DmeTransform (position, orientation)
-				// bones are in the same order as the model's bones
-			}
-			break;
-		}
-	}
-	// Draw children
-	const CUtlVector<DXDag*>& pChildren = dagParent->GetChildren();
-	for (int i = 0; i < pChildren.Count(); i++)
-	{
-		DXDag* pChild = pChildren[i];
-		if (!pChild)
+		DxeDag* child = (DxeDag*)parent->GetChildren()->GetElement(i);
+		if (child == NULL)
 			continue;
-		RecursiveDrawScene(pChild, renderContext);
+		// Check type of child
+		if (Q_strcmp(child->GetTypeName(), "DxeGameModel") == 0)
+		{
+			DxeGameModel* gameModel = (DxeGameModel*)child;
+			gameModel->ReleasePuppet();
+		}
+		RecursiveReleaseSceneHierarchy(child);
 	}
 }
 
@@ -903,24 +518,86 @@ void DXEditorHelper::PostRender()
 	if(!engine->IsInGame())
 		return;
 	CMatRenderContextPtr renderContext(g_pMaterialSystem);
-	if(m_Dag != NULL)
+
+	if(IsWorkCameraActive())
 	{
-		// Draw scene
-		RecursiveDrawScene(m_Dag, renderContext);
-		// Trim models (if they are not in the scene)
-		for (unsigned int i = 0; i < m_pModels.Count(); i++)
+		DxeCamera* currentCamera = GetCurrentCamera();
+		if (currentCamera != NULL)
 		{
-			const char* nElementId = m_pModels.Key(i);
-			int found = sModels.Find(nElementId);
-			if (found == -1)
+			DxeTransform* cameraTransform = currentCamera->GetTransform();
+			if (cameraTransform != NULL)
 			{
-				CDirectorsCutPuppet* pModelEntity = m_pModels.Element(i);
-				if (pModelEntity != nullptr)
+				Vector vecPosition = cameraTransform->GetPosition()->GetVector();
+				Quaternion rOrientation = cameraTransform->GetOrientation()->GetQuaternion();
+				QAngle angOrientation;
+				QuaternionAngles(rOrientation, angOrientation);
+				Vector vecForward, vecRight, vecUp;
+				AngleVectors(angOrientation, &vecForward, &vecRight, &vecUp);
+				float flFieldOfView = currentCamera->GetFieldOfView();
+				float flZNear = currentCamera->GetNearClip();
+				float flZFar = currentCamera->GetFarClip();
+
+				if(!DXIsLayoff() || (DXIsLayoff() && !(GetLayoffFlags() & DX_LAYOFF_NO_FRUSTRUM)))
 				{
-					delete pModelEntity;
-					m_pModels.RemoveAt(i);
+					int nColRed = 255;
+					int nColGreen = 255;
+					int nColBlue = 255;
+					bool bNoDepthTest = false;
+					// TODO: delta time? time since last frame?
+					float flDuration = 0.1f;
+					// Draw frustum from znear to zfar using fov and the aspect ratio of the viewport
+					// So it stretches from one corner of the viewport (near) to the other (far)
+					float flAspectRatio = (float)DirectorsCutGameSystem().GetViewportWidth() / (float)DirectorsCutGameSystem().GetViewportHeight();
+					// Rotate aspect ratio by 90 degrees (quick fix because it's sideways)
+					flAspectRatio = 1 / flAspectRatio;
+					// Apply aspect ratio
+					Vector vecTopLeft = vecPosition + vecForward * flZNear + vecUp * tan(flFieldOfView * M_PI / 360) * flZNear * flAspectRatio - vecRight * tan(flFieldOfView * M_PI / 360) * flZNear;
+					Vector vecTopRight = vecPosition + vecForward * flZNear + vecUp * tan(flFieldOfView * M_PI / 360) * flZNear * flAspectRatio + vecRight * tan(flFieldOfView * M_PI / 360) * flZNear;
+					Vector vecBottomLeft = vecPosition + vecForward * flZNear - vecUp * tan(flFieldOfView * M_PI / 360) * flZNear * flAspectRatio - vecRight * tan(flFieldOfView * M_PI / 360) * flZNear;
+					Vector vecBottomRight = vecPosition + vecForward * flZNear - vecUp * tan(flFieldOfView * M_PI / 360) * flZNear * flAspectRatio + vecRight * tan(flFieldOfView * M_PI / 360) * flZNear;
+					Vector vecTopLeftFar = vecPosition + vecForward * flZFar + vecUp * tan(flFieldOfView * M_PI / 360) * flZFar * flAspectRatio - vecRight * tan(flFieldOfView * M_PI / 360) * flZFar;
+					Vector vecTopRightFar = vecPosition + vecForward * flZFar + vecUp * tan(flFieldOfView * M_PI / 360) * flZFar * flAspectRatio + vecRight * tan(flFieldOfView * M_PI / 360) * flZFar;
+					Vector vecBottomLeftFar = vecPosition + vecForward * flZFar - vecUp * tan(flFieldOfView * M_PI / 360) * flZFar * flAspectRatio - vecRight * tan(flFieldOfView * M_PI / 360) * flZFar;
+					Vector vecBottomRightFar = vecPosition + vecForward * flZFar - vecUp * tan(flFieldOfView * M_PI / 360) * flZFar * flAspectRatio + vecRight * tan(flFieldOfView * M_PI / 360) * flZFar;
+					debugoverlay->AddLineOverlay(vecTopLeft, vecTopRight, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
+					debugoverlay->AddLineOverlay(vecTopRight, vecBottomRight, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
+					debugoverlay->AddLineOverlay(vecBottomRight, vecBottomLeft, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
+					debugoverlay->AddLineOverlay(vecBottomLeft, vecTopLeft, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
+					debugoverlay->AddLineOverlay(vecTopLeftFar, vecTopRightFar, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
+					debugoverlay->AddLineOverlay(vecTopRightFar, vecBottomRightFar, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
+					debugoverlay->AddLineOverlay(vecBottomRightFar, vecBottomLeftFar, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
+					debugoverlay->AddLineOverlay(vecBottomLeftFar, vecTopLeftFar, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
+					debugoverlay->AddLineOverlay(vecTopLeft, vecTopLeftFar, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
+					debugoverlay->AddLineOverlay(vecTopRight, vecTopRightFar, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
+					debugoverlay->AddLineOverlay(vecBottomRight, vecBottomRightFar, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
+					debugoverlay->AddLineOverlay(vecBottomLeft, vecBottomLeftFar, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
+					// Draw lines from origin to near
+					debugoverlay->AddLineOverlay(vecPosition, vecTopLeft, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
+					debugoverlay->AddLineOverlay(vecPosition, vecTopRight, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
+					debugoverlay->AddLineOverlay(vecPosition, vecBottomRight, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
+					debugoverlay->AddLineOverlay(vecPosition, vecBottomLeft, nColRed, nColGreen, nColBlue, bNoDepthTest, flDuration);
+				}
+
+				if(!DXIsLayoff() || (DXIsLayoff() && !(GetLayoffFlags() & DX_LAYOFF_NO_SPRITES)))
+				{
+					// Draw a sprite at the camera's position
+					const char* spriteName = "sprites/light_glow02_add_noz";
+					IMaterial *pMat = materials->FindMaterial( spriteName, TEXTURE_GROUP_CLIENT_EFFECTS );
+					color32 spriteColor = { 255, 255, 255, 255 };
+					renderContext->Bind( pMat, NULL );
+					DrawSprite( vecPosition, 64, 64, spriteColor );
 				}
 			}
+		}
+	}
+
+	DxeFilmClip* shot = GetShotAtCurrentTime();
+	if(shot != NULL)
+	{
+		DxeDag* scene = (DxeDag*)shot->FindKey("scene");
+		if(scene != NULL)
+		{
+			RecursiveRenderCurrentScene(scene);
 		}
 	}
 }
@@ -929,241 +606,37 @@ void DXEditorHelper::Update( float ft )
 {
 	if(NeedsUpdate(DX_NEEDS_UPDATE_TIMELINE))
 	{
-		CDmxElement* pRoot = GetDocument();
+		DxElement* pRoot = GetDocument();
 		if( pRoot != NULL )
 		{
-			CDmxElement* pSettings = pRoot->GetValue<CDmxElement*>( "settings" );
+			DxElement* pSettings = (DxElement*)pRoot->FindKey("settings");
 			if( pSettings != NULL )
 			{
-				CDmxElement* pRenderSettings = pSettings->GetValue<CDmxElement*>( "renderSettings" );
+				DxElement* pRenderSettings = (DxElement*)pSettings->FindKey("renderSettings");
 				if( pRenderSettings != NULL )
 				{
-					float newFps = pRenderSettings->GetValue<float>( "frameRate" );
+					float newFps = pRenderSettings->GetFloat("frameRate");
 					if(newFps > 0)
 						fps = newFps;
 				}
 			}
-			bool setupCamera = false;
-			// Find clip in document at playhead position
-			CDmxElement* pClip = pRoot->GetValue<CDmxElement*>( "activeClip" );
-			if( pClip != NULL )
+			if(!IsWorkCameraActive())
 			{
-				CDmxElement* pSubClipTrackGroup = pClip->GetValue<CDmxElement*>( "subClipTrackGroup" );
-				if( pSubClipTrackGroup != NULL )
+				DxeCamera* pCamera = GetCurrentCamera();
+				if(pCamera != NULL)
 				{
-					const CUtlVector<CDmxElement*>& pTracks = pSubClipTrackGroup->GetArray<CDmxElement*>( "tracks" );
-					if( pTracks.Count() != 0 )
+					SetSceneCameraFOV(pCamera->GetFieldOfView());
+					DxeTransform* transform = pCamera->GetTransform();
+					if (transform != NULL)
 					{
-						CDmxElement* pTrack = pTracks[0];
-						if( pTrack != NULL )
-						{
-							const CUtlVector<CDmxElement*>& pChildren = pTrack->GetArray<CDmxElement*>( "children" );
-							if( pChildren.Count() != 0)
-							{
-								// Find the shot that is currently playing (pChildren[i] -> timeFrame -> start, duration)
-								CDmxElement* pChild = NULL;
-								for (int i = 0; i < pChildren.Count(); i++)
-								{
-									CDmxElement* pTimeFrame = pChildren[i]->GetValue<CDmxElement*>( "timeFrame" );
-									if (pTimeFrame == NULL)
-										continue;
-									float flStart = pTimeFrame->GetValue<float>( "start" );
-									float flDuration = pTimeFrame->GetValue<float>( "duration" );
-									float flPlayhead = GetPlayhead();
-									if (flPlayhead >= flStart && flPlayhead <= flStart + flDuration)
-									{
-										pChild = pChildren[i];
-										break;
-									}
-								}
-								if (pChild != NULL)
-								{
-									// pChild -> camera -> transform -> position, orientation
-									CDmxElement* pCamera = pChild->GetValue<CDmxElement*>( "camera" );
-									if (pCamera != NULL)
-									{
-										CDmxElement* pTransform = pCamera->GetValue<CDmxElement*>( "transform" );
-										if (pTransform != NULL)
-										{
-											Vector vecPosition = pTransform->GetValue<Vector>( "position" );
-											Quaternion angOrientation = pTransform->GetValue<Quaternion>( "orientation" );
-											float flFov = pCamera->GetValue<float>( "fieldOfView" );
-											SetSceneCameraOrigin(vecPosition);
-											// Convert quaternion to angles
-											QAngle angOrientationEuler;
-											QuaternionAngles(angOrientation, angOrientationEuler);
-											SetSceneCameraAngles(angOrientationEuler);
-											SetSceneCameraFOV(flFov);
-											setupCamera = true;
-										}
-									}
-									// Track groups
-									const CUtlVector<CDmxElement*>& pTrackGroups = pChild->GetArray<CDmxElement*>( "trackGroups" );
-									int count = pTrackGroups.Count();
-									if(count != 0)
-									{
-										for (int i = 0; i < pTrackGroups.Count(); i++)
-										{
-											CDmxElement* pTrackGroup = pTrackGroups[i];
-											if( pTrackGroup != NULL )
-											{
-												const CUtlVector<CDmxElement*>& pTracks = pTrackGroup->GetArray<CDmxElement*>( "tracks" );
-												if( pTracks.Count() != 0)
-												{
-													for (int j = 0; j < pTracks.Count(); j++)
-													{
-														CDmxElement* pTrack = pTracks[j];
-														if( pTrack != NULL )
-														{
-															const CUtlVector<CDmxElement*>& pChildren = pTrack->GetArray<CDmxElement*>( "children" );
-															if( pChildren.Count() != 0)
-															{
-																for (int k = 0; k < pChildren.Count(); k++)
-																{
-																	CDmxElement* pChild = pChildren[k];
-																	if( pChild != NULL )
-																	{
-																		CDmxElement* pTimeFrame = pChild->GetValue<CDmxElement*>( "timeFrame" );
-																		if( pTimeFrame != NULL )
-																		{
-																			float flStart = pTimeFrame->GetValue<float>( "start" );
-																			float flPlayhead = GetPlayhead();
-																			float flCurrentTime = flPlayhead - flStart;
-																			// Channels might not exist
-																			// check for "channels" attribute
-																			if( pChild->HasAttribute( "channels" ) )
-																			{
-																				const CUtlVector<CDmxElement*>& pChannels = pChild->GetArray<CDmxElement*>( "channels" );
-																				if( pChannels.Count() != 0)
-																				{
-																					for (int l = 0; l < pChannels.Count(); l++)
-																					{
-																						const char* fromAttribute = pChannels[l]->GetValueString( "fromAttribute" );
-																						char* fromAttributeCopy = new char[strlen(fromAttribute) + 1];
-																						// remove "value" and camelCase (valuePosition -> position)
-																						// after removing "value" then make first letter lowercase
-																						if( fromAttribute != NULL )
-																						{
-																							if( Q_strstr( fromAttribute, "value" ) != NULL )
-																							{
-																								// write to fromAttributeCopy
-																								int i = 0;
-																								int j = 0;
-																								while( fromAttribute[i] != '\0' )
-																								{
-																									if( fromAttribute[i] == 'v' && fromAttribute[i + 1] == 'a' && fromAttribute[i + 2] == 'l' && fromAttribute[i + 3] == 'u' && fromAttribute[i + 4] == 'e' )
-																									{
-																										i += 5;
-																										fromAttributeCopy[j] = fromAttribute[i];
-																										j++;
-																									}
-																									else
-																									{
-																										fromAttributeCopy[j] = fromAttribute[i];
-																										j++;
-																									}
-																									i++;
-																								}
-																								fromAttributeCopy[j] = '\0';
-																								// make first letter lowercase
-																								fromAttributeCopy[0] = tolower(fromAttributeCopy[0]);
-																								fromAttribute = fromAttributeCopy;
-																							}
-																							CDmxElement* pChannel = pChannels[l];
-																							if( pChannel != NULL )
-																							{
-																								CDmxElement* pToElement = pChannel->GetValue<CDmxElement*>( "toElement" );
-																								if( pToElement != NULL )
-																								{
-																									CDmxElement* pLog = pChannel->GetValue<CDmxElement*>( "log" );
-																									if( pLog != NULL )
-																									{
-																										const CUtlVector<CDmxElement*>& pLayers = pLog->GetArray<CDmxElement*>( "layers" );
-																										if( pLayers.Count() != 0)
-																										{
-																											for (int l = 0; l < pLayers.Count(); l++)
-																											{
-																												const char* layerName = pLayers[l]->GetName();
-																												const CUtlVector<float>& pTimes = pLayers[l]->GetArray<float>( "times" );
-																												int timeIndex = -1;
-																												for (int m = pTimes.Count() - 1; m >= 0; m--)
-																												{
-																													float thistime = pTimes[m];
-																													if(flCurrentTime >= thistime)
-																													{
-																														timeIndex = m;
-																														break;
-																													}
-																												}
-																												if(timeIndex != -1)
-																												{
-																													// if layerName contains "vector3" or "quaternion" then make values into a vector3 or quaternion
-																													if(Q_strstr(layerName, "vector3") != NULL)
-																													{
-																														const CUtlVector<Vector>& pValues = pLayers[l]->GetArray<Vector>( "values" );
-																														if(pValues.Count() >= timeIndex)
-																														{
-																															Vector timedValue = pValues[timeIndex];
-																															pToElement->SetValue<Vector>( fromAttribute, timedValue );
-																														}
-																													}
-																													else if(Q_strstr(layerName, "quaternion") != NULL)
-																													{
-																														const CUtlVector<Quaternion>& pValues = pLayers[l]->GetArray<Quaternion>( "values" );
-																														if(pValues.Count() >= timeIndex)
-																														{
-																															Quaternion timedValue = pValues[timeIndex];
-																															pToElement->SetValue<Quaternion>( fromAttribute, timedValue );
-																														}
-																													}
-																												}
-																											}
-																										}
-																									}
-																								}
-																							}
-																						}
-																					}
-																				}
-																			}
-																		}
-																	}
-																}
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-									// Build scene view
-									CDmxElement* pScene = pChild->GetValue<CDmxElement*>("scene");
-									if (pScene != NULL)
-									{
-										Vector vecOrigin = pScene->GetValue<Vector>("origin");
-										QAngle angAngles = pScene->GetValue<QAngle>("angles");
-										float flScale = pScene->GetValue<float>("scale", 1);
-										float flScaleX = pScene->GetValue<float>("scale_x", 0);
-										float flScaleY = pScene->GetValue<float>("scale_y", 0);
-										float flScaleZ = pScene->GetValue<float>("scale_z", 0);
-										Vector vecScale;
-										if (flScaleX == 0 && flScaleY == 0 && flScaleZ == 0)
-											vecScale.Init(flScale, flScale, flScale);
-										else
-											vecScale.Init(flScaleX, flScaleY, flScaleZ);
-										m_Dag = new DXDag(DX_DME_DAG, vecOrigin, angAngles, vecScale, new KeyValues("data"));
-										RecursiveBuildScene(m_Dag, pScene);
-									}
-								}
-							}
-						}
+						Vector vecPosition = transform->GetPosition()->GetVector();
+						Quaternion qOrientation = transform->GetOrientation()->GetQuaternion();
+						QAngle angOrientation;
+						QuaternionAngles(qOrientation, angOrientation);
+						SetSceneCameraOrigin(vecPosition);
+						SetSceneCameraAngles(angOrientation);
 					}
 				}
-			}
-			if(!setupCamera)
-			{
-				SetSceneCameraOrigin(Vector(0, 0, 0));
-				SetSceneCameraAngles(QAngle(0, 0, 0));
 			}
 		}
 		SetNeedsUpdate(false, DX_NEEDS_UPDATE_TIMELINE);
@@ -1326,47 +799,18 @@ void DXEditorHelper::Update( float ft )
 		if (vgui::input()->IsKeyDown(KEY_UP) || vgui::input()->IsKeyDown(KEY_DOWN))
 		{
 			bDebounce = true;
-			CDmxElement* pRoot = GetDocument();
-			if (pRoot != NULL)
+			DxeFilmClip* shot = GetShotAtCurrentTime();
+			if (shot != NULL)
 			{
-				// Find clip in document at playhead position
-				CDmxElement* pClip = pRoot->GetValue<CDmxElement*>("activeClip");
-				if (pClip != NULL)
+				DxeTimeFrame* timeFrame = shot->GetTimeFrame();
+				if (timeFrame != NULL)
 				{
-					CDmxElement* pSubClipTrackGroup = pClip->GetValue<CDmxElement*>("subClipTrackGroup");
-					if (pSubClipTrackGroup != NULL)
-					{
-						const CUtlVector<CDmxElement*>& pTracks = pSubClipTrackGroup->GetArray<CDmxElement*>("tracks");
-						if (pTracks.Count() != 0)
-						{
-							CDmxElement* pTrack = pTracks[0];
-							if (pTrack != NULL)
-							{
-								const CUtlVector<CDmxElement*>& pChildren = pTrack->GetArray<CDmxElement*>("children");
-								if (pChildren.Count() != 0)
-								{
-									// Find the shot that is currently playing (pChildren[i] -> timeFrame -> start, duration)
-									for (int i = 0; i < pChildren.Count(); i++)
-									{
-										CDmxElement* pTimeFrame = pChildren[i]->GetValue<CDmxElement*>("timeFrame");
-										if (pTimeFrame == NULL)
-											continue;
-										float flStart = pTimeFrame->GetValue<float>("start");
-										float flDuration = pTimeFrame->GetValue<float>("duration");
-										float flPlayhead = GetPlayhead();
-										if (flPlayhead >= flStart && flPlayhead <= flStart + flDuration)
-										{
-											if (vgui::input()->IsKeyDown(KEY_UP))
-												SetPlayhead(flStart);
-											else
-												SetPlayhead(flStart + flDuration);
-											break;
-										}
-									}
-								}
-							}
-						}
-					}
+					float flStart = timeFrame->GetStart();
+					float flDuration = timeFrame->GetDuration();
+					if (vgui::input()->IsKeyDown(KEY_UP))
+						SetPlayhead(flStart);
+					else
+						SetPlayhead(flStart + flDuration);
 				}
 			}
 			bDebounce = true;

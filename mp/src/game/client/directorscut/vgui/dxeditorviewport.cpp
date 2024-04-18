@@ -106,6 +106,7 @@ void DXEditorViewport::Paint()
 		viewportY += (height - viewportH) / 2;
 	}
 
+	/*
 	if(DirectorsCutGameSystem().GetDocument() == NULL)
 	{
 		// TODO: Standard function for drawing text
@@ -123,6 +124,7 @@ void DXEditorViewport::Paint()
 		g_pMatSystemSurface->DrawPrintText(text, wcslen(text));
 		return;
 	}
+	*/
 
 	if(!engine->IsInGame())
 	{
@@ -169,9 +171,6 @@ void DXEditorViewport::OnMousePressed(MouseCode code)
 {
 	// Needs to be in-game
 	if (!engine->IsInGame())
-		return;
-		
-	if (DirectorsCutGameSystem().GetDocument() == NULL)
 		return;
 
 	if(!DirectorsCutGameSystem().IsWorkCameraActive())
@@ -247,9 +246,6 @@ void DXEditorViewport::OnCursorMoved(int x, int y)
 {
 	if (DirectorsCutGameSystem().IsMouseCaptured())
 	{
-		if (DirectorsCutGameSystem().GetDocument() == NULL)
-			return;
-
 		if(!DirectorsCutGameSystem().IsWorkCameraActive())
 			return;
 
@@ -284,9 +280,6 @@ void DXEditorViewport::OnMouseWheeled(int delta)
 {
 	if (DirectorsCutGameSystem().IsMouseCaptured())
 	{
-		if (DirectorsCutGameSystem().GetDocument() == NULL)
-			return;
-
 		if (!DirectorsCutGameSystem().IsWorkCameraActive())
 			return;
 

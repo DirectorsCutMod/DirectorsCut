@@ -18,7 +18,6 @@ public:
 	DxElement(const char* attributeName, const char* typeName, const char* elementName);
 	DxElement(const char* attributeName, const char* typeName);
 	DxElement(const char* attributeName);
-    ~DxElement();
     virtual void InitElement();
     // if this type name doesn't get used, just dummy it out
     // keyvalue iteration would just be harder to do
