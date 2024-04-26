@@ -161,6 +161,10 @@ void KvDxElementArray::SetElement(int index, DxElement* element)
 DxElement* KvDxElementArray::GetElement(int index)
 {
     const char* key = GetIndexChar(index);
+    KeyValues* found = FindKey(key);
+    if (found == nullptr) {
+        return NULL;
+    }
     return (DxElement*)FindKey(key);
 }
 void KvDxElementArray::AddElement(DxElement* element)

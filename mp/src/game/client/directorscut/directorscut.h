@@ -168,6 +168,7 @@ public:
 	void RecursiveRenderCurrentScene(DxeDag* parent);
 	void RecursiveReleaseSceneHierarchy(DxeDag* parent);
 	DxeCamera* GetCurrentCamera();
+	void CheckReleaseModel();
 
 	// new keyvalues system
 	void LoadDocument( const char* pszDocumentName );
@@ -175,6 +176,8 @@ public:
 	void SaveDocument();
 	void SaveDocument( const char* pszDocumentName );
 	void CloseDocument();
+
+	void ConvertDMXToKV( const char* pszDocumentName );
 
 	const char* GetLoadedDocumentName() { return m_pszLoadedDocumentName; };
 

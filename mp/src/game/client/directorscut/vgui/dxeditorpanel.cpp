@@ -131,7 +131,7 @@ void DXEditorPanel::PopulateEditor()
 		for (int i = 0; i < toolWindows.Count(); i++)
 		{
 			ToolWindow* pToolWindow = toolWindows[i];
-			Panel* page = pToolWindow->GetActivePage();
+			//Panel* page = pToolWindow->GetActivePage();
 			/*
 			if (page == m_vecPanels[0] || page == m_vecPanels[1]) // Animation set editor + element viewer
 			{

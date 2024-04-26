@@ -108,6 +108,23 @@ void DxeGameModel::UpdatePuppet()
                 }
             }
         }
+        // Loop through all bones and set model pointer's bones
+        KvDxElementArray* pBones = GetBones();
+        if(pBones != NULL)
+        {
+            for(int i = 0; i < pBones->GetSize(); i++)
+            {
+                DxeTransform* pBone = (DxeTransform*)pBones->GetElement(i);
+                if(pBone != NULL)
+                {
+                    Vector vecPosition = pBone->GetPosition()->GetVector();
+                    Quaternion qOrientation = pBone->GetOrientation()->GetQuaternion();
+                    QAngle angOrientation;
+                    QuaternionAngles(qOrientation, angOrientation);
+                    m_pPuppet->PoseBones(i, vecPosition, angOrientation);
+                }
+            }
+        }
     }
 }
 

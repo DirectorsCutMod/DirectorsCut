@@ -228,21 +228,25 @@ void DXEditorHelper::SetPlayhead( float fPlayhead )
 		return;
 	SetAllNeedsUpdate(true);
 	m_fPlayhead = fPlayhead;
+	CheckReleaseModel();
 }
 
 void DXEditorHelper::LoadDocument( const char* pszDocumentName )
 {
 	CloseDocument();
+	SetAllNeedsUpdate(false);
+	
 	DxElement* document = new DxElement("session");
 
 	// Mark timestamp so we can document how long it takes to load
 	double flStartTime = Plat_FloatTime();
 
-	if (document->LoadFromFile(g_pFullFileSystem, pszDocumentName, NULL))
+	if (document->LoadFromFile(g_pFullFileSystem, pszDocumentName, NULL, true))
 	{
 		SetDocument(document);
 		SetFileOpen(true);
 		m_pszLoadedDocumentName = pszDocumentName;
+		SetAllNeedsUpdate(true);
 
 		// Get timestamp and print how long it took to load
 		double flEndTime = Plat_FloatTime();
@@ -250,9 +254,9 @@ void DXEditorHelper::LoadDocument( const char* pszDocumentName )
 		Msg("Finished loading keyvalues session in %f seconds\n", flTimeTaken);
 	}
 	else
+	{
 		Warning("Could not read keyvalues file %s\n", pszDocumentName);
-	
-	SetAllNeedsUpdate(true);
+	}
 }
 
 void DXEditorHelper::NewDocument()
@@ -320,6 +324,16 @@ void DXEditorHelper::NewDocument()
 	DxeTransform* modelTransform = gameModel->GetTransform();
 	modelTransform->GetPosition()->SetVector(Vector(10, 10, 10));
 	modelTransform->GetOrientation()->SetQuaternion(Quaternion(0, 0, 0, 1));
+	DxeTransform* bonePelvis = new DxeTransform("bone 0 (bip_pelvis)");
+	bonePelvis->SetElementName("bone 0 (bip_pelvis)");
+	bonePelvis->GetPosition()->SetVector(Vector(0, 0, 0));
+	bonePelvis->GetOrientation()->SetQuaternion(Quaternion(0, 0, 0, 1));
+	gameModel->GetBones()->AddElement(bonePelvis);
+	DxeTransform* boneSpine = new DxeTransform("bone 1 (bip_spine)");
+	boneSpine->SetElementName("bone 1 (bip_spine)");
+	boneSpine->GetPosition()->SetVector(Vector(10, -5, 0));
+	boneSpine->GetOrientation()->SetQuaternion(Quaternion(0, 0, 0, 1));
+	gameModel->GetBones()->AddElement(boneSpine);
 	modelDag->GetChildren()->AddElement(gameModel);
 	sceneDag->GetChildren()->AddElement(modelDag);
 	QAngle angOrientation = QAngle(15, 15, 15);
@@ -382,7 +396,7 @@ void DXEditorHelper::CloseDocument()
 	DxeFilmClip* shot = GetShotAtCurrentTime();
 	if(shot != NULL)
 	{
-		DxeDag* scene = (DxeDag*)shot->FindKey("scene");
+		DxeDag* scene = (DxeDag*)shot->GetScene();
 		if(scene != NULL)
 		{
 			RecursiveReleaseSceneHierarchy(scene);
@@ -393,6 +407,290 @@ void DXEditorHelper::CloseDocument()
 	SetFileOpen(false);
 	m_pszLoadedDocumentName = NULL;
 	SetAllNeedsUpdate(true);
+}
+
+void DXEditorHelper::ConvertDMXToKV( const char* pszDocumentName )
+{
+	DECLARE_DMX_CONTEXT_DECOMMIT();
+	CloseDocument();
+
+	CDmxElement* document = (CDmxElement*)DMXAlloc( 1000000000 );
+
+	// Mark timestamp so we can document how long it takes to load
+	double flStartTime = Plat_FloatTime();
+
+	// Read for a bit to find "keyvalues2" or "binary"
+	FileHandle_t fh = filesystem->Open(pszDocumentName, "r", "DEFAULT_WRITE_PATH");
+	char buf[64];
+	filesystem->Read(buf, 64, fh);
+	filesystem->Close(fh);
+
+	bool bBinary = false;
+	if (strstr(buf, "binary"))
+	{
+		bBinary = true;
+	}
+
+	fh = filesystem->Open(pszDocumentName, "r", "DEFAULT_WRITE_PATH");
+	CUtlBuffer::BufferFlags_t flags = bBinary ? CUtlBuffer::READ_ONLY : CUtlBuffer::TEXT_BUFFER;
+	CUtlBuffer buffer = CUtlBuffer(0, 0, flags);
+	filesystem->ReadToBuffer(fh, buffer);
+	filesystem->Close(fh);
+
+	// If text, find all mentions of "time" and "time_array" and replace them with "float" and "float_array"
+	Msg("Converting DMX session format: \"time\" -> \"float\", \"time_array\" -> \"float_array\"\n");
+	if (!bBinary)
+	{
+		Msg("Text DMX session format detected, continuing...\n");
+		// Replace all "time" with "float" and "time_array" with "float_array"
+		// This is because the DMX parser doesn't support "time" and "time_array" types
+		const char * pszBuffer = buffer.String();
+		const char * pszTime = "\"time\"";
+		const char * pszTimeArray = "\"time_array\"";
+		const char * pszFloat = "\"float\"";
+		const char * pszFloatArray = "\"float_array\"";
+		std::string strBuffer = pszBuffer;
+		std::regex rgxTime(pszTime);
+		std::regex rgxTimeArray(pszTimeArray);
+		std::regex rgxFloat(pszFloat);
+		std::regex rgxFloatArray(pszFloatArray);
+		std::string strReplaced = std::regex_replace(strBuffer, rgxTime, pszFloat);
+		strReplaced = std::regex_replace(strReplaced, rgxTimeArray, pszFloatArray);
+		buffer.Clear();
+		buffer.PutString(strReplaced.c_str());
+	}
+	else
+	{
+		Warning("Binary DMX session format detected, failed to convert!\nPlease run the following command in the origin mod's bin folder:\n");
+		Warning("dmxconvert -i session.dmx -oe keyvalues2 -o session_kv2.dmx\n");
+	}
+
+	if (UnserializeDMX(buffer, &document, pszDocumentName))
+	{
+		// Populate document
+		const char* rootName = document->GetName();
+		DxElement* dxDocument = new DxElement(rootName);
+		dxDocument->SetElementName(rootName);
+		CDmxAttribute* dmxMovieAttribute = document->GetAttribute("activeClip");
+		if (dmxMovieAttribute != NULL)
+		{
+			CDmxElement* dmxMovie = dmxMovieAttribute->GetValue();
+			if (dmxMovie != NULL)
+			{
+				const char* sessionName = dmxMovie->GetName();
+				DxeFilmClip* dxMovie = new DxeFilmClip("activeClip");
+				dxMovie->SetElementName(sessionName);
+				CDmxAttribute* dmxTimeFrame = dmxMovie->GetAttribute("timeFrame");
+				if (dmxTimeFrame != NULL)
+				{
+					DxeTimeFrame* dxTimeFrame = dxMovie->GetTimeFrame();
+					const char* timeFrameName = dmxTimeFrame->GetName();
+					CDmxAttribute* start = dmxTimeFrame->GetAttribute("start");
+					if (start != NULL)
+						dxTimeFrame->SetStart(start->GetValue());
+					CDmxAttribute* duration = dmxTimeFrame->GetAttribute("duration");
+					if (duration != NULL)
+						dxTimeFrame->SetDuration(duration->GetValue());
+					CDmxAttribute* offset = dmxTimeFrame->GetAttribute("offset");
+					if (offset != NULL)
+						dxTimeFrame->SetOffset(offset->GetValue());
+					CDmxAttribute* scale = dmxTimeFrame->GetAttribute("scale");
+					if (scale != NULL)
+						dxTimeFrame->SetScale(scale->GetValue());
+				}
+				CDmxAttribute* dmxColor = dmxMovie->GetAttribute("color");
+				if (dmxColor != NULL)
+					dxMovie->SetColor(dmxColor->GetValue());
+				CDmxAttribute* dmxText = dmxMovie->GetAttribute("text");
+				if (dmxText != NULL)
+					dxMovie->SetText(dmxText->GetValue());
+				CDmxAttribute* dmxMute = dmxMovie->GetAttribute("mute");
+				if (dmxMute != NULL)
+					dxMovie->SetMute(dmxMute->GetValue());
+				CDmxAttribute* dmxTrackGroups = dmxMovie->GetAttribute("trackGroups");
+				if (dmxTrackGroups != NULL)
+				{
+					CUtlVector<CDmxElement*> dmxtrackGroupsArray = dmxTrackGroups->GetArrayForEdit<CDmxElement*>();
+					for (int i = 0; i < dmxtrackGroupsArray.Count(); i++)
+					{
+						CDmxElement* dmxTrackGroup = dmxtrackGroupsArray[i];
+						const char* trackGroupName = dmxTrackGroup->GetName();
+						DxeTrackGroup* dxTrackGroup = new DxeTrackGroup(trackGroupName);
+						dxTrackGroup->SetElementName(trackGroupName);
+						CDmxAttribute* dmxTracks = dmxTrackGroup->GetAttribute("tracks");
+						if (dmxTracks != NULL)
+						{
+							CUtlVector<CDmxElement*> dmxTracksArray = dmxTracks->GetArrayForEdit<CDmxElement*>();
+							for (int j = 0; j < dmxTracksArray.Count(); j++)
+							{
+								CDmxElement* dmxTrack = dmxTracksArray[j];
+								const char* trackName = dmxTrack->GetName();
+								DxeTrack* dxTrack = new DxeTrack(trackName);
+								dxTrack->SetElementName(trackName);
+								//CDmxAttribute* dmxChildren = dmxTrack->GetAttribute("children");
+								CDmxAttribute* dmxCollapsed = dmxTrack->GetAttribute("collapsed");
+								if (dmxCollapsed != NULL)
+									dxTrack->SetCollapsed(dmxCollapsed->GetValue());
+								CDmxAttribute* dmxMuteTrack = dmxTrack->GetAttribute("mute");
+								if (dmxMuteTrack != NULL)
+									dxTrack->SetMute(dmxMuteTrack->GetValue());
+								CDmxAttribute* dmxSynched = dmxTrack->GetAttribute("synched");
+								if (dmxSynched != NULL)
+									dxTrack->SetSynched(dmxSynched->GetValue());
+								CDmxAttribute* dmxClipType = dmxTrack->GetAttribute("clipType");
+								if (dmxClipType != NULL)
+									dxTrack->SetClipType(dmxClipType->GetValue());
+								CDmxAttribute* dmxVolume = dmxTrack->GetAttribute("volume");
+								if (dmxVolume != NULL)
+									dxTrack->SetVolume(dmxVolume->GetValue());
+								CDmxAttribute* dmxDisplayScale = dmxTrack->GetAttribute("displayScale");
+								if (dmxDisplayScale != NULL)
+									dxTrack->SetDisplayScale(dmxDisplayScale->GetValue());
+								dxTrackGroup->GetTracks()->AddElement(dxTrack);
+							}
+						}
+						CDmxAttribute* dmxMuteTrackGroup = dmxTrackGroup->GetAttribute("mute");
+						if (dmxMuteTrackGroup != NULL)
+							dxTrackGroup->SetMute(dmxMuteTrackGroup->GetBool());
+						CDmxAttribute* dmxDisplayScale = dmxTrackGroup->GetAttribute("displayScale");
+						if (dmxDisplayScale != NULL)
+							dxTrackGroup->SetDisplayScale(dmxDisplayScale->GetValue());
+						CDmxAttribute* dmxMinimized = dmxTrackGroup->GetAttribute("minimized");
+						if (dmxMinimized != NULL)
+							dxTrackGroup->SetMinimized(dmxMinimized->GetValue());
+						CDmxAttribute* dmxVolume = dmxTrackGroup->GetAttribute("volume");
+						if (dmxVolume != NULL)
+							dxTrackGroup->SetVolume(dmxVolume->GetValue());
+						CDmxAttribute* dmxForceMultiTrack = dmxTrackGroup->GetAttribute("forcemultitrack");
+						if (dmxForceMultiTrack != NULL)
+							dxTrackGroup->SetForceMultiTrack(dmxForceMultiTrack->GetBool());
+						dxMovie->GetTrackGroups()->AddElement(dxTrackGroup);
+					}		
+				}
+				CDmxAttribute* dmxDisplayScale = dmxMovie->GetAttribute("displayScale");
+				if (dmxDisplayScale != NULL)
+					dxMovie->SetDisplayScale(dmxDisplayScale->GetValue());
+				//CDmxAtribute* dmxMaterialOverlay = dmxMovie->GetAttribute("materialOverlay");
+				CDmxAttribute* dmxMapName = dmxMovie->GetAttribute("mapname");
+				if (dmxMapName != NULL)
+					dxMovie->SetMapName(dmxMapName->GetValue());
+				CDmxAttribute* dmxCamera = dmxMovie->GetAttribute("camera");
+				if (dmxCamera != NULL)
+				{
+					CDmxElement* dmxCameraElement = dmxCamera->GetValue("camera");
+					if (dmxCameraElement != NULL)
+					{
+						dxMovie->SetActiveCamera(dmxCameraElement->GetName());
+					}
+				}
+				//CDmxAttribute* dmxMonitorCameras = dmxMovie->GetAttribute("monitorCameras");
+				//CDmxAttribute* dmxActiveMonitor = dmxMovie->GetAttribute("activeMonitor");
+				//CDmxAttribute* dmxScene = dmxMovie->GetAttribute("scene");
+				CDmxAttribute* dmxAviFile = dmxMovie->GetAttribute("aviFile");
+				if (dmxAviFile != NULL)
+					dxMovie->SetAviFile(dmxAviFile->GetValue());
+				CDmxAttribute* dmxFadeIn = dmxMovie->GetAttribute("fadeIn");
+				if (dmxFadeIn != NULL)
+					dxMovie->SetFadeIn(dmxFadeIn->GetValue());
+				CDmxAttribute* dmxFadeOut = dmxMovie->GetAttribute("fadeOut");
+				if (dmxFadeOut != NULL)
+					dxMovie->SetFadeOut(dmxFadeOut->GetValue());
+				//CDmxAttribute* dmxInputs = dmxMovie->GetAttribute("inputs");
+				//CDmxAttribute* dmxOperators = dmxMovie->GetAttribute("operators");
+				CDmxAttribute* dmxUseAviFile = dmxMovie->GetAttribute("useAviFile");
+				if (dmxUseAviFile != NULL)
+					dxMovie->SetUseAviFile(dmxUseAviFile->GetValue());
+				//CDmxAttribute* dmxAnimationSets = dmxMovie->GetAttribute("animationSets");
+				CDmxAttribute* dmxBookmarkSets = dmxMovie->GetAttribute("bookmarkSets");
+				if (dmxBookmarkSets != NULL)
+				{
+					CUtlVector<CDmxElement*> dmxBookmarkSetsArray = dmxBookmarkSets->GetArrayForEdit<CDmxElement*>();
+					for (int i = 0; i < dmxBookmarkSetsArray.Count(); i++)
+					{
+						CDmxElement* dmxBookmarkSet = dmxBookmarkSetsArray[i];
+						const char* bookmarkSetName = dmxBookmarkSet->GetName();
+						DxeBookmarkSet* dxBookmarkSet = new DxeBookmarkSet(bookmarkSetName);
+						dxBookmarkSet->SetElementName(bookmarkSetName);
+						//CDmxAttribute* dmxBookmarks = dmxBookmarkSet->GetAttribute("bookmarks");
+						dxMovie->GetBookmarkSets()->AddElement(dxBookmarkSet);
+					}
+				}
+				CDmxAttribute* dmxActiveBookmarkSet = dmxMovie->GetAttribute("activeBookmarkSet");
+				if (dmxActiveBookmarkSet != NULL)
+					dxMovie->SetActiveBookmarkSet(dmxActiveBookmarkSet->GetValue());
+				CDmxAttribute* dmxSubClipTrackGroup = dmxMovie->GetAttribute("subClipTrackGroup");
+				if (dmxSubClipTrackGroup != NULL)
+				{
+					CDmxElement* dmxSubClipTrackGroupElement = dmxSubClipTrackGroup->GetValue();
+					if (dmxSubClipTrackGroupElement != NULL)
+					{
+						const char* subClipTrackGroupName = dmxSubClipTrackGroupElement->GetName();
+						DxeTrackGroup* dxSubClipTrackGroup = new DxeTrackGroup(subClipTrackGroupName);
+						dxSubClipTrackGroup->SetElementName(subClipTrackGroupName);
+						CDmxAttribute* dmxTracks = dmxSubClipTrackGroupElement->GetAttribute("tracks");
+						if (dmxTracks != NULL)
+						{
+							CUtlVector<CDmxElement*> dmxTracksArray = dmxTracks->GetArrayForEdit<CDmxElement*>();
+							for (int i = 0; i < dmxTracksArray.Count(); i++)
+							{
+								CDmxElement* dmxTrack = dmxTracksArray[i];
+								const char* trackName = dmxTrack->GetName();
+								DxeTrack* dxTrack = new DxeTrack(trackName);
+								dxTrack->SetElementName(trackName);
+								//CDmxAttribute* dmxChildren = dmxTrack->GetAttribute("children");
+								CDmxAttribute* dmxCollapsed = dmxTrack->GetAttribute("collapsed");
+								if (dmxCollapsed != NULL)
+									dxTrack->SetCollapsed(dmxCollapsed->GetValue());
+								CDmxAttribute* dmxMuteTrack = dmxTrack->GetAttribute("mute");
+								if (dmxMuteTrack != NULL)
+									dxTrack->SetMute(dmxMuteTrack->GetValue());
+								CDmxAttribute* dmxSynched = dmxTrack->GetAttribute("synched");
+								if (dmxSynched != NULL)
+									dxTrack->SetSynched(dmxSynched->GetValue());
+								CDmxAttribute* dmxClipType = dmxTrack->GetAttribute("clipType");
+								if (dmxClipType != NULL)
+									dxTrack->SetClipType(dmxClipType->GetValue());
+								CDmxAttribute* dmxVolume = dmxTrack->GetAttribute("volume");
+								if (dmxVolume != NULL)
+									dxTrack->SetVolume(dmxVolume->GetValue());
+								CDmxAttribute* dmxDisplayScale = dmxTrack->GetAttribute("displayScale");
+								if (dmxDisplayScale != NULL)
+									dxTrack->SetDisplayScale(dmxDisplayScale->GetValue());
+								dxSubClipTrackGroup->GetTracks()->AddElement(dxTrack);
+							}
+						}
+						CDmxAttribute* dmxVisible = dmxSubClipTrackGroupElement->GetAttribute("visible");
+						if (dmxVisible != NULL)
+							dxSubClipTrackGroup->SetVisible(dmxVisible->GetValue());
+						CDmxAttribute* dmxMute = dmxSubClipTrackGroupElement->GetAttribute("mute");
+						if (dmxMute != NULL)
+							dxSubClipTrackGroup->SetMute(dmxMute->GetValue());
+						CDmxAttribute* dmxDisplayScale = dmxSubClipTrackGroupElement->GetAttribute("displayScale");
+						if (dmxDisplayScale != NULL)
+							dxSubClipTrackGroup->SetDisplayScale(dmxDisplayScale->GetValue());
+						CDmxAttribute* dmxMinimized = dmxSubClipTrackGroupElement->GetAttribute("minimized");
+						if (dmxMinimized != NULL)
+							dxSubClipTrackGroup->SetMinimized(dmxMinimized->GetValue());
+						CDmxAttribute* dmxVolume = dmxSubClipTrackGroupElement->GetAttribute("volume");
+						if (dmxVolume != NULL)
+							dxSubClipTrackGroup->SetVolume(dmxVolume->GetValue());
+						CDmxAttribute* dmxForceMultiTrack = dmxSubClipTrackGroupElement->GetAttribute("forcemultitrack");
+						if (dmxForceMultiTrack != NULL)
+							dxSubClipTrackGroup->SetForceMultiTrack(dmxForceMultiTrack->GetValue());
+						dxMovie->AddSubKey(dxSubClipTrackGroup);
+					}
+				}
+				CDmxAttribute* dmxVolume = dmxMovie->GetAttribute("volume");
+				if (dmxVolume != NULL)
+					dxMovie->SetVolume(dmxVolume->GetValue());
+				//CDmxAttribute* dmxConcommands = dmxMovie->GetAttribute("concommands");
+				//CDmxAttribute* dmxConvars = dmxMovie->GetAttribute("convars");
+				dxDocument->AddSubKey(dxMovie);
+			}
+		}
+	}
+	else
+		Warning("Could not read DMX file %s\n", pszDocumentName);
 }
 
 DxeFilmClip* DXEditorHelper::GetMovie()
@@ -410,15 +708,21 @@ DxeFilmClip* DXEditorHelper::GetShotAtCurrentTime()
 	DxeFilmClip* movie = GetMovie();
 	if(!movie)
 		return NULL;
-	DxeTrackGroup* subClipTrackGroup = (DxeTrackGroup*)movie->FindKey("subClipTrackGroup");
+	DxeTrackGroup* subClipTrackGroup = (DxeTrackGroup*)movie->GetSubClipTrackGroup();
 	if(!subClipTrackGroup)
 		return NULL;
-	for (int i = 0; i < subClipTrackGroup->GetTracks()->GetSize(); i++)
+	KvDxElementArray* subClipTrackGroupTracks = subClipTrackGroup->GetTracks();
+	if (!subClipTrackGroupTracks)
+		return NULL;
+	for (int i = 0; i < subClipTrackGroupTracks->GetSize(); i++)
 	{
-		DxeTrack* currentTrack = (DxeTrack*)subClipTrackGroup->GetTracks()->GetElement(i);
+		DxElement* currentTrackElem = subClipTrackGroupTracks->GetElement(i);
+		if (currentTrackElem == NULL)
+			continue;
+		DxeTrack* currentTrack = (DxeTrack*)currentTrackElem;
 		if (currentTrack != NULL)
 		{
-			for (int j = 0; j < subClipTrackGroup->GetTracks()->GetSize(); j++)
+			for (int j = 0; j < subClipTrackGroupTracks->GetSize(); j++)
 			{
 				DxeFilmClip* currentShot = (DxeFilmClip*)currentTrack->GetChildren()->GetElement(j);
 				if (currentShot != NULL)
@@ -448,7 +752,7 @@ DxeCamera* DXEditorHelper::GetCurrentCamera()
 	const char* activeCamera = shot->GetActiveCamera();
 	if(!activeCamera)
 		return NULL;
-	DxeDag* scene = (DxeDag*)shot->FindKey("scene");
+	DxeDag* scene = (DxeDag*)shot->GetScene();
 	if (!scene)
 		return NULL;
 	DxeCamera* camera = (DxeCamera*)RecursiveFindDag(scene, activeCamera);
@@ -513,11 +817,57 @@ void DXEditorHelper::RecursiveReleaseSceneHierarchy(DxeDag* parent)
 	}
 }
 
+void DXEditorHelper::CheckReleaseModel()
+{
+	// Check to see if models are still in use when the timeline is not at the shot
+	// if not, release them
+	// Get current time
+	float flPlayhead = GetPlayhead();
+	// Get movie
+	DxeFilmClip* movie = GetMovie();
+	if (movie == NULL)
+		return;
+	// Get subclip track group
+	DxeTrackGroup* subClipTrackGroup = (DxeTrackGroup*)movie->GetSubClipTrackGroup();
+	if (subClipTrackGroup == NULL)
+		return;
+	// Loop through each shot
+	for (int i = 0; i < subClipTrackGroup->GetTracks()->GetSize(); i++)
+	{
+		DxeTrack* currentTrack = (DxeTrack*)subClipTrackGroup->GetTracks()->GetElement(i);
+		if (currentTrack == NULL)
+			continue;
+		for (int j = 0; j < subClipTrackGroup->GetTracks()->GetSize(); j++)
+		{
+			DxeFilmClip* currentShot = (DxeFilmClip*)currentTrack->GetChildren()->GetElement(j);
+			if (currentShot == NULL)
+				continue;
+			DxeTimeFrame* timeFrame = currentShot->GetTimeFrame();
+			if (timeFrame == NULL)
+				continue;
+			float flStart = timeFrame->GetStart();
+			float flDuration = timeFrame->GetDuration();
+			if (flPlayhead < flStart || flPlayhead > flStart + flDuration)
+			{
+				// Get scene
+				DxeDag* scene = (DxeDag*)currentShot->GetScene();
+				if (scene == NULL)
+					continue;
+				// Release models
+				RecursiveReleaseSceneHierarchy(scene);
+			}
+		}
+	}
+}
+
 void DXEditorHelper::PostRender()
 {
 	if(!engine->IsInGame())
 		return;
 	CMatRenderContextPtr renderContext(g_pMaterialSystem);
+
+	if(!GetFileOpen())
+		return;
 
 	if(IsWorkCameraActive())
 	{
@@ -590,11 +940,10 @@ void DXEditorHelper::PostRender()
 			}
 		}
 	}
-
 	DxeFilmClip* shot = GetShotAtCurrentTime();
 	if(shot != NULL)
 	{
-		DxeDag* scene = (DxeDag*)shot->FindKey("scene");
+		DxeDag* scene = (DxeDag*)shot->GetScene();
 		if(scene != NULL)
 		{
 			RecursiveRenderCurrentScene(scene);
