@@ -15,7 +15,7 @@ This software is in early production as development was recently reset.
 
 ## Links
 - [Director's Cut Github](https://github.com/KiwifruitDev/DirectorsCut)
-- [Director's Cut Discord](https://discord.gg/3X3teNecWs)
+- [Director's Cut Discord](https://discord.com/invite/zrjApe5gkk)
 - [Director's Cut YouTube](https://youtube.com/@DirectorsCutMod)
 - [r/DirectorsCut](https://www.reddit.com/r/DirectorsCut/)
 - [Director's Cut on X (Twitter)](https://x.com/DirectorsCutMod)
