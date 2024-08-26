@@ -85,8 +85,8 @@ Scheme
 		Frame.OutOfFocusBgColor			"DXMenuDark"
 		Frame.FocusTransitionEffectTime	"0.3"	// time it takes for a window to fade in/out on focus/out of focus
 		Frame.TransitionEffectTime		"0.3"	// time it takes for a window to fade in/out on open/close
-		// Frame.AutoSnapRange				"8"
-		Frame.AutoSnapRange				"0"
+		Frame.AutoSnapRange				"8"
+		// Frame.AutoSnapRange				"0"
 		Frame.FocusBorderColor			"WhiteBorder"
 		FrameGrip.Color1				"200 200 200 196"
 		FrameGrip.Color2				"0 0 0 196"

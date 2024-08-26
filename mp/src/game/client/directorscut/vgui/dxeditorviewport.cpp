@@ -15,6 +15,8 @@
 #include "iviewrender.h"
 #include "view_shared.h"
 #include <vgui/IInput.h>
+#include <vgui_controls/Menu.h>
+#include <vgui_controls/MenuItem.h>
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include <tier0/memdbgon.h>
@@ -25,10 +27,101 @@ DXEditorViewport::DXEditorViewport(Panel* pParent)
 	: BaseClass(pParent, "Primary Viewport")
 {
 	m_hFont = vgui::scheme()->GetIScheme( vgui::scheme()->GetScheme( "ClientScheme" ) )->GetFont( "Default", true );
+	
+	// Create context menu
+	m_pContextMenu = new Menu(this, "contextmenu");
+
+	// Render Settings... (button)
+	// Progessive Refinement (checkbox)
+	// --- Separator ---
+	// Enable Lighting (checkbox)
+	// Display (submenu)
+	// - Show Focal Plane (checkbox)
+	// - Show Camera Frustum (checkbox)
+	// - Show View Targets (checkbox)
+	// - Show Shot ID Overlay (checkbox)
+	// - Show Transform Labels (checkbox)
+	// - --- Separator ---
+	// - Trigger Game Effects In Reverse (checkbox)
+	// - Stereo Flip (checkbox)
+	// - --- Separator ---
+	// - Allow Pixel Zoom (checkbox)
+	// Draw Game Entities (submenu)
+	// - Players (checkbox)
+	// - NPCs (checkbox)
+	// - World Static Props (checkbox)
+	// - World Brush Models (checkbox)
+	// - Ropes (checkbox)
+	// - Beams (checkbox)
+	// - Particles (checkbox)
+	// - Other Entities (checkbox)
+	// Draw Tool Objects (submenu)
+	// - Models (checkbox)
+	// - Effects (checkbox)
+	// - Particles (checkbox)
+	// - Lights (checkbox)
+	// --- Separator ---
+	// Game (submenu)
+	// Draw Tool Objects In Game (checkbox)
+	// Teleport Player To Camera (button)
+	// Teleport Sets FOV (checkbox)
+	// Reset Player Roll And FOV (button)
+	// Delete (submenu)
+	// - Models Outside Camera Frustum (button)
+	// - Particles Outside Camera Frustum (button)
+	// --- Separator ---
+	// Load Map (button)
+
+	m_pContextMenu->AddMenuItem("Render Settings...", new KeyValues( "Command", "command", "rendersettings" ), this );
+	m_pContextMenu->AddCheckableMenuItem("Progressive Refinement", "Progressive Refinement", "progressiverefine", this );
+	m_pContextMenu->AddSeparator();
+	m_pContextMenu->AddCheckableMenuItem("Enable Lighting", "Enable Lighting", "enablelighting", this );
+	Menu* displayMenu = new Menu(this, "displaymenu");
+	displayMenu->AddCheckableMenuItem("Show Focal Plane", "Show Focal Plane", "showfocalplane", this );
+	displayMenu->AddCheckableMenuItem("Show Camera Frustum", "Show Camera Frustum", "showcamerafrustum", this );
+	displayMenu->AddCheckableMenuItem("Show View Targets", "Show View Targets", "showviewtargets", this );
+	displayMenu->AddCheckableMenuItem("Show Shot ID Overlay", "Show Shot ID Overlay", "showshotidoverlay", this );
+	displayMenu->AddCheckableMenuItem("Show Transform Labels", "Show Transform Labels", "showtransformlabels", this );
+	displayMenu->AddSeparator();
+	displayMenu->AddCheckableMenuItem("Trigger Game Effects In Reverse", "Trigger Game Effects In Reverse", "triggergameeffectsreverse", this );
+	displayMenu->AddCheckableMenuItem("Stereo Flip", "Stereo Flip", "stereoflip", this );
+	displayMenu->AddSeparator();
+	displayMenu->AddCheckableMenuItem("Allow Pixel Zoom", "Allow Pixel Zoom", "allowpixelzoom", this );
+	m_pContextMenu->AddCascadingMenuItem("Display", "Display", "display", this, displayMenu);
+	Menu* drawEntitiesMenu = new Menu(this, "drawentitiesmenu");
+	drawEntitiesMenu->AddCheckableMenuItem("Players", "Players", "drawplayers", this );
+	drawEntitiesMenu->AddCheckableMenuItem("NPCs", "NPCs", "drawnpcs", this );
+	drawEntitiesMenu->AddCheckableMenuItem("World Static Props", "World Static Props", "drawworldstaticprops", this );
+	drawEntitiesMenu->AddCheckableMenuItem("World Brush Models", "World Brush Models", "drawworldbrushmodels", this );
+	drawEntitiesMenu->AddCheckableMenuItem("Ropes", "Ropes", "drawropes", this );
+	drawEntitiesMenu->AddCheckableMenuItem("Beams", "Beams", "drawbeams", this );
+	drawEntitiesMenu->AddCheckableMenuItem("Particles", "Particles", "drawparticles", this );
+	drawEntitiesMenu->AddCheckableMenuItem("Other Entities", "Other Entities", "drawotherentities", this );
+	m_pContextMenu->AddCascadingMenuItem("Draw Game Entities", "Draw Game Entities", "drawgameentities", this, drawEntitiesMenu);
+	Menu* drawToolObjectsMenu = new Menu(this, "drawtoolobjectsmenu");
+	drawToolObjectsMenu->AddCheckableMenuItem("Models", "Models", "drawmodels", this );
+	drawToolObjectsMenu->AddCheckableMenuItem("Effects", "Effects", "draweffects", this );
+	drawToolObjectsMenu->AddCheckableMenuItem("Particles", "Particles", "drawparticles", this );
+	drawToolObjectsMenu->AddCheckableMenuItem("Lights", "Lights", "drawlights", this );
+	m_pContextMenu->AddCascadingMenuItem("Draw Tool Objects", "Draw Tool Objects", "drawtoolobjects", this, drawToolObjectsMenu);
+	m_pContextMenu->AddSeparator();
+	Menu* gameMenu = new Menu(this, "gamemenu");
+	gameMenu->AddCheckableMenuItem("Draw Tool Objects In Game", "Draw Tool Objects In Game", "drawtoolobjectsingame", this );
+	gameMenu->AddMenuItem("Teleport Player To Camera", new KeyValues( "Command", "command", "teleportplayertocamera" ), this );
+	gameMenu->AddCheckableMenuItem("Teleport Sets FOV", "Teleport Sets FOV", "teleportsetsfov", this );
+	gameMenu->AddMenuItem("Reset Player Roll And FOV", new KeyValues( "Command", "command", "resetplayerrollandfov" ), this );
+	m_pContextMenu->AddCascadingMenuItem("Game", "Game", "game", this, gameMenu);
+	Menu* deleteMenu = new Menu(this, "deletemenu");
+	deleteMenu->AddMenuItem("Models Outside Camera Frustum", new KeyValues( "Command", "command", "deleteoutsidecamerafrustummodels" ), this );
+	deleteMenu->AddMenuItem("Particles Outside Camera Frustum", new KeyValues( "Command", "command", "deleteoutsidecamerafrumparticles" ), this );
+	m_pContextMenu->AddCascadingMenuItem("Delete", "Delete", "delete", this, deleteMenu);
+	m_pContextMenu->AddSeparator();
+	m_pContextMenu->AddMenuItem("Load Map", new KeyValues( "Command", "command", "loadmap" ), this );
 }
 
 DXEditorViewport::~DXEditorViewport()
 {
+	m_pContextMenu->MarkForDeletion();
 }
 
 void DXEditorViewport::OnThink()
@@ -178,13 +271,12 @@ void DXEditorViewport::OnMousePressed(MouseCode code)
 
 	ConVar* mouseMoveButton = g_pCVar->FindVar("dx_mousemovebutton");
 	ButtonCode_t moveButton = MOUSE_LEFT;
+	ButtonCode_t contextButton = MOUSE_RIGHT;
 	switch (mouseMoveButton->GetInt())
 	{
-	case 1:
-		moveButton = MOUSE_LEFT;
-		break;
 	case 2:
 		moveButton = MOUSE_RIGHT;
+		contextButton = MOUSE_LEFT;
 		break;
 	case 3:
 		moveButton = MOUSE_MIDDLE;
@@ -210,6 +302,10 @@ void DXEditorViewport::OnMousePressed(MouseCode code)
 		int ypos = y;
 		LocalToScreen( xpos, ypos );
 		input()->SetCursorPos( xpos, ypos );
+	}
+	else if (code == contextButton)
+	{
+		Menu::PlaceContextMenu( this, m_pContextMenu );
 	}
 }
 

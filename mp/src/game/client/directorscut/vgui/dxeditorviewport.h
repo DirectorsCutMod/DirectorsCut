@@ -35,6 +35,7 @@ public:
 	virtual void OnMouseWheeled(int delta);
 
 protected:
+	vgui::Menu *m_pContextMenu;
 	HFont m_hFont;
 };
 

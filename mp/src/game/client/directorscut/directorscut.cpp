@@ -411,13 +411,13 @@ void DXEditorHelper::CloseDocument()
 
 void DXEditorHelper::ConvertDMXToKV( const char* pszDocumentName )
 {
-	DECLARE_DMX_CONTEXT_DECOMMIT();
+	//DECLARE_DMX_CONTEXT_DECOMMIT();
 	CloseDocument();
 
 	CDmxElement* document = (CDmxElement*)DMXAlloc( 1000000000 );
 
 	// Mark timestamp so we can document how long it takes to load
-	double flStartTime = Plat_FloatTime();
+	//double flStartTime = Plat_FloatTime();
 
 	// Read for a bit to find "keyvalues2" or "binary"
 	FileHandle_t fh = filesystem->Open(pszDocumentName, "r", "DEFAULT_WRITE_PATH");
@@ -467,6 +467,7 @@ void DXEditorHelper::ConvertDMXToKV( const char* pszDocumentName )
 
 	if (UnserializeDMX(buffer, &document, pszDocumentName))
 	{
+		/*
 		// Populate document
 		const char* rootName = document->GetName();
 		DxElement* dxDocument = new DxElement(rootName);
@@ -688,6 +689,7 @@ void DXEditorHelper::ConvertDMXToKV( const char* pszDocumentName )
 				dxDocument->AddSubKey(dxMovie);
 			}
 		}
+		*/
 	}
 	else
 		Warning("Could not read DMX file %s\n", pszDocumentName);

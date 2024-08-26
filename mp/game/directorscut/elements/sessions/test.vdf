@@ -1,0 +1,278 @@
+"Session"
+{
+	"Name" "session"
+	"ActiveClip"
+    {
+        "Name" "session1"
+        "TimeFrameStart" "0.0000"
+        "TimeFrameDuration" "60.0000"
+        "#TrackGroup" "0"
+        "Picture"
+        {
+            "name" "Picture"
+            "#track" "1"
+            "track0"
+            {
+                "name" "Film"
+                "children"
+                [
+                    "DmeFilmClip"
+                    {
+                        "name" "shot1"
+                        "timeFrame" "DmeTimeFrame"
+                        {
+                            "name" "unnamed"
+                            "start" "0.0000"
+                            "duration" "60.0000"
+                            "offset" "0.0000"
+                            "scale" "1"
+                        }
+                        
+                        "color" "0 0 0 0"
+                        "text" ""
+                        "mute" "0"
+                        "trackGroups" "element_array"
+                        [
+                        ]
+                        "displayScale" "1"
+                        "materialOverlay" "element" ""
+                        "mapname" ""
+                        "camera" "element" "6c720bd7-5257-4d75-b497-5bd655dcc5cc"
+                        "monitorCameras"
+                        [
+                        ]
+                        "activeMonitor" "-1"
+                        "scene" "DmeDag"
+                        {
+                            "name" "scene"
+                            "transform" "DmeTransform"
+                            {
+                                "name" "unnamed"
+                                "position" "vector3" "0 0 0"
+                                "orientation" "quaternion" "0 0 0 1"
+                            }
+                            
+                            "shape" "element" ""
+                            "visible" "1"
+                            "children"
+                            [
+                                "DmeDag"
+                                {
+                                    "name" "Cameras"
+                                    "transform" "DmeTransform"
+                                    {
+                                        "name" "unnamed"
+                                        "position" "vector3" "0 0 0"
+                                        "orientation" "quaternion" "0 0 0 1"
+                                    }
+                                    
+                                    "shape" "element" ""
+                                    "visible" "1"
+                                    "children"
+                                    [
+                                        "element" "6c720bd7-5257-4d75-b497-5bd655dcc5cc"
+                                    ]
+                                }
+                            ]
+                        }
+                        
+                        "aviFile" ""
+                        "fadeIn" "0.0000"
+                        "fadeOut" "0.0000"
+                        "inputs"
+                        [
+                        ]
+                        "operators"
+                        [
+                        ]
+                        "useAviFile" "0"
+                        "animationSets"
+                        [
+                        ]
+                        "bookmarkSets"
+                        [
+                            "DmeBookmarkSet"
+                            {
+                                "name" "Default Set"
+                                "bookmarks"
+                                [
+                                ]
+                            }
+                        ]
+                        "activeBookmarkSet" "0"
+                        "subClipTrackGroup" "element" ""
+                        "volume" "1"
+                        "concommands" "string_array"
+                        [
+                        ]
+                        "convars" "string_array"
+                        [
+                        ]
+                    }
+                ]
+                "collapsed" "0"
+                "mute" "0"
+                "synched" "1"
+                "clipType" "3"
+                "volume" "1"
+                "displayScale" "1"
+            }
+            "visible" "1"
+            "mute" "0"
+            "displayScale" "1"
+            "minimized" "0"
+            "volume" "1"
+            "forcemultitrack" "0"
+        }
+        "displayScale" "1"
+        "materialOverlay" "element" ""
+        "mapname" "ctf_2fort.bsp"
+        "camera" "element" ""
+        "monitorCameras"
+        [
+        ]
+        "activeMonitor" "-1"
+        "scene" "element" ""
+        "aviFile" ""
+        "fadeIn" "0.0000"
+        "fadeOut" "0.0000"
+        "inputs"
+        [
+        ]
+        "operators"
+        [
+        ]
+        "useAviFile" "0"
+        "animationSets"
+        [
+        ]
+        "bookmarkSets"
+        [
+            "DmeBookmarkSet"
+            {
+                "name" "Default Set"
+                "bookmarks"
+                [
+                ]
+            }
+        ]
+        "activeBookmarkSet" "0"
+        
+        "volume" "1"
+        "concommands" "string_array"
+        [
+        ]
+        "convars" "string_array"
+        [
+        ]
+    }
+	"settings" "DmElement"
+	{
+		"name" "sessionSettings"
+		"timeSelection" "DmeTimeSelection"
+		{
+			"name" "timeSelection"
+			"enabled" "1"
+			"relative" "0"
+			"falloff_left" "-214748.3647"
+			"falloff_right" "214748.3647"
+			"hold_left" "-214748.3647"
+			"hold_right" "214748.3647"
+			"interpolator_left" "6"
+			"interpolator_right" "6"
+			"threshold" "0.0005"
+			"resampleinterval" "0.0100"
+			"recordingstate" "2"
+		}
+		
+		"graphEditorState" "DmeGraphEditorState"
+		{
+			"name" "graphEditorState"
+			"displayGrid" "1"
+		}
+		
+		"proceduralPresets" "DmeProceduralPresetSettings"
+		{
+			"name" "proceduralPresets"
+			"jitterscale" "1"
+			"smoothscale" "1"
+			"jitterscale_vector" "2.5"
+			"smoothscale_vector" "2.5"
+			"jitteriterations" "5"
+			"smoothiterations" "5"
+			"staggerinterval" "0.0833"
+		}
+		
+		"renderSettings" "DmElement"
+		{
+			"name" "renderSettings"
+			"frameRate" "24"
+			"lightAverage" "0"
+			"modelLod" "0"
+			"engineCameraEffects" "0"
+			"ambientOcclusionMode" "1"
+			"showAmbientOcclusion" "0"
+			"drawGameRenderablesMask" "216"
+			"drawToolRenderablesMask" "15"
+			"toneMapScale" "1"
+			"ProgressiveRefinement" "DmElement"
+			{
+				"name" "ProgressiveRefinementSettings"
+				"on" "1"
+				"useDepthOfField" "1"
+				"overrideDepthOfFieldQuality" "0"
+				"overrideDepthOfFieldQualityValue" "1"
+				"useMotionBlur" "1"
+				"overrideMotionBlurQuality" "0"
+				"overrideMotionBlurQualityValue" "1"
+				"useAntialiasing" "1"
+				"overrideShutterSpeed" "0"
+				"overrideShutterSpeedValue" "0.020833334"
+			}
+			
+		}
+		
+		"posterSettings" "DmElement"
+		{
+			"name" "posterSettings"
+			"width" "1920"
+			"height" "1080"
+			"DPI" "300"
+			"units" "0"
+			"constrainAspect" "1"
+			"heightInPixels" "1"
+			"widthInPixels" "1"
+		}
+		
+		"movieSettings" "DmElement"
+		{
+			"name" "movieSettings"
+			"videoTarget" "6"
+			"audioTarget" "2"
+			"stereoscopic" "0"
+			"stereoSingleFile" "0"
+			"clearDecals" "0"
+			"width" "1280"
+			"height" "720"
+			"filename" ""
+		}
+		
+		"sharedPresetGroupSettings" "DmElement"
+		{
+			"name" "sharedPresetGroupSettings"
+			"presetGroupInfos"
+			[
+				"DmePresetGroupInfo"
+				{
+					"name" "alyx"
+					"filenameBase" "models\\alyx"
+					"presetGroups"
+					[
+					]
+				}
+			]
+		}
+		
+	}
+	
+}

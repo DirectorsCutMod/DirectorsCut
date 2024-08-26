@@ -24,14 +24,14 @@
 			"name" "string" "timeSelection"
 			"enabled" "bool" "1"
 			"relative" "bool" "0"
-			"falloff_left" "time" "-214748.3647"
-			"falloff_right" "time" "214748.3647"
-			"hold_left" "time" "-214748.3647"
-			"hold_right" "time" "214748.3647"
+			"falloff_left" "float" "-214748.3647"
+			"falloff_right" "float" "214748.3647"
+			"hold_left" "float" "-214748.3647"
+			"hold_right" "float" "214748.3647"
 			"interpolator_left" "int" "6"
 			"interpolator_right" "int" "6"
 			"threshold" "float" "0.0005"
-			"resampleinterval" "time" "0.0100"
+			"resampleinterval" "float" "0.0100"
 			"recordingstate" "int" "2"
 		}
 		
@@ -52,7 +52,7 @@
 			"smoothscale_vector" "float" "2.5"
 			"jitteriterations" "int" "5"
 			"smoothiterations" "int" "5"
-			"staggerinterval" "time" "0.0833"
+			"staggerinterval" "float" "0.0833"
 		}
 		
 		"renderSettings" "DmElement"
@@ -143,9 +143,9 @@
 	{
 		"id" "elementid" "b7fe0240-c4f9-463b-80d6-37bba08b0ff7"
 		"name" "string" "unnamed"
-		"start" "time" "0.0000"
-		"duration" "time" "60.0000"
-		"offset" "time" "0.0000"
+		"start" "float" "0.0000"
+		"duration" "float" "60.0000"
+		"offset" "float" "0.0000"
 		"scale" "float" "1"
 	}
 	
@@ -249,8 +249,8 @@
 	"activeMonitor" "int" "-1"
 	"scene" "element" ""
 	"aviFile" "string" ""
-	"fadeIn" "time" "0.0000"
-	"fadeOut" "time" "0.0000"
+	"fadeIn" "float" "0.0000"
+	"fadeOut" "float" "0.0000"
 	"inputs" "element_array" 
 	[
 	]
@@ -293,9 +293,9 @@
 						{
 							"id" "elementid" "9f770730-a520-42f8-b94f-5b1d417f53a2"
 							"name" "string" "unnamed"
-							"start" "time" "0.0000"
-							"duration" "time" "60.0000"
-							"offset" "time" "0.0000"
+							"start" "float" "0.0000"
+							"duration" "float" "60.0000"
+							"offset" "float" "0.0000"
 							"scale" "float" "1"
 						}
 						
@@ -324,9 +324,9 @@
 												{
 													"id" "elementid" "66295d70-cd51-4e38-89f1-75d4bc836559"
 													"name" "string" "unnamed"
-													"start" "time" "-5.0000"
-													"duration" "time" "70.0000"
-													"offset" "time" "0.0000"
+													"start" "float" "-5.0000"
+													"duration" "float" "70.0000"
+													"offset" "float" "0.0000"
 													"scale" "float" "1"
 												}
 												
@@ -539,7 +539,7 @@
 																{
 																	"id" "elementid" "1f202455-9ab4-4bf1-89c4-0db0772f1184"
 																	"name" "string" "vector3 log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -596,13 +596,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "vector3" "0 0 0"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -629,7 +629,7 @@
 																{
 																	"id" "elementid" "66264976-73ee-4aa0-be32-46f57cd1b05c"
 																	"name" "string" "quaternion log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -686,13 +686,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "quaternion" "0 0 0 1"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -719,7 +719,7 @@
 																{
 																	"id" "elementid" "e07f46ef-7081-40dc-92a8-186dfe56df14"
 																	"name" "string" "vector3 log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -776,13 +776,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "vector3" "0 0 0"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -809,7 +809,7 @@
 																{
 																	"id" "elementid" "279ee589-0902-4511-97dd-883def370c85"
 																	"name" "string" "quaternion log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -866,13 +866,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "quaternion" "0 0 0 1"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -899,7 +899,7 @@
 																{
 																	"id" "elementid" "3beae708-3b03-4a11-83a8-463f51d9b89c"
 																	"name" "string" "vector3 log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -956,13 +956,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "vector3" "0 0 0"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -989,7 +989,7 @@
 																{
 																	"id" "elementid" "8eb3fb6c-1c8b-4caf-959d-e0d211495537"
 																	"name" "string" "quaternion log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -1046,13 +1046,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "quaternion" "0 0 0 1"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -1079,7 +1079,7 @@
 																{
 																	"id" "elementid" "517463c9-e8ea-4140-8faa-f60e3bf95ad6"
 																	"name" "string" "vector3 log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -1136,13 +1136,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "vector3" "0 0 0"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -1169,7 +1169,7 @@
 																{
 																	"id" "elementid" "70d44456-cd49-4442-b854-21f6b54287d1"
 																	"name" "string" "quaternion log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -1226,13 +1226,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "quaternion" "0 0 0 1"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -1259,7 +1259,7 @@
 																{
 																	"id" "elementid" "0bd75a1d-b316-4f74-929d-435f1e637b0a"
 																	"name" "string" "vector3 log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -1316,13 +1316,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "vector3" "0 0 0"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -1349,7 +1349,7 @@
 																{
 																	"id" "elementid" "199c55df-ff62-4a87-845e-daadfc6d236d"
 																	"name" "string" "quaternion log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -1406,13 +1406,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "quaternion" "0 0 0 1"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -1439,7 +1439,7 @@
 																{
 																	"id" "elementid" "9683b2be-e5ed-4e07-9260-7a3817dc2ba1"
 																	"name" "string" "vector3 log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -1496,13 +1496,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "vector3" "0 0 0"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -1529,7 +1529,7 @@
 																{
 																	"id" "elementid" "76445ac0-fb7b-4405-8da2-99a6df1be333"
 																	"name" "string" "quaternion log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -1586,13 +1586,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "quaternion" "0 0 0 1"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -1619,7 +1619,7 @@
 																{
 																	"id" "elementid" "4ef80f57-efcb-45b5-9197-6422c4be9058"
 																	"name" "string" "vector3 log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -1676,13 +1676,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "vector3" "0 0 0"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -1709,7 +1709,7 @@
 																{
 																	"id" "elementid" "1c1749d6-48bc-414f-8050-a61ef0c40291"
 																	"name" "string" "quaternion log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -1766,13 +1766,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "quaternion" "0 0 0 1"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -1799,7 +1799,7 @@
 																{
 																	"id" "elementid" "2f206a5b-6bd9-45d1-a751-c7ac45a84151"
 																	"name" "string" "vector3 log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -1856,13 +1856,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "vector3" "0 0 0"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -1889,7 +1889,7 @@
 																{
 																	"id" "elementid" "c87fd270-f53a-41bc-bb6f-8f09369c6bfd"
 																	"name" "string" "quaternion log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -1946,13 +1946,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "quaternion" "0 0 0 1"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -1979,7 +1979,7 @@
 																{
 																	"id" "elementid" "9e466bba-5b72-4044-8b08-cd240544fac1"
 																	"name" "string" "vector3 log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -2036,13 +2036,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "vector3" "0 0 0"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -2069,7 +2069,7 @@
 																{
 																	"id" "elementid" "f4e97b57-1a19-477f-808c-23665e289e24"
 																	"name" "string" "quaternion log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -2126,13 +2126,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "quaternion" "0 0 0 1"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -2159,7 +2159,7 @@
 																{
 																	"id" "elementid" "9853f52f-bda5-416b-a576-7afdd7581557"
 																	"name" "string" "vector3 log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -2216,13 +2216,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "vector3" "0 0 0"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -2249,7 +2249,7 @@
 																{
 																	"id" "elementid" "c9924b77-c5f1-4453-898d-e0f24e9d7605"
 																	"name" "string" "quaternion log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -2306,13 +2306,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "quaternion" "0 0 0 1"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -2339,7 +2339,7 @@
 																{
 																	"id" "elementid" "9ea8c4ca-ce72-457c-bd85-cafe14fca626"
 																	"name" "string" "vector3 log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -2396,13 +2396,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "vector3" "0 0 0"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -2429,7 +2429,7 @@
 																{
 																	"id" "elementid" "1cc27e47-3de9-437a-9826-42b4644c5614"
 																	"name" "string" "quaternion log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -2486,13 +2486,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "quaternion" "0 0 0 1"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -2519,7 +2519,7 @@
 																{
 																	"id" "elementid" "04c971f0-a521-4ffb-8d5f-468c28e006ea"
 																	"name" "string" "vector3 log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -2576,13 +2576,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "vector3" "0 0 0"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -2609,7 +2609,7 @@
 																{
 																	"id" "elementid" "fde6d6f0-8e7f-4ca6-8d20-1e7d41125e31"
 																	"name" "string" "quaternion log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -2666,13 +2666,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "quaternion" "0 0 0 1"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -2699,7 +2699,7 @@
 																{
 																	"id" "elementid" "f3167f37-8069-491b-87a2-868826c6a884"
 																	"name" "string" "vector3 log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -2756,13 +2756,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "vector3" "0 0 0"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -2789,7 +2789,7 @@
 																{
 																	"id" "elementid" "4a4b370d-410a-4293-8c25-6d2fc95df189"
 																	"name" "string" "quaternion log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -2846,13 +2846,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "quaternion" "0 0 0 1"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -2879,7 +2879,7 @@
 																{
 																	"id" "elementid" "3a827b72-0b0b-4d8b-8492-923ec661616a"
 																	"name" "string" "vector3 log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -2936,13 +2936,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "vector3" "0 0 0"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -2969,7 +2969,7 @@
 																{
 																	"id" "elementid" "81ae1413-fe15-4623-832b-10438342bc8f"
 																	"name" "string" "quaternion log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -3026,13 +3026,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "quaternion" "0 0 0 1"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -3059,7 +3059,7 @@
 																{
 																	"id" "elementid" "1ee0d720-5968-4560-884a-18b5893f80ba"
 																	"name" "string" "vector3 log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -3116,13 +3116,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "vector3" "0 0 0"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -3149,7 +3149,7 @@
 																{
 																	"id" "elementid" "ccf24e0e-6e22-4a16-a630-7a205c078139"
 																	"name" "string" "quaternion log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -3206,13 +3206,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "quaternion" "0 0 0 1"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -3239,7 +3239,7 @@
 																{
 																	"id" "elementid" "90a43020-35c6-43a6-b6ac-570c90d457cb"
 																	"name" "string" "vector3 log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -3296,13 +3296,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "vector3" "0 0 0"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -3329,7 +3329,7 @@
 																{
 																	"id" "elementid" "4a5d4037-3dc5-42d3-917c-909462c47b3e"
 																	"name" "string" "quaternion log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -3386,13 +3386,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "quaternion" "0 0 0 1"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -3419,7 +3419,7 @@
 																{
 																	"id" "elementid" "10576028-b914-4537-9659-069f546f570a"
 																	"name" "string" "vector3 log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -3476,13 +3476,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "vector3" "0 0 0"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -3509,7 +3509,7 @@
 																{
 																	"id" "elementid" "5d482f4d-93d4-4502-b323-2444e22bdc4f"
 																	"name" "string" "quaternion log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -3566,13 +3566,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "quaternion" "0 0 0 1"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -3599,7 +3599,7 @@
 																{
 																	"id" "elementid" "5a555738-f8ba-4e83-8275-2826bc0379ab"
 																	"name" "string" "vector3 log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -3656,13 +3656,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "vector3" "0 0 0"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -3689,7 +3689,7 @@
 																{
 																	"id" "elementid" "8c9f2ff6-3855-4eac-947f-502a518957ff"
 																	"name" "string" "quaternion log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -3746,13 +3746,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "quaternion" "0 0 0 1"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -3779,7 +3779,7 @@
 																{
 																	"id" "elementid" "557e8c49-dd32-4630-86ff-3cc892f802e4"
 																	"name" "string" "vector3 log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -3836,13 +3836,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "vector3" "0 0 0"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -3869,7 +3869,7 @@
 																{
 																	"id" "elementid" "f31ba14e-28f0-4a64-aee1-c4815bf0ad40"
 																	"name" "string" "quaternion log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -3926,13 +3926,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "quaternion" "0 0 0 1"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -3959,7 +3959,7 @@
 																{
 																	"id" "elementid" "df580312-4920-46a0-87a2-e84213a27363"
 																	"name" "string" "vector3 log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -4016,13 +4016,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "vector3" "0 0 0"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -4049,7 +4049,7 @@
 																{
 																	"id" "elementid" "7232be67-3b6a-43a5-847c-10bba4942d1f"
 																	"name" "string" "quaternion log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -4106,13 +4106,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "quaternion" "0 0 0 1"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -4139,7 +4139,7 @@
 																{
 																	"id" "elementid" "acea76c3-e2f1-4c18-ae7c-884befc9b8fe"
 																	"name" "string" "vector3 log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -4196,13 +4196,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "vector3" "0 0 0"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -4229,7 +4229,7 @@
 																{
 																	"id" "elementid" "5a4aa02a-0400-448a-9e56-e52a8a2f07e3"
 																	"name" "string" "quaternion log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -4286,13 +4286,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "quaternion" "0 0 0 1"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -4319,7 +4319,7 @@
 																{
 																	"id" "elementid" "dd644a69-c4bf-48a7-90f3-fc1bd1694e69"
 																	"name" "string" "vector3 log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -4376,13 +4376,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "vector3" "0 0 0"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -4409,7 +4409,7 @@
 																{
 																	"id" "elementid" "35588328-119d-4da3-8054-a11fba1dcbfb"
 																	"name" "string" "quaternion log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -4466,13 +4466,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "quaternion" "0 0 0 1"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -4499,7 +4499,7 @@
 																{
 																	"id" "elementid" "268cf569-607b-4a76-9064-e8a4055c77cf"
 																	"name" "string" "vector3 log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -4556,13 +4556,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "vector3" "0 0 0"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -4589,7 +4589,7 @@
 																{
 																	"id" "elementid" "f38cf02f-4d01-43d8-9baa-fa39eaf1d281"
 																	"name" "string" "quaternion log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -4646,13 +4646,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "quaternion" "0 0 0 1"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -4679,7 +4679,7 @@
 																{
 																	"id" "elementid" "808b468e-10b8-48ec-96c6-386b872a39cc"
 																	"name" "string" "vector3 log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -4736,13 +4736,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "vector3" "0 0 0"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -4769,7 +4769,7 @@
 																{
 																	"id" "elementid" "52e6e17c-f3b0-40da-ae9a-6fe8d452c394"
 																	"name" "string" "quaternion log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -4826,13 +4826,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "quaternion" "0 0 0 1"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -4859,7 +4859,7 @@
 																{
 																	"id" "elementid" "c60e1f9d-d141-4751-adde-2c47d009c185"
 																	"name" "string" "vector3 log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -4916,13 +4916,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "vector3" "0 0 0"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -4949,7 +4949,7 @@
 																{
 																	"id" "elementid" "6c3f0a82-ebc5-4889-9ad9-bcf9909e7f0d"
 																	"name" "string" "quaternion log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -5006,13 +5006,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "quaternion" "0 0 0 1"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -5039,7 +5039,7 @@
 																{
 																	"id" "elementid" "139a18eb-4168-42af-9e89-0336dc79354b"
 																	"name" "string" "vector3 log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -5096,13 +5096,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "vector3" "0 0 0"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -5129,7 +5129,7 @@
 																{
 																	"id" "elementid" "57086f93-37fe-4be5-acf8-474f24d05b99"
 																	"name" "string" "quaternion log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																		"0.0000",
 																		"0.0500",
@@ -5186,13 +5186,13 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "quaternion" "0 0 0 1"
-															"bookmarksX" "time_array" 
+															"bookmarksX" "float_array" 
 															[
 															]
-															"bookmarksY" "time_array" 
+															"bookmarksY" "float_array" 
 															[
 															]
-															"bookmarksZ" "time_array" 
+															"bookmarksZ" "float_array" 
 															[
 															]
 														}
@@ -5223,7 +5223,7 @@
 																{
 																	"id" "elementid" "1457abc6-701d-4681-bbeb-d609f31d7a3a"
 																	"name" "string" "float log"
-																	"times" "time_array" 
+																	"times" "float_array" 
 																	[
 																	]
 																	"curvetypes" "int_array" 
@@ -5240,7 +5240,7 @@
 															"curveinfo" "element" ""
 															"usedefaultvalue" "bool" "0"
 															"defaultvalue" "float" "0"
-															"bookmarks" "time_array" 
+															"bookmarks" "float_array" 
 															[
 															]
 														}
@@ -5333,8 +5333,8 @@
 						}
 						
 						"aviFile" "string" ""
-						"fadeIn" "time" "0.0000"
-						"fadeOut" "time" "0.0000"
+						"fadeIn" "float" "0.0000"
+						"fadeOut" "float" "0.0000"
 						"inputs" "element_array" 
 						[
 						]
@@ -8433,7 +8433,7 @@
 			{
 				"id" "elementid" "19853225-d2a2-4e34-97f8-8a624772d4e4"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -8454,7 +8454,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0.5"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -8491,7 +8491,7 @@
 			{
 				"id" "elementid" "f70129d5-cc20-441e-84c8-4e81c0f7d633"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -8512,7 +8512,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0.5"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -8549,7 +8549,7 @@
 			{
 				"id" "elementid" "1708e328-0a47-4a14-9ca8-f5d2e592b627"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -8570,7 +8570,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -8607,7 +8607,7 @@
 			{
 				"id" "elementid" "5587d917-2c8f-44ed-888b-18042c28e9b6"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -8628,7 +8628,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -8678,7 +8678,7 @@
 			{
 				"id" "elementid" "cbdec6e2-f693-4f08-990b-49175a74af28"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -8699,13 +8699,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -8733,7 +8733,7 @@
 			{
 				"id" "elementid" "7a425960-4837-48df-9ce5-a059dd383a71"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -8754,13 +8754,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "vector3" "32 0 64"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -8797,7 +8797,7 @@
 			{
 				"id" "elementid" "0f7a5efe-a876-402d-ba63-c9fdd16c28fa"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -8818,7 +8818,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -8855,7 +8855,7 @@
 			{
 				"id" "elementid" "5146cc76-37f7-494f-ab57-0d944443f456"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -8876,7 +8876,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -8915,7 +8915,7 @@
 			{
 				"id" "elementid" "76edfee4-985c-46df-9f1e-42faea771454"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -8936,7 +8936,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -8964,7 +8964,7 @@
 			{
 				"id" "elementid" "3b09388b-b9a0-41dd-b1b4-5ef24cca6356"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -8985,7 +8985,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -9024,7 +9024,7 @@
 			{
 				"id" "elementid" "e836ae70-c2a8-489f-af04-d6c664e6d71a"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -9045,7 +9045,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -9073,7 +9073,7 @@
 			{
 				"id" "elementid" "d89c3ef5-6fc5-403d-a5f1-d27808c80b9d"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -9094,7 +9094,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -9133,7 +9133,7 @@
 			{
 				"id" "elementid" "fb342844-6b7c-45b4-a9bb-f023f25a0818"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -9154,7 +9154,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -9182,7 +9182,7 @@
 			{
 				"id" "elementid" "2c616b10-1236-43ee-a1a5-591e403df972"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -9203,7 +9203,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -9242,7 +9242,7 @@
 			{
 				"id" "elementid" "9fd82d92-5358-47c6-ae9e-16366bbe6d0b"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -9263,7 +9263,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -9291,7 +9291,7 @@
 			{
 				"id" "elementid" "b0846d7d-f7f4-4a5a-98e3-318e00e56bde"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -9312,7 +9312,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -9351,7 +9351,7 @@
 			{
 				"id" "elementid" "805aae46-e3e8-4ffc-bc79-57c8531b5fc7"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -9372,7 +9372,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -9400,7 +9400,7 @@
 			{
 				"id" "elementid" "d2662389-586a-4b37-9691-6d5e298cefd4"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -9421,7 +9421,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -9460,7 +9460,7 @@
 			{
 				"id" "elementid" "a28d1e21-e855-473d-b174-fec0158ccd0e"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -9481,7 +9481,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -9509,7 +9509,7 @@
 			{
 				"id" "elementid" "ebe7ef16-eff4-4a0c-a298-10002c5a46bd"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -9530,7 +9530,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -9569,7 +9569,7 @@
 			{
 				"id" "elementid" "1a23ec70-b60c-4004-b085-a6e7ea14115d"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -9590,7 +9590,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -9618,7 +9618,7 @@
 			{
 				"id" "elementid" "18597913-8554-43e0-9643-9ffebc7edb0c"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -9639,7 +9639,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -9678,7 +9678,7 @@
 			{
 				"id" "elementid" "f98281d7-5350-4040-9645-aad6eba3ac3e"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -9699,7 +9699,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -9727,7 +9727,7 @@
 			{
 				"id" "elementid" "2520b282-97a1-47f9-9b93-99c128f32260"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -9748,7 +9748,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -9787,7 +9787,7 @@
 			{
 				"id" "elementid" "7ee18ba4-08fc-48af-9b2d-7672a70ee377"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -9808,7 +9808,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -9836,7 +9836,7 @@
 			{
 				"id" "elementid" "80b37e4f-5b98-465d-8e1b-747cc29382bd"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -9857,7 +9857,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -9896,7 +9896,7 @@
 			{
 				"id" "elementid" "4db3e6f3-248b-4f6c-93cc-9d5018e79c77"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -9917,7 +9917,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -9945,7 +9945,7 @@
 			{
 				"id" "elementid" "c87267b2-7158-4e68-be68-7b4be0980498"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -9966,7 +9966,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -10003,7 +10003,7 @@
 			{
 				"id" "elementid" "7e91c546-ba90-4eb5-b3f9-b9014ea1d7a8"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -10024,7 +10024,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -10061,7 +10061,7 @@
 			{
 				"id" "elementid" "a968005a-59c2-40e3-874f-cb3b686c2550"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -10082,7 +10082,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -10119,7 +10119,7 @@
 			{
 				"id" "elementid" "63a2400f-6104-4c97-a50b-77831ef6b8c2"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -10140,7 +10140,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0.5"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -10177,7 +10177,7 @@
 			{
 				"id" "elementid" "e1e105e5-dc5e-4b88-88bb-8a6bd0ce30d2"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -10198,7 +10198,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0.5"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -10237,7 +10237,7 @@
 			{
 				"id" "elementid" "f4af5f46-e998-4213-ac5e-eca1cb68ed2d"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -10258,7 +10258,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -10286,7 +10286,7 @@
 			{
 				"id" "elementid" "542cad30-b2db-431b-842e-aab08e8e2880"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -10307,7 +10307,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -10346,7 +10346,7 @@
 			{
 				"id" "elementid" "ca31f8f6-5a99-4177-9dbb-ada47f53d3a1"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -10367,7 +10367,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -10395,7 +10395,7 @@
 			{
 				"id" "elementid" "adde15c7-0d94-4c39-96a4-2824beb42f51"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -10416,7 +10416,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -10455,7 +10455,7 @@
 			{
 				"id" "elementid" "29d0aca5-8e0b-4ae7-8bb9-e832bc2c33da"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -10476,7 +10476,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -10504,7 +10504,7 @@
 			{
 				"id" "elementid" "e60d8029-cac5-4bd3-b1cd-c4828384750d"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -10525,7 +10525,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -10562,7 +10562,7 @@
 			{
 				"id" "elementid" "efd5eb6c-65df-4ea5-b4f7-db8fcac928fe"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -10583,7 +10583,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -10622,7 +10622,7 @@
 			{
 				"id" "elementid" "1bca90d0-33c8-4e6f-a93c-8c2fe2a59274"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -10643,7 +10643,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -10671,7 +10671,7 @@
 			{
 				"id" "elementid" "f4bf6263-237f-4528-93a1-482bd7ccc5a7"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -10692,7 +10692,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -10731,7 +10731,7 @@
 			{
 				"id" "elementid" "01b039dd-b312-4055-aa23-ce6e76ba8fb3"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -10752,7 +10752,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -10780,7 +10780,7 @@
 			{
 				"id" "elementid" "b9c29102-8caa-40fc-9cb5-28d8c917cccc"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -10801,7 +10801,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -10840,7 +10840,7 @@
 			{
 				"id" "elementid" "96180781-4e91-48f6-a7ad-1d188dd25a0b"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -10861,7 +10861,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -10889,7 +10889,7 @@
 			{
 				"id" "elementid" "474dc792-3d0e-445f-9cea-e2bc484ecaf5"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -10910,7 +10910,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -10949,7 +10949,7 @@
 			{
 				"id" "elementid" "ea79bf1d-7fef-41a6-8e2d-c171ccdead6c"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -10970,7 +10970,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -10998,7 +10998,7 @@
 			{
 				"id" "elementid" "627754f6-ab74-4439-af83-10083a523fc3"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -11019,7 +11019,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -11056,7 +11056,7 @@
 			{
 				"id" "elementid" "95c59080-7efd-4790-8ba1-a6d215304c96"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -11077,7 +11077,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -11114,7 +11114,7 @@
 			{
 				"id" "elementid" "9652cdbc-5d8b-4f85-bb40-410cde25075a"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -11135,7 +11135,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -11172,7 +11172,7 @@
 			{
 				"id" "elementid" "b52883b6-8cab-445e-9941-6c4868a74727"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -11193,7 +11193,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -11230,7 +11230,7 @@
 			{
 				"id" "elementid" "7aa3e1c9-bbdc-49dd-951b-9647115a9775"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -11251,7 +11251,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -11288,7 +11288,7 @@
 			{
 				"id" "elementid" "8f658f89-c8af-4b78-8ce3-c32299ebadd0"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -11309,7 +11309,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -11348,7 +11348,7 @@
 			{
 				"id" "elementid" "7696aa97-c813-41de-a5ed-a9fa4315e74a"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -11369,7 +11369,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -11397,7 +11397,7 @@
 			{
 				"id" "elementid" "ce2e1a84-bab5-4a5a-9511-8e2bffc56115"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -11418,7 +11418,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -11455,7 +11455,7 @@
 			{
 				"id" "elementid" "07718cf3-a9ee-4bc6-acfd-b8a090a40e1a"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -11476,7 +11476,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -11514,7 +11514,7 @@
 			{
 				"id" "elementid" "6f918e49-e818-47c3-aee3-9ff67591e9f7"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -11535,13 +11535,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -11569,7 +11569,7 @@
 			{
 				"id" "elementid" "41bcfb66-9035-41bb-89b1-54f420bab59e"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -11590,13 +11590,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -11634,7 +11634,7 @@
 			{
 				"id" "elementid" "b15c3d96-365e-42be-b44d-6c1115294e30"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -12027,13 +12027,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -12061,7 +12061,7 @@
 			{
 				"id" "elementid" "d32cb8e0-bbc4-44ed-9f81-dcd25799071b"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -12446,13 +12446,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -12490,7 +12490,7 @@
 			{
 				"id" "elementid" "520d4ae9-3295-4aed-b610-c8ba4e476d09"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9584",
@@ -12589,13 +12589,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -12623,7 +12623,7 @@
 			{
 				"id" "elementid" "4fd8294d-44b4-4267-847f-70b3501e3d46"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -12644,13 +12644,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -12688,7 +12688,7 @@
 			{
 				"id" "elementid" "dac9aaf8-0ee6-4ba4-b80d-27f5e6872fd8"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -13061,13 +13061,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -13095,7 +13095,7 @@
 			{
 				"id" "elementid" "690e3774-5fbd-4225-8545-df749d2d4084"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -13116,13 +13116,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -13160,7 +13160,7 @@
 			{
 				"id" "elementid" "b66ffc91-78a0-4cf6-8003-f74870050aba"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -13563,13 +13563,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -13597,7 +13597,7 @@
 			{
 				"id" "elementid" "03772f58-eef4-4686-b5be-70e25ae8ec57"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -13618,13 +13618,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -13662,7 +13662,7 @@
 			{
 				"id" "elementid" "d420d993-3b4c-402c-8481-9888b6651fc2"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -13933,13 +13933,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -13967,7 +13967,7 @@
 			{
 				"id" "elementid" "e8fee8f7-5642-468c-8fc2-e2227aa64b82"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -13988,13 +13988,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -14032,7 +14032,7 @@
 			{
 				"id" "elementid" "68e2e4f1-78b6-4d59-8461-dd155fe6862d"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -14223,13 +14223,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -14257,7 +14257,7 @@
 			{
 				"id" "elementid" "6375bd52-aeed-4473-af00-072f957263fb"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -14278,13 +14278,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -14322,7 +14322,7 @@
 			{
 				"id" "elementid" "92e4735c-e332-4ea4-b384-b4e6b569f905"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -14653,13 +14653,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -14687,7 +14687,7 @@
 			{
 				"id" "elementid" "afe31a11-98e9-4067-aeed-b0caee553006"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -14708,13 +14708,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -14752,7 +14752,7 @@
 			{
 				"id" "elementid" "d8a378b1-b86c-4025-953f-22db0ba4ff58"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -14793,13 +14793,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -14827,7 +14827,7 @@
 			{
 				"id" "elementid" "9b7e5401-f095-4104-8028-379a827b2c9a"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -14848,13 +14848,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -14892,7 +14892,7 @@
 			{
 				"id" "elementid" "21b86dc2-c0a0-4f84-b51b-1eff75880a1f"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -15317,13 +15317,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -15351,7 +15351,7 @@
 			{
 				"id" "elementid" "2df5efd0-81d8-4f5d-902d-adbab07af1c9"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -15372,13 +15372,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -15416,7 +15416,7 @@
 			{
 				"id" "elementid" "2d72c8e7-db26-41c9-9ca5-85ecaf7b27d8"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -15835,13 +15835,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -15869,7 +15869,7 @@
 			{
 				"id" "elementid" "0a3495b7-5a69-43cf-90f4-f3609f778ea0"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -15890,13 +15890,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -15934,7 +15934,7 @@
 			{
 				"id" "elementid" "263e3e2b-3268-4b41-bf37-870468e94f39"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -16327,13 +16327,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -16361,7 +16361,7 @@
 			{
 				"id" "elementid" "acd0a5fe-6685-4a4f-a1f8-ccba8c10f027"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -16382,13 +16382,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -16426,7 +16426,7 @@
 			{
 				"id" "elementid" "0b1835f3-dfaf-46aa-92e8-5d431f26edb1"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -16575,13 +16575,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -16609,7 +16609,7 @@
 			{
 				"id" "elementid" "b2bb046e-2a08-4f69-b108-4311ab9ed94d"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -16630,13 +16630,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -16674,7 +16674,7 @@
 			{
 				"id" "elementid" "953ffb2b-f8d9-4df7-979d-88ad70022397"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.6667",
@@ -17101,13 +17101,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -17135,7 +17135,7 @@
 			{
 				"id" "elementid" "7855c816-4152-46d9-95e8-00246a51eff2"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -17156,13 +17156,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -17200,7 +17200,7 @@
 			{
 				"id" "elementid" "a93dbea2-db45-400c-b134-229b94b97460"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.0000",
@@ -17605,13 +17605,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -17639,7 +17639,7 @@
 			{
 				"id" "elementid" "fd584b74-8b6e-4da6-b192-b2efb8efaeac"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -17660,13 +17660,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -17704,7 +17704,7 @@
 			{
 				"id" "elementid" "c8bd1966-9791-458a-a441-ed0c9cdb2fbe"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -17937,13 +17937,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -17971,7 +17971,7 @@
 			{
 				"id" "elementid" "75281b58-9d48-430c-be71-93fc7d78b545"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -17992,13 +17992,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -18036,7 +18036,7 @@
 			{
 				"id" "elementid" "9adeb8e4-153a-4eae-9638-6485073762fb"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -18115,13 +18115,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -18149,7 +18149,7 @@
 			{
 				"id" "elementid" "e86d8970-3175-43c9-9362-d603614df637"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -18170,13 +18170,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -18214,7 +18214,7 @@
 			{
 				"id" "elementid" "435fbc46-50b7-4ba2-a15a-78bca9143dd2"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -18269,13 +18269,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -18303,7 +18303,7 @@
 			{
 				"id" "elementid" "ab8dd5db-a871-42f6-aa60-ec0e8cdd6722"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -18324,13 +18324,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -18368,7 +18368,7 @@
 			{
 				"id" "elementid" "c786ffe9-eb76-4968-91aa-ca5f28cc0ab2"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -18421,13 +18421,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -18455,7 +18455,7 @@
 			{
 				"id" "elementid" "9f743d96-a3fc-4b6a-a634-36018183cfb2"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -18476,13 +18476,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -18520,7 +18520,7 @@
 			{
 				"id" "elementid" "b98d926b-c6ab-438a-9d95-6c02f0fff179"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -18599,13 +18599,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -18633,7 +18633,7 @@
 			{
 				"id" "elementid" "cde1cf36-f8b5-4b3f-b8d2-c68d053667fc"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -18654,13 +18654,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -18698,7 +18698,7 @@
 			{
 				"id" "elementid" "50e65f28-5ee3-4255-af69-9748cc587374"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -18757,13 +18757,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -18791,7 +18791,7 @@
 			{
 				"id" "elementid" "b7caf636-efd6-4780-9ea8-d9b416d1a0c6"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -18812,13 +18812,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -18856,7 +18856,7 @@
 			{
 				"id" "elementid" "c34c391f-c59d-4e08-b25b-02a1e3aa4526"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -18915,13 +18915,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -18949,7 +18949,7 @@
 			{
 				"id" "elementid" "25f369ec-56c6-421a-8045-7e4330ebaf10"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -18970,13 +18970,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -19014,7 +19014,7 @@
 			{
 				"id" "elementid" "2b431f78-a75b-48ca-88e4-8b8f8ddf8b72"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -19069,13 +19069,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -19103,7 +19103,7 @@
 			{
 				"id" "elementid" "cca031cc-f194-4b28-b0c5-bfe2ea899af8"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -19124,13 +19124,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -19168,7 +19168,7 @@
 			{
 				"id" "elementid" "0f13c913-f71e-4493-acee-129ab1c243d3"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -19219,13 +19219,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -19253,7 +19253,7 @@
 			{
 				"id" "elementid" "a137f8ac-a7ec-45d1-b2e7-d55427549736"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -19274,13 +19274,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -19318,7 +19318,7 @@
 			{
 				"id" "elementid" "7387012f-0f79-4dfd-906f-6b5c29d00286"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -19369,13 +19369,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -19403,7 +19403,7 @@
 			{
 				"id" "elementid" "5b68a8e4-39da-4789-aeff-33da4022771f"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -19424,13 +19424,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -19468,7 +19468,7 @@
 			{
 				"id" "elementid" "97c4f0ce-0beb-4c90-a934-22b1f4439d2d"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -19523,13 +19523,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -19557,7 +19557,7 @@
 			{
 				"id" "elementid" "92004cde-db15-4373-a6b3-44a3134953bc"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -19578,13 +19578,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -19622,7 +19622,7 @@
 			{
 				"id" "elementid" "e51d5055-d8ad-4abd-8a35-bc248e48e5cd"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -19673,13 +19673,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -19707,7 +19707,7 @@
 			{
 				"id" "elementid" "b29e6409-e99e-4596-aead-5073509d0584"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -19728,13 +19728,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -19772,7 +19772,7 @@
 			{
 				"id" "elementid" "5647010e-83ab-4c46-bc1f-9ee4d59e8d6e"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -19823,13 +19823,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -19857,7 +19857,7 @@
 			{
 				"id" "elementid" "9e05012d-0d79-480f-830f-fa75ace778a4"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -19878,13 +19878,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -19922,7 +19922,7 @@
 			{
 				"id" "elementid" "b2f27515-c8f9-4023-b709-1695289dac04"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -19985,13 +19985,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -20019,7 +20019,7 @@
 			{
 				"id" "elementid" "4f5f23e4-0599-47b0-af4e-8564b692738b"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -20040,13 +20040,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -20084,7 +20084,7 @@
 			{
 				"id" "elementid" "24486b30-21d3-4728-8cf7-4f9505635c7d"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -20135,13 +20135,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -20169,7 +20169,7 @@
 			{
 				"id" "elementid" "7b8b8cc6-6977-45f2-aee2-4906f5eda374"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -20190,13 +20190,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -20234,7 +20234,7 @@
 			{
 				"id" "elementid" "ea0301b9-e656-49fb-8ef4-2f166df57429"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -20285,13 +20285,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -20319,7 +20319,7 @@
 			{
 				"id" "elementid" "abb3648f-61d3-4389-bb83-da7e257795be"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -20340,13 +20340,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -20384,7 +20384,7 @@
 			{
 				"id" "elementid" "d69e1142-3e91-461f-b3f8-55a452313405"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -20495,13 +20495,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -20529,7 +20529,7 @@
 			{
 				"id" "elementid" "203559fc-f4e9-401c-af86-2bc464773f1b"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -20550,13 +20550,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -20594,7 +20594,7 @@
 			{
 				"id" "elementid" "cd102414-a084-484d-9034-cf8dcdfc37f7"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -20645,13 +20645,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -20679,7 +20679,7 @@
 			{
 				"id" "elementid" "1a9fec2b-99e1-48ec-a471-b3c0a0c0ee43"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -20700,13 +20700,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -20744,7 +20744,7 @@
 			{
 				"id" "elementid" "8c97b04e-1a4c-40d6-b871-f2d93b65f104"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -20795,13 +20795,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -20829,7 +20829,7 @@
 			{
 				"id" "elementid" "4b6aa4a6-c674-422c-8a29-1b1016a9b1ce"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -20850,13 +20850,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -20894,7 +20894,7 @@
 			{
 				"id" "elementid" "c1b3165f-e863-402e-9082-f6284d39866a"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -20951,13 +20951,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -20985,7 +20985,7 @@
 			{
 				"id" "elementid" "94820ee3-dca6-490b-9e4d-6fe0194b76f4"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -21006,13 +21006,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -21050,7 +21050,7 @@
 			{
 				"id" "elementid" "d1452f60-757d-45e6-8b84-faff53d04a04"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -21109,13 +21109,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -21143,7 +21143,7 @@
 			{
 				"id" "elementid" "76ec445a-e1ef-4ae6-b9e5-5fe1a5a3180c"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -21164,13 +21164,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -21208,7 +21208,7 @@
 			{
 				"id" "elementid" "c26efc86-5078-4a36-94cf-321bf9b9a006"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -21265,13 +21265,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -21299,7 +21299,7 @@
 			{
 				"id" "elementid" "7f0b3ee1-66bf-469f-b931-8a5dd3187b88"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -21320,13 +21320,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -21364,7 +21364,7 @@
 			{
 				"id" "elementid" "fe4503a3-594c-469d-99f2-bd2b3684d553"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -21429,13 +21429,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -21463,7 +21463,7 @@
 			{
 				"id" "elementid" "86e0ad1c-8fd9-442f-8fae-c0b28d9ab078"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -21484,13 +21484,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -21528,7 +21528,7 @@
 			{
 				"id" "elementid" "07924628-ae83-4d66-a338-ec8125887963"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -21587,13 +21587,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -21621,7 +21621,7 @@
 			{
 				"id" "elementid" "a64488f3-acf0-4efa-bd88-e5169e9c78d5"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -21642,13 +21642,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -21686,7 +21686,7 @@
 			{
 				"id" "elementid" "bb31ba37-33a8-4bb1-b204-cb3af83c4c5c"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -21745,13 +21745,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -21779,7 +21779,7 @@
 			{
 				"id" "elementid" "b8133238-a1f9-4fe7-83df-14861b6f4c6b"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -21800,13 +21800,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -21844,7 +21844,7 @@
 			{
 				"id" "elementid" "000c0f2f-d307-4533-a378-0129f8d577a9"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -21909,13 +21909,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -21943,7 +21943,7 @@
 			{
 				"id" "elementid" "754b9ba6-f5ce-4a9e-8219-914b383e4397"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -21964,13 +21964,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -22008,7 +22008,7 @@
 			{
 				"id" "elementid" "703d2080-4a83-4a05-8e21-db1a1fb57a8e"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -22067,13 +22067,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -22101,7 +22101,7 @@
 			{
 				"id" "elementid" "882251cb-863b-4526-8abb-ac802ae2e064"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -22122,13 +22122,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -22166,7 +22166,7 @@
 			{
 				"id" "elementid" "f78b4a74-acc7-4db6-883b-5eb0eeeab94a"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -22225,13 +22225,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -22259,7 +22259,7 @@
 			{
 				"id" "elementid" "10c33507-d0a9-44ae-a89f-1efabdb88971"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -22280,13 +22280,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -22324,7 +22324,7 @@
 			{
 				"id" "elementid" "746da7cb-0405-4c2f-aee6-bb890bac8536"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -22381,13 +22381,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -22415,7 +22415,7 @@
 			{
 				"id" "elementid" "731a573a-7554-45bd-b5e8-28879f05405d"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -22436,13 +22436,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -22480,7 +22480,7 @@
 			{
 				"id" "elementid" "c2dfde6b-e52d-4443-9bfc-cca8c6216847"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -22539,13 +22539,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -22573,7 +22573,7 @@
 			{
 				"id" "elementid" "4178715f-8e6a-4304-b65f-0972959bbd14"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -22594,13 +22594,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -22638,7 +22638,7 @@
 			{
 				"id" "elementid" "259d5ed2-f52f-4ac2-8199-b0bd6d4198fe"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -22697,13 +22697,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -22731,7 +22731,7 @@
 			{
 				"id" "elementid" "c2d8df9e-b7ae-4e1b-99cc-2ea2d6e85900"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -22752,13 +22752,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -22796,7 +22796,7 @@
 			{
 				"id" "elementid" "e88f36f3-90f1-4c7f-a90f-5b734ab487b5"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -23219,13 +23219,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -23253,7 +23253,7 @@
 			{
 				"id" "elementid" "09ece31a-0b63-465e-9d02-a3d5bef075b1"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -23274,13 +23274,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -23318,7 +23318,7 @@
 			{
 				"id" "elementid" "c2da9094-63d1-479d-8971-45a642be72fa"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -23735,13 +23735,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -23769,7 +23769,7 @@
 			{
 				"id" "elementid" "31f49581-3e7d-4980-aac3-7572836a09ef"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -23790,13 +23790,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -23834,7 +23834,7 @@
 			{
 				"id" "elementid" "c88a0f07-bdc9-4cd5-b086-7f97cef66471"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -24259,13 +24259,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -24293,7 +24293,7 @@
 			{
 				"id" "elementid" "cc8e8a06-0f02-4ba0-9f9f-3ac53faf9afe"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -24314,13 +24314,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -24358,7 +24358,7 @@
 			{
 				"id" "elementid" "9e0da2a8-a3c1-4430-abfe-af7b3222bf57"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"4.8750",
@@ -24497,13 +24497,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -24531,7 +24531,7 @@
 			{
 				"id" "elementid" "c906062b-c37f-49d7-9e75-fdbe935e204a"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -24552,13 +24552,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -24596,7 +24596,7 @@
 			{
 				"id" "elementid" "ff57d469-212d-4b5d-a8c0-f77928540352"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -25015,13 +25015,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -25049,7 +25049,7 @@
 			{
 				"id" "elementid" "2c6125b4-d72c-460a-8738-7dad2ce10213"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -25070,13 +25070,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -25114,7 +25114,7 @@
 			{
 				"id" "elementid" "cd1e7477-a455-4c84-a4d8-543ce00112e2"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -25511,13 +25511,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -25545,7 +25545,7 @@
 			{
 				"id" "elementid" "be2bde8b-114e-4bef-838f-b953f3166635"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -25566,13 +25566,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -25610,7 +25610,7 @@
 			{
 				"id" "elementid" "9b519a4f-7797-475c-b985-bba5ba6c0413"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -26027,13 +26027,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -26061,7 +26061,7 @@
 			{
 				"id" "elementid" "937274dc-fc9d-4cca-8e68-9084add5ca28"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -26082,13 +26082,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -26126,7 +26126,7 @@
 			{
 				"id" "elementid" "a34577e0-28a0-46b0-99a9-90249338b0bc"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"3.9167",
@@ -26359,13 +26359,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -26393,7 +26393,7 @@
 			{
 				"id" "elementid" "0e40c1f5-dfcf-41b9-9f3e-25b9876c4dfd"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -26414,13 +26414,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -26457,7 +26457,7 @@
 			{
 				"id" "elementid" "d929d6f1-a0dd-4e42-b773-c529fd9add84"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -26478,7 +26478,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -26515,7 +26515,7 @@
 			{
 				"id" "elementid" "815380f0-7a99-4792-991a-0fbd7b94ef16"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -26536,7 +26536,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -26573,7 +26573,7 @@
 			{
 				"id" "elementid" "72731a27-1537-4e4d-95f3-f4475f19db0b"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -26594,7 +26594,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0.5"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -26631,7 +26631,7 @@
 			{
 				"id" "elementid" "635dc39c-2d94-42ce-ab7c-ad9f5901eb59"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -26652,7 +26652,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0.5"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -26689,7 +26689,7 @@
 			{
 				"id" "elementid" "d659caf6-572c-4cc6-a33c-adf93e347b4f"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -26710,7 +26710,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0.5"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -26747,7 +26747,7 @@
 			{
 				"id" "elementid" "aa552f9f-1b45-4a41-9d9f-182f39cf3be7"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -26768,7 +26768,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0.5"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -26805,7 +26805,7 @@
 			{
 				"id" "elementid" "ba3b759d-c54a-4ec3-8a96-4b555b64f6e5"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -26826,7 +26826,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0.5"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -26863,7 +26863,7 @@
 			{
 				"id" "elementid" "80f50e2f-0b9d-4964-ae56-32c11eb725c3"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -26884,7 +26884,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0.5"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -26921,7 +26921,7 @@
 			{
 				"id" "elementid" "e52b6ff5-0946-4554-9fbe-f64cb42aa3cc"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -26942,7 +26942,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0.5"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -26979,7 +26979,7 @@
 			{
 				"id" "elementid" "859f3ff1-7cb9-4020-88f3-9f5a603b11d4"
 				"name" "string" "float log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -27000,7 +27000,7 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "1"
 		"defaultvalue" "float" "0.5"
-		"bookmarks" "time_array" 
+		"bookmarks" "float_array" 
 		[
 		]
 	}
@@ -27038,7 +27038,7 @@
 			{
 				"id" "elementid" "12a3649d-abd2-4646-be05-c7845b90d922"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -27059,13 +27059,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -27093,7 +27093,7 @@
 			{
 				"id" "elementid" "2fa4a13b-be94-4ef5-bf3e-d9fb4dff6fb5"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -27114,13 +27114,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -27158,7 +27158,7 @@
 			{
 				"id" "elementid" "4bd908f2-c0c3-437e-9276-92232780e614"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -27179,13 +27179,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -27213,7 +27213,7 @@
 			{
 				"id" "elementid" "3fe79224-4448-4964-a928-348e743c34f6"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -27234,13 +27234,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -27278,7 +27278,7 @@
 			{
 				"id" "elementid" "68496aa6-fc75-4ad1-ba90-f492f1fd2753"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -27299,13 +27299,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -27333,7 +27333,7 @@
 			{
 				"id" "elementid" "d8abd00c-2f10-46c9-a18d-41fec1873ec7"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -27354,13 +27354,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -27398,7 +27398,7 @@
 			{
 				"id" "elementid" "eeec05aa-eec1-4e2d-90a4-03dd4c4adce9"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -27419,13 +27419,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -27453,7 +27453,7 @@
 			{
 				"id" "elementid" "6460e9ff-ae10-4141-8355-342aa9eeafb6"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -27474,13 +27474,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -27518,7 +27518,7 @@
 			{
 				"id" "elementid" "744adaad-2fde-417e-b6f0-4baa96be95a2"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -27539,13 +27539,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -27573,7 +27573,7 @@
 			{
 				"id" "elementid" "58f78f67-e7ab-4525-88e1-20ef04a2684c"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -27594,13 +27594,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -27638,7 +27638,7 @@
 			{
 				"id" "elementid" "a2514f39-1b79-4adb-9faa-dc5a52c56a2a"
 				"name" "string" "quaternion log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -27659,13 +27659,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "quaternion" "0 0 0 1"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -27693,7 +27693,7 @@
 			{
 				"id" "elementid" "8941946f-ff97-49b2-bb7a-ce669e622503"
 				"name" "string" "vector3 log"
-				"times" "time_array" 
+				"times" "float_array" 
 				[
 					"2.9584",
 					"13.2499"
@@ -27714,13 +27714,13 @@
 		"curveinfo" "element" ""
 		"usedefaultvalue" "bool" "0"
 		"defaultvalue" "vector3" "0 0 0"
-		"bookmarksX" "time_array" 
+		"bookmarksX" "float_array" 
 		[
 		]
-		"bookmarksY" "time_array" 
+		"bookmarksY" "float_array" 
 		[
 		]
-		"bookmarksZ" "time_array" 
+		"bookmarksZ" "float_array" 
 		[
 		]
 	}
@@ -27751,7 +27751,7 @@
 	"zeroParallaxDistance" "float" "75"
 	"eyeSeparation" "float" "0.75"
 	"aperture" "float" "0.200000003"
-	"shutterSpeed" "time" "0.0208"
+	"shutterSpeed" "float" "0.0208"
 	"toneMapScale" "float" "1"
 	"SSAOBias" "float" "0.0005"
 	"SSAOStrength" "float" "1"
