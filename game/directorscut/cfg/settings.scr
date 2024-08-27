@@ -32,7 +32,7 @@
 
 
 // Half-Life Server Configuration Layout Script (stores last settings chosen, too)
-// File generated:  Fri Apr 02 07:04:35 PM
+// File generated:  Mon Aug 26 10:39:08 PM
 //
 //
 // Cvar	-	Setting
@@ -62,25 +62,18 @@ DESCRIPTION SERVER_OPTIONS
 		{ "32" }
 	}
 
-	"sv_password"
-	{
-		"#Valve_Server_Password"
-		{ STRING }
-		{ "" }
-	}
-
 	"mp_timelimit"
 	{
 		"#Valve_Time_Limit"
-		{ NUMBER 0.000000 -1.000000 }
-		{ "0.000000" }
+		{ NUMBER 0 -1 }
+		{ "0" }
 	}
 
 	"mp_fraglimit"
 	{
 		"#Valve_Frag_Limit"
-		{ NUMBER 0.000000 -1.000000 }
-		{ "0.000000" }
+		{ NUMBER 0 -1 }
+		{ "0" }
 	}
 
 	"mp_teamplay"
@@ -101,19 +94,21 @@ DESCRIPTION SERVER_OPTIONS
 	{
 		"#Valve_Footsteps"
 		{ BOOL }
-		{ "1" }
+		{ "0" }
 	}
 
 	"mp_flashlight"
 	{
 		"#Valve_Flashlight"
 		{ BOOL }
-		{ "0" }
+		{ "1" }
 	}
+
 	"mp_forcerespawn"
 	{
 		"#Valve_Force_Respawn"
 		{ BOOL }
 		{ "0" }
 	}
+
 }

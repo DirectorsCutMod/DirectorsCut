@@ -11,6 +11,8 @@
 # Director's Cut
 A community-driven filmmaking mod for the Source engine.
 
+Based on [source-sdk-vs2022](https://github.com/Source-SDK-Resources/source-sdk-vs2022).
+
 ## Links
 - [Director's Cut Github](https://github.com/KiwifruitDev/DirectorsCut)
 - [Director's Cut Discord](https://discord.com/invite/zrjApe5gkk)
@@ -46,4 +48,4 @@ Please feel free to submit any issues you find as well.
 Some parts of the code in Director's Cut is AI-assisted using [GitHub Copilot](https://copilot.github.com/).
 
 ### Third-Party Legal Notices
-Please view [Third-Party Legal Notices.md](Third-Party Legal Notices.md) for more information.
+Please view [Third-Party Legal Notices.md](Third-Party%20Legal%20Notices.md) for more information.

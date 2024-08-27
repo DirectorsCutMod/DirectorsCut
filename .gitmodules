@@ -1,0 +1,6 @@
+[submodule "src/thirdparty/openusd"]
+	path = src/thirdparty/openusd
+	url = https://github.com/PixarAnimationStudios/OpenUSD.git
+[submodule "src/thirdparty/source-2013-imgui"]
+	path = src/thirdparty/source-2013-imgui
+	url = https://github.com/Source-SDK-Resources/source-2013-imgui.git
