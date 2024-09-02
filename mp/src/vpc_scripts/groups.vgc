@@ -64,3 +64,8 @@ $Group "dedicated"
 	"tier1"
 }
 
+$Group "tools"
+{
+	"dx_vgui"
+	"dxfm"
+}

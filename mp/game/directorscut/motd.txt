@@ -1,0 +1,2 @@
+Welcome to Director's Cut!
+Press F11 to toggle editor mode.

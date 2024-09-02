@@ -5743,7 +5743,9 @@ int C_BaseEntity::RestoreData( const char *context, int slot, int type )
 
 	// This assert will fire if the server ack'd a CUserCmd which we hadn't predicted yet...
 	// In that case, we'd be comparing "old" data from this "unused" slot with the networked data and reporting all kinds of prediction errors possibly.
+#ifndef DX_SUPPRESS_ANNOYING_ASSERTS
 	Assert( slot == SLOT_ORIGINALDATA || slot <= m_nIntermediateDataCount );
+#endif
 
 	char sz[ 64 ];
 	sz[0] = 0;

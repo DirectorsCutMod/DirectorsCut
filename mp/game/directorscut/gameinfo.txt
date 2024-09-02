@@ -1,0 +1,53 @@
+"GameInfo"
+{
+    "Game" "Director's Cut"
+    "GameLogo" "1"
+    "Type" "multiplayer_only"
+    "NoDifficulty" "1"
+    "HasPortals" "0"
+    "NoCrosshair" "1"
+    "AdvCrosshair" "0"
+    "NoModels" "0"
+    "NoHIModel" "1"
+    "Hidden_Maps"
+    {
+        "test_speakers" "1"
+        "test_hardware" "1"
+    }
+    "Developer" "KiwifruitDev"
+    "Developer_URL" "http://github.com/KiwifruitDev"
+    "Manual" "http://github.com/KiwifruitDev/DirectorsCut"
+    "Icon" "resource/icon"
+    "Nodegraph" "0"
+    "SupportsDX8" "0"
+    "SupportsVR" "0"
+    "SupportsXbox360" "0"
+    "FileSystem"
+    {
+        "SteamAppId" "243750"
+        "ToolsAppId" "211"
+        "SearchPaths"
+        {
+            "Game+Mod" "|GameInfo_Path|custom/*"
+            "Game+Mod+Mod_Write+Default_Write_Path" "|GameInfo_Path|."
+            "Game" "|All_Source_Engine_Paths|hl2mp/hl2mp_english.vpk"
+            "Game" "|All_Source_Engine_Paths|hl2mp/hl2mp_pak.vpk"
+            "Game" "|All_Source_Engine_Paths|hl2/hl2_english.vpk"
+            "Game" "|All_Source_Engine_Paths|hl2/hl2_pak.vpk"
+            "Game" "|All_Source_Engine_Paths|hl2/hl2_textures.vpk"
+            "Game" "|All_Source_Engine_Paths|hl2/hl2_sound_vo_english.vpk"
+            "Game" "|All_Source_Engine_Paths|hl2/hl2_sound_misc.vpk"
+            "Game" "|All_Source_Engine_Paths|hl2/hl2_misc.vpk"
+            "Platform" "|All_Source_Engine_Paths|platform/platform_misc.vpk"
+            "GameBin" "|GameInfo_Path|bin"
+            "Game" "|All_Source_Engine_Paths|hl2mp"
+            "Game" "|All_Source_Engine_Paths|hl2"
+            "Platform" "|All_Source_Engine_Paths|platform"
+            "Game+Download" "|GameInfo_Path|download"
+        }
+    }
+    "ToolsEnvironment"
+    {
+        "Engine" "Source"
+    }
+}

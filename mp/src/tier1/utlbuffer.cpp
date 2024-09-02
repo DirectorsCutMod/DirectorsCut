@@ -614,8 +614,9 @@ void CUtlBuffer::GetStringInternal( char *pString, size_t maxLenInChars )
 		*pString = 0;
 		return;
 	}
-
+#ifndef DX_SUPPRESS_ANNOYING_ASSERTS
 	Assert( maxLenInChars != 0 );
+#endif
 
 	if ( maxLenInChars == 0 )
 	{

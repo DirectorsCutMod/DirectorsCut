@@ -1,0 +1,106 @@
+//-----------------------------------------------------------------------------
+//    DXFM.VPC
+//
+//    Project Script
+//-----------------------------------------------------------------------------
+
+$Macro SRCDIR "..\..\.."
+$Macro OUTBINNAME "dxfm"
+$Macro OUTBINDIR "$SRCDIR\..\game\bin\tools"
+
+$Include "$SRCDIR\vpc_scripts\source_dll_base.vpc"
+
+$Configuration "Debug"
+{
+    $General
+    {
+        $IntermediateDirectory ".\Debug_dxfm"
+    }
+}
+
+$Configuration "Release"
+{
+    $General
+    {
+        $IntermediateDirectory ".\Release_dxfm"
+    }
+}
+
+$Configuration
+{
+    $General
+    {
+        $TargetName "dxfm"
+    }
+
+    $Compiler
+    {
+        $AdditionalIncludeDirectories "$BASE;$SRCDIR\tools\directorscut\dxfm,$SRCDIR\tools\directorscut\dxfm\ui;$SRCDIR\public;$SRCDIR\tools\directorscut\dx_vgui\include;$SRCDIR\tools\directorscut\dx_vgui;$SRCDIR\thirdparty,$SRCDIR\imgui;$TOOLSDIR"
+        $PreprocessorDefinitions "$BASE;DIRECTORSCUT"
+    }
+
+    $Linker
+    {
+        $AdditionalDependencies "$BASE"
+    }
+}
+
+$Project "dxfm"
+{
+    $Folder "Source Files"
+    {
+        $File "$SRCDIR\tools\directorscut\dx_vgui\dx_vgui.cpp"
+        {
+            $Configuration
+            {
+                $Compiler
+                {
+                    $Create/UsePrecompiledHeader "Not Using Precompiled Headers"
+                }
+            }
+        }
+
+        $Folder "ui"
+        {
+            $File "ui\dx_ui_menubar.cpp"
+            $File "ui\dx_ui_panel.cpp"
+            $File "ui\dx_ui_viewport.cpp"
+            $File "ui\dx_ui_welcome.cpp"
+        }
+
+        $File "dx_viewport.cpp"
+        $File "dxfm.cpp"
+        $File "tooldictionary.cpp"
+    }
+
+    $Folder "Public Header Files"
+    {
+        $Folder "ui"
+        {
+            $File "ui\dx_ui_menubar.h"
+            $File "ui\dx_ui_panel.h"
+            $File "ui\dx_ui_viewport.h"
+            $File "ui\dx_ui_welcome.h"
+        }
+
+        $File "dx_viewport.h"
+        $File "dxfm.h"
+        $File "tooldictionary.h"
+    }
+
+    $Folder "Link Libraries"
+    {
+        $DynamicFile "$SRCDIR\lib\public\bitmap.lib"
+        $DynamicFile "$SRCDIR\lib\public\choreoobjects.lib"
+        $DynamicFile "$SRCDIR\lib\public\dmxloader.lib"
+        $DynamicFile "$SRCDIR\lib\public\mathlib.lib"
+        $DynamicFile "$SRCDIR\lib\public\matsys_controls.lib"
+        $DynamicFile "$SRCDIR\lib\public\particles.lib"
+        $DynamicFile "$SRCDIR\lib\public\tier1.lib"
+        $DynamicFile "$SRCDIR\lib\public\tier2.lib"
+        $DynamicFile "$SRCDIR\lib\public\tier3.lib"
+        $DynamicFile "$SRCDIR\lib\public\steam_api.lib"
+        $DynamicFile "$SRCDIR\lib\public\vtf.lib"
+        $DynamicFile "$SRCDIR\lib\public\dx_vgui.lib"
+    }
+}
