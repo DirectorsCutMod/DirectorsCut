@@ -15,10 +15,10 @@
 #include "ui.h"
 
 // Main Window
-// Embeds two matsyswindows into the same window, using container widgers
 
 CMainWindow::CMainWindow(QWidget* pParent) : QWidget(pParent)
 {
+	// placeholders
 	this->setWindowTitle(tr("the fun zone"));
 	auto pViewerLayout = new QVBoxLayout(this);
 

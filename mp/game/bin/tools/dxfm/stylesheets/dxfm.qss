@@ -1,0 +1,1438 @@
+/* Qt Stylesheet for Valve Qt Soverign applications - Dark Gray Background - YM */
+
+
+QWidget
+{
+	background-color: rgb( 54, 54, 54);
+	color: rgb(182, 182, 182);
+	selection-background-color: #4C5B7A;
+	selection-color: rgba(255, 252, 229, 100%);
+}
+
+
+QWidget:disabled
+{
+	color: rgba(190, 190, 190, 24%);
+}
+
+CQSDKLauncherMainWindow
+{
+	background-color: rgb( 0, 0, 0);
+}
+
+
+.QFrame
+{
+	border-radius: 0px;
+}
+
+.QScrollArea
+{
+	border-radius: 0px;
+}
+
+QLabel
+{
+	border-image: none;
+	background-color: transparent;
+	padding: 0 px;
+}
+
+QLabel#LinkLabel
+{
+	border-image: none;
+	background-color: transparent;
+	padding: 0 px;
+	font-size: 14px;
+}
+
+QLabel#HeaderLabel
+{
+	color: #606060;
+	border-image: none;
+	background-color: transparent;
+	padding: 0 px;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+QMenuBar
+	{
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+		stop: 0 rgba(70, 71, 72, 100%),
+		stop: 1 rgba(29, 29, 29, 100%) );
+	selection-background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+		stop: 0 #5D667D,
+		stop: 0.1 #5D667D,
+		stop: 1 #464D60 );
+	border-image: none;
+	border-style: none;
+	border-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: rgb(20, 20, 20, 50%);
+	padding: 3px;
+	}
+
+QMenuBar::item
+	{
+ 	background-color: transparent;
+	}
+
+QMenu
+	{
+	background-color: qlineargradient(x1: 0, y1: 0, x2: .25, y2: 1,
+		stop: 0 rgba(70, 71, 72, 100%),
+		stop: 1 rgba(42, 42, 42, 100%) );
+	selection-background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+		stop: 0 #5D667D,
+		stop: 0.1 #5D667D,
+		stop: 1 #464D60 );
+	selection-color: rgba(255, 251, 209, 100%);
+	margin: 0px;
+	border-width: 2px;
+	border-style: solid;
+	border-color: rgb(20, 20,20, 40%);
+	padding: 2px;
+	}
+
+
+QMenu::item:!selected 
+	{
+ 	background-color: transparent;
+	}
+
+QMenu::item:selected 
+{
+ 	background-color: transparent;
+ 		selection-background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+		stop: 0 #5D667D,
+		stop: 0.1 #5D667D,
+		stop: 1 #464D60 );
+}
+	
+QMenu::separator
+	{
+	height: 1px;
+	background: rgba(99, 99, 99, 46%);
+	margin-left: 10px;
+	margin-right: 3px;
+	margin-top: 6px;
+	margin-bottom: 3px;
+	}
+
+QMenu::indicator 
+	{
+	width: 19px;
+ 	height: 19px;
+ 	}
+
+
+QMenu::indicator:non-exclusive:unchecked {
+	image: url(tools:images/valve_base/check_off.png);
+ 	}
+ 	
+QMenu::indicator:non-exclusive:unchecked:selected {
+	image: url(tools:images/valve_base/check_off_selected.png);
+	}
+	
+QMenu::indicator:non-exclusive:checked {
+	image: url(tools:images/valve_base/check.png);
+	}
+QMenu::indicator:non-exclusive:checked:selected {
+	image: url(tools:images/valve_base/check.png);
+	}
+QMenu::indicator:exclusive:unchecked {
+	image: url(tools:images/valve_base/radio_unselected.png);
+	}
+QMenu::indicator:exclusive:unchecked:selected {
+	image: url(tools:images/valve_base/radio_unselected_hover.png);
+	}
+QMenu::indicator:exclusive:checked {
+	image: url(tools:images/valve_base/radio_selected.png);
+	}
+QMenu::indicator:exclusive:checked:selected {
+	image: url(tools:images/valve_base/radio_selected.png);
+	}
+
+
+
+QTabWidget::pane
+{
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+		stop: 0 rgba(57, 57, 57, 100%),
+		stop: 1 rgba(73, 71, 69, 20%) );
+	padding: 0px;
+	border: 1px solid rgba(122, 122, 122, 20%);
+}
+	
+QTabWidget::pane:disabled
+	{
+	}
+
+
+QTabBar::tab
+{
+	background: rgb(44, 44,44, 40%);
+	color: rgb(182, 182, 182, 70%);
+	border: 1px solid rgba(122, 122, 122, 20%);
+	padding: 5px;
+	min-width: 40px;
+}
+
+QTabBar::tab:selected
+{
+	color: rgb(255, 255, 255 );
+}
+
+QTabBar::tab:!selected {
+     margin-top: 2px; /* make non-selected tabs look smaller */
+}
+ 
+
+QTabBar::close-button::selected
+	{
+	padding-top: 2px;
+	image: url(tools:images/valve_base/tab-closebutton-selected.png);
+	}
+QTabBar::close-button::selected:hover
+	{
+	padding-top: 2px;
+	image: url(tools:images/valve_base/tab-closebutton-selected-hovered.png);
+	}
+
+QTabBar::close-button
+	{
+	padding-top: 2px;
+	image: url(tools:images/valve_base/tab-closebutton.png);
+	}
+QTabBar::close-button:hover
+	{
+	padding-top: 2px;
+	image: url(tools:images/valve_base/tab-closebutton-hovered.png);
+	}
+
+QAbstractItemView
+	{
+	background-color: rgb( 38, 38, 39 );
+	selection-background-color: rgba(49, 62, 81, 100%);
+	selection-background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+		stop: 0 rgba(69, 76, 87, 100%),
+		stop: 0.55 rgba(69, 76, 87, 80%),
+		stop: 1 rgba(69, 76, 87, 100%) );
+	color: rgba(182, 182, 182, 100%);
+	selection-color: rgba(255, 255, 255, 100%);
+	border-style: solid;
+	border-width: 1px;
+	border-color: rgba( 155, 153, 151, 25%);
+	border-radius: 0px;
+	}
+
+QAbstractItemView:focus
+	{
+	border-style: solid;
+	border-width: 2px;
+	border-color: rgba(155, 153, 151, 25%);
+	border-radius: 0px;
+	}
+
+QAbstractItemView:disabled
+	{
+	background-color: rgb( 38, 38, 39 );
+	 selection-background-color: rgba(0, 0, 0, 100%);
+	 selection-background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+		stop: 0 rgba(69, 76, 87, 100%),
+		stop: 0.55 rgba(69, 76, 87, 80%),
+		stop: 1 rgba(69, 76, 87, 100%) );
+	 selection-color: rgba(255, 251, 209, 100%);
+	}
+
+
+
+
+QHeaderView
+	{
+	font: bold;
+	background-color: rgb(50, 50, 50);
+	margin-left: -1px;
+	margin-right: 1px;
+	margin-top: -1px;
+	border: 0px solid rgb(255, 54,53);
+	
+	}
+
+QHeaderView::section:horizontal
+	{
+	color: rgb(212, 212, 212 );
+	background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+		stop:0  rgb(23, 23, 24 ),
+		stop:1 rgb( 31, 31, 32 ) );
+	padding-left: 5px;
+	padding-top: 2px;
+	padding-right: 1px;
+	border: 1px solid;
+	border-right: 0px solid;
+	border-top: 0px solid;
+	}
+
+QHeaderView::section:horizontal:hover
+	{
+	background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+		stop:0  rgb(23, 23, 24 ),
+		stop:1 rgb( 31, 31, 32 ) );
+	color: white;
+	padding-left: 5px;
+	border: 1px solid;
+	}
+
+QHeaderView::section:horizontal:focus
+	{
+	background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+		stop:0  rgb(23, 23, 24 ),
+		stop:1 rgb( 31, 31, 32 ) );
+	color: white;
+	padding-left: 5px;
+	border-bottom: 4px solid;
+	}
+
+QHeaderView::section:horizontal:disabled
+	{
+	color: rgb(212, 212, 212, 15%);
+	background-color: rgba(53, 51, 50, 90%);
+	padding-left: 5px;
+	}
+
+
+QHeaderView::section:vertical
+	{
+	color: rgb(212, 212, 212, 65%);
+	background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+		stop:0  rgba(45, 45, 45, 25%),
+		stop:1 rgba(115, 115, 115, 25%) );
+	margin-left:1 px;
+	padding-left: 4px;
+	border: 1px solid;
+	border-left: 0px;
+	border-bottom: 0px;
+	border-color: rgba(155, 153, 151, 15%);
+	}
+
+QHeaderView::section:vertical:hover
+	{
+	background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+		stop:0  rgba(45, 44, 43, 50%),
+		stop:1 rgba(115, 114, 113, 50%) );
+	color: white;
+	padding-left: 3px;
+	padding-top: 2px;
+	border: 1px solid;
+	border-color: rgba(155, 153, 151, 25%);
+	}
+
+QHeaderView::section:vertical:disabled
+	{
+	color: rgb(212, 212, 212, 15%);
+	background-color: rgba(53, 51, 50, 90%);
+	padding-left: 3px;
+	padding-top: 2px;
+	border-color: rgba(123, 123, 123, 12%);
+	}
+
+
+
+
+
+QHeaderView::section:checked
+	{
+	}
+QHeaderView::down-arrow
+	{
+	padding-right: 6px;
+	}
+
+QTreeView QHeaderView::section:horizontal:first
+	{
+	border-top-left-radius: 5px;
+	}
+
+QTreeView QHeaderView::section:horizontal:last
+	{
+	border-top-right-radius: 5px;
+	}
+
+QHeaderView::section:only-one
+	{
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	}
+
+
+
+QTreeView
+	{
+	show-decoration-selected: 0;
+	padding-top: 1px;
+	}
+
+QTreeView
+	{
+	alternate-background-color: rgba(47, 47, 47, 100%);
+	alternate-background-color: rgba(137, 136, 135, 6%);
+	}
+
+QTreeView QHeaderView
+	{
+	margin-left: 1px;
+	}
+
+QTreeView:focus
+	{
+	alternate-background-color: rgba(137, 137, 137, 7%);
+
+	selection-background-color: rgba(49, 62, 81, 100%);
+	selection-background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+		stop: 0 rgba(69, 76, 87, 100%),
+		stop: 0.55 rgba(69, 76, 87, 60%),
+		stop: 1 rgba(69, 76, 87, 90%) );
+	selection-color: rgba(255, 251, 209, 100%);
+	border: 1px solid rgba(155, 153, 151, 25%);
+	}
+
+QTreeView:disabled
+	{
+	selection-color: rgba(255, 251, 209, 20%);
+	color: rgba(90, 90, 90,80%);
+	}
+QTreeView::item
+	{
+	margin: 0px;
+	border: 0px;
+	padding: 0px;
+	border: none;
+	border-bottom: 1px solid rgb( 38, 38, 39 );
+	}
+
+QTreeView::item:selected:active
+{
+	background-color: rgb( 79, 82, 89 );
+}
+	
+QTreeView::item:selected:!active
+{
+	background-color: rgb( 79, 82, 89);
+}
+
+TreeView::branch
+{
+	background-color: transparent;
+}
+
+
+QTreeView::branch:has-siblings:!adjoins-item
+	{
+	border-image: url(tools:images/valve_base/branch_vline.png) 0;
+	margin: 0px;
+	border: 0px;
+	padding: 0px;
+	border-bottom: 1px solid  rgba(0, 0, 0, 9%);
+	}
+
+QTreeView::branch:has-siblings:adjoins-item
+	{
+	 border-image: url(tools:images/valve_base/branch_fork.png) 0;
+	 margin: 0px;
+	 border: 0px;
+	 padding: 0px;
+	 border-bottom: 1px solid  rgba(0, 0, 0, 9%);
+	 }
+
+QTreeView::branch:!has-children:!has-siblings:adjoins-item
+	{
+	border-image: url(tools:images/valve_base/branch_end.png) 0;
+	}
+
+QTreeView::branch:open:has-children:!has-siblings,
+QTreeView::branch:open:has-children:has-siblings
+	{
+	image: url(tools:images/valve_base/branch_open.png);
+	margin: 0px;
+	border: 0px;
+	padding: 0px;
+	border-bottom: 1px solid  rgba(0, 0, 0, 9%);
+	}
+
+ QTreeView::branch:has-children:!has-siblings:closed,
+ QTreeView::branch:closed:has-children:has-siblings
+	{
+	border-image: none;
+	image: url(tools:images/valve_base/branch_closed.png);
+	margin: 0px;
+	border: 0px;
+	padding: 0px;
+	border-bottom: 1px solid  rgba(0, 0, 0, 9%);
+	}
+
+ QTreeView QScrollBar
+	{
+	}
+
+
+
+QTableView
+	{
+	gridline-color: rgba(65, 65, 65 );
+	padding: 1px;
+	}
+
+
+QTableView:focus
+	{
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+	stop: 0 rgba(51, 51, 51, 100%),
+	stop: 1 rgba(39, 39, 39, 100%) );
+	gridline-color: rgba(65, 65, 65 );
+	}
+
+
+QTableView QTableCornerButton::section
+	{
+	background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+		stop:0  rgb(23, 23, 23 ),
+		stop:1 rgb(31, 31, 32 ) );
+	margin: 0px;
+	border: 1px;
+	border-color: rgba(155, 153, 151, 100%);
+	}
+
+QTableView::item:selected:active
+	{
+	background-color: rgba(48, 57, 70, 70%);
+	}
+QTableView::item:selected:!active
+	{
+	background-color: rgba(46, 48, 54, 90%);
+	color: rgba(255, 255, 255, 60%);
+	}
+QTableView::item:!selected:!active
+	{
+	}
+
+QTableView::item:!selected:hover
+	{
+	color: rgba(255, 255, 255, 90%);
+	}
+
+
+
+QScrollBar
+{
+	background: rgba(12, 12, 12, 10%);
+}
+	
+QScrollBar:horizontal
+	{
+	border-top: 1px solid rgba(22, 22, 22, 60%);
+	border-bottom: 1px solid rgba(22, 22, 22, 60%);
+	height: 15px;
+	margin: 0px 15px 0px 15px;
+	}
+QScrollBar:vertical
+	{
+	border-left: 1px solid rgba(22, 22, 22, 60%);
+	border-right: 1px solid rgba(22, 22, 22, 60%);
+	width: 15px;
+	margin: 15px 0px 15px 0px;
+	padding-bottom: 1px;
+	}
+
+
+QScrollBar::add-page,
+QScrollBar::sub-page
+	{
+	border: none;
+	background: rgba(37, 36, 34, 25%);
+	margin: 0px;
+	}
+QScrollBar::add-page:horizontal,
+QScrollBar::sub-page:horizontal
+	{
+	border-top: 0px solid rgba(8, 8, 8, 20%);
+	border-bottom: 0px solid rgba(8, 8, 8, 20%);
+	}
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical
+	{
+	border-left: 0px solid rgba(8, 8, 8, 20%);
+	border-right: 0px solid rgba(8, 8, 8, 20%);
+	}
+
+QScrollBar::add-page:hover,
+QScrollBar::sub-page:hover
+	{
+	background: rgba(44, 44, 44, 25%);
+	}
+QScrollBar::add-page:disabled,
+QScrollBar::sub-page:disabled
+	{
+	background: rgba(56, 55, 53, 30%);
+	}
+
+QScrollBar::handle
+	{
+	border: 1px solid rgba(79, 78, 77, 25%);
+	border-radius: 2px;
+	margin: 0px;
+	}
+QScrollBar::handle:horizontal
+	{
+	margin-top: 0px;
+	min-width: 15px;
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+		stop: 0 rgba(98, 97, 96, 50%),
+		stop: 0.55 rgba(232, 232, 232, 17%),
+		stop: 1 rgba(98, 97, 96, 50%) );
+	}
+QScrollBar::handle:vertical
+	{
+	min-height: 15px;
+	background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
+		stop: 0 rgba(98, 98, 98, 50%),
+		stop: 0.55 rgba(232, 232, 232, 17%),
+		stop: 1 rgba(98, 98, 98, 50%) );
+	}
+
+QScrollBar::handle:horizontal:hover
+	{
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+		stop: 0 rgba(88, 88, 88, 51%),
+		stop: 0.5 rgba(232, 232, 232, 17%),
+		stop: 1 rgba(88, 88, 88, 51%) );
+	}
+QScrollBar::handle:vertical:hover
+	{
+	background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
+		stop: 0 rgba(88, 88, 88, 51%),
+		stop: 0.5 rgba(232, 232, 232, 17%),
+		stop: 1 rgba(88, 88, 88, 51%) );
+	}
+QScrollBar::handle:horizontal:pressed
+	{
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+		stop: 0 rgba(98, 98, 98, 80%),
+		stop: 0.15 rgba(92, 92, 92, 47%),
+		stop: 1 rgba(98, 98, 98, 80%) );
+
+	}
+QScrollBar::handle:vertical:pressed
+	{
+	background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
+		stop: 0 rgba(98, 98, 98, 80%),
+		stop: 0.15 rgba(92, 92, 92, 47%),
+		stop: 1 rgba(98, 98, 98, 80%) );
+	}
+QScrollBar::handle:horizontal:disabled
+	{
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+		stop: 0 rgba(88, 88, 88, 11%),
+		stop: 1 rgba(88, 88, 88, 11%) );
+	}
+QScrollBar::handle:vertical:disabled
+	{
+	background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
+		stop: 0 rgba(88, 88, 88, 11%),
+		stop: 1 rgba(88, 88, 88, 11%) );
+	}
+
+
+
+QScrollBar::add-line,
+QScrollBar::sub-line
+	{
+	margin: 0px;
+	border: 1px solid rgba(22, 22, 22, 60%);
+	border-radius: 0px;
+	background: rgba(98, 98, 98, 20%);
+	subcontrol-origin: margin;
+	}
+QScrollBar::add-line:horizontal
+	{
+	width: 15px;
+	subcontrol-position: right;
+	border-top-left-radius: 0px;
+	border-bottom-left-radius: 0px;
+	}
+QScrollBar::sub-line:horizontal
+	{
+	width: 15px;
+	subcontrol-position: left;
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 0px;
+	}
+QScrollBar::add-line:vertical
+	{
+	height: 15px;
+	subcontrol-position: bottom;
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+	}
+QScrollBar::sub-line:vertical
+	{
+	height: 15px;
+	subcontrol-position: top;
+	border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px;
+	}
+QScrollBar::add-line:hover,
+QScrollBar::sub-line:hover
+	{
+	background: rgba(98, 98, 98, 40%);
+	}
+QScrollBar::add-line:pressed,
+QScrollBar::sub-line:pressed
+	{
+	background: rgba(0, 0, 0, 12%);
+	}
+
+
+
+QPushButton
+	{
+	background-color: rgba(168, 168, 168, 0%);
+	border-image: url(tools:images/valve_base/pushbutton_enabled.png) 3;
+	border-width: 3;
+	padding: 3;
+	padding-left: 4px;
+	padding-right: 4px;
+	color: rgb(220, 220, 220);
+	}
+
+QPushButton:focus
+	{
+	border-image: url(tools:images/valve_base/pushbutton_focus.png) 3;
+	border-width: 3;
+	color: rgb(230, 230, 230);
+	}
+
+QPushButton:focus:hover
+	{
+	border-image: url(tools:images/valve_base/pushbutton_focus.png) 3;
+	border-width: 3;
+	color: white;
+	}
+
+QPushButton:hover
+	{
+	border-image: url(tools:images/valve_base/pushbutton_hover.png) 3;
+	border-width: 3;
+	color: white;
+	}
+
+QPushButton:checked
+	{
+	border-image: url(tools:images/valve_base/pushbutton_checked.png) 3;
+	border-width: 3;
+	color: rgb(240, 240, 240);
+	padding-top: 4px;
+	padding-bottom: 2px;
+	padding-left: 4px;
+	padding-right: 2px;
+	}
+
+QPushButton:checked:hover
+	{
+	border-image: url(tools:images/valve_base/pushbutton_checked_hover.png) 3;
+	border-width: 3;
+	color: rgb(240, 240, 240);
+	padding-top: 4px;
+	padding-bottom: 2px;
+	padding-left: 4px;
+	padding-right: 2px;
+	}
+
+QPushButton:checked:focus
+	{
+	border-image: url(tools:images/valve_base/pushbutton_checked_focus.png) 3;
+	border-width: 3;
+	color: rgb(240, 240, 240);
+	padding-top: 4px;
+	padding-bottom: 2px;
+	padding-left: 4px;
+	padding-right: 2px;
+	}
+
+QPushButton:focus:hover:pressed
+	{
+	border-image: url(tools:images/valve_base/pushbutton_pressed.png) 3;
+	border-width: 3;
+	padding-top: 4px;
+	padding-bottom: 2px;
+	padding-left: 4px;
+	padding-right: 2px;
+	color: white;
+	}
+
+QPushButton:flat
+	{
+	border-image: url(tools:images/valve_base/pushbutton_flat.png) 6;
+	}
+
+QPushButton:flat:focus
+	{
+	border-image: url(tools:images/valve_base/pushbutton_flat_focus.png) 6;
+	}
+
+QPushButton:disabled
+	{
+	border-image: url(tools:images/valve_base/pushbutton_disabled.png) 6;
+	color: rgb(230, 230, 230, 37%);
+	}
+
+
+
+
+QToolButton 
+	{
+	border: 0px solid  rgb(90, 90, 90, 12%);
+	border-radius: 4px;
+	background-color: none;
+	}
+
+QToolButton:hover
+	{
+	border: 1px solid  rgb(90, 90, 90, 70%);
+	border-radius: 4px;
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
+          	stop: 0  rgb(90, 90, 90, 37%),
+          	stop: 0.5  rgb(90, 90, 90, 80%),
+		stop: 1  rgb(90, 90, 90, 37%));
+	background-color: qradialgradient(cx: 0.5, cy: 0.5, fx: 0.5, fy: 0.5,
+		radius: 0.55,
+		stop: 0 rgba(60, 60, 60, 100%),
+		stop: 1 rgba(70, 70, 70, 100%) );
+	}
+
+QToolButton[popupMode="1"]
+	{
+	padding-right: 20px;
+	}
+
+QToolButton:pressed 
+	{
+	background-color: qradialgradient(cx: 0.5, cy: 0.5, fx: 0.5, fy: 0.5,
+		radius: 0.55,
+		stop: 0 rgba(0, 0, 0, 78%),
+		stop: 1 rgba(0, 0, 0, 12%) );
+	}
+
+QToolButton:checked 
+	{
+	border: 1px solid  rgb(90, 90, 90, 12%);
+	border-radius: 4px;
+	background-color: rgb(90, 90, 90, 50%);
+	}
+
+QToolButton::menu-button 
+	{
+	border: 0px solid  rgb(90, 90, 90, 37%);
+	border-top-right-radius: 6px;
+	border-bottom-right-radius: 6px;
+	width: 16px;
+ 	}
+
+QToolButton::menu-arrow 
+{
+	image: url(tools:images/valve_base/arrow_down_disabled.png);
+}
+
+
+QToolBar
+{
+	background: rgba( 255, 0, 0, 0% );
+	border: 1px solid  rgb(90, 90, 90, 0%);
+	border-radius: 6px;
+	spacing: 0px;
+}
+
+
+QToolBar::handle
+{
+	image: url(tools:images/valve_base/handle.png);
+}
+
+
+QMessageBox QPushButton
+	{
+	background-color: rgba(168, 168, 168, 0%);
+	border-image: url(tools:images/valve_base/pushbutton_enabled.png) 6;
+	border-width: 6;
+	color: rgb(220, 220, 220);
+	width: 130;
+	}
+
+QDialogButtonBox QPushButton
+	{
+    	min-width: 5em;
+	}
+
+QComboBox[editable="false"]
+	{
+	padding-left: 4px;
+	border-image: url(tools:images/valve_base/pushbutton_enabled.png) 4;
+	border-width:4;
+	background-color: transparent;
+	color: rgb(220, 220, 220);
+	font-size: 14px;
+	}
+
+QComboBox[editable="false"]:hover
+	{
+	border-image: url(tools:images/valve_base/pushbutton_hover.png) 4;
+	border-width: 4;
+	color: white;
+	font-size: 14px;
+	}
+
+QComboBox[editable="false"]:focus
+	{
+	border-image: url(tools:images/valve_base/pushbutton_focus.png) 4;
+	border-width: 4;
+	font-size: 14px;
+	}
+
+QComboBox[editable="false"]:disabled
+	{
+	 padding-left: 4px;
+	border-image: url(tools:images/valve_base/pushbutton_disabled.png) 4;
+	border-width: 4;
+	color: rgb(230, 230, 230, 37%);
+	font-size: 14px;
+	}
+
+QComboBox[editable="false"]:on,
+QComboBox[editable="true"]:on
+	{
+	border-image: url(tools:images/valve_base/pushbutton_pressed.png) 4;
+	border-width: 4;
+	padding-top: 2px;
+	color: rgb(255, 0, 209);
+	}
+QComboBox::drop-down
+	{
+	border-left-width:2px;
+	border-left-style: solid;
+	}
+
+QComboBox::drop-down:editable
+	{
+	width: 17px;
+	margin: -1px;
+	padding: 0px;
+	border-left-width:1px;
+	border-left-color:  rgba(50, 50, 50, 50%);
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,	
+		stop: 0 rgba(123, 120, 117, 50%),
+		stop: 0.15 rgba(94, 92, 90, 80%),
+		stop: 0.5 rgba(80, 78, 75, 80%),
+		stop: 1.0 rgba(60, 60, 60, 29%) );
+	}
+
+
+QComboBox::drop-down:editable:hover
+	{
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+		stop: 0 rgba(93, 90, 87, 60%),
+		stop: 0.2 rgba(134, 132, 130, 60%),
+		stop: 0.6 rgba(80, 78, 75, 50%),
+		stop: 1.0 rgba(20, 20, 20, 40%) );
+	}
+QComboBox::drop-down:editable:on
+	{
+	margin: -1px;
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+		stop: 0 rgba(8, 8, 8, 40%),
+		stop: 0.8 rgba(55, 55, 55, 90%),
+		stop: 1 rgba(134, 132, 130, 90%) );
+	}
+
+QComboBox::drop-down:!editable
+	{
+	border-left-color:  rgba(220, 220, 220, 15%);
+	width: 15px;
+	}
+
+QComboBox::drop-down:!editable:hover
+	{
+	}
+
+
+QRadioButton
+	{
+	padding: 0 px;
+	background-color: transparent;
+	spacing: 4px;
+	}
+QRadioButton::indicator 
+	{
+	width: 15px;
+	height:15px;
+	}
+QRadioButton::indicator::unchecked {
+	image: url(tools:images/valve_base/radio_unselected.png);
+	}
+QRadioButton::indicator:unchecked:disabled {
+	image: url(tools:images/valve_base/radio_unselected_disabled.png);
+	}
+QRadioButton::indicator:unchecked:hover {
+	image: url(tools:images/valve_base/radio_unselected_hover.png);
+	}
+QRadioButton::indicator:unchecked:pressed {
+	image: url(tools:images/valve_base/radio_unselected_pressed.png);
+	}
+QRadioButton::indicator::checked {
+	image: url(tools:images/valve_base/radio_selected.png);
+	}
+QRadioButton::indicator::checked:disabled {
+	image: url(tools:images/valve_base/radio_selected_disabled.png);
+	}
+QRadioButton::indicator:checked:hover {
+	}
+QRadioButton::indicator:checked:pressed {
+	image: url(tools:images/valve_base/radio_pressed.png);
+	}
+
+
+QPlainTextEdit
+	{
+	border-style: none;
+	border-radius: 4px;
+	background-color: rgb(0, 0,0, 19%);
+	selection-background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
+		stop: 0 rgba(59, 68, 83, 100%),
+		stop: 0.95 rgba(59, 68, 83, 100%),
+		stop: 1 rgba(59, 68, 83, 100%) );
+	}
+
+QPlainTextEdit:focus
+	{
+	border: 2px solid rgba(109, 117, 116, 80%);
+	background-color: rgb(0, 0,0, 28%);
+	}
+
+QPlainTextEdit:!active
+	{
+	selection-background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
+		stop: 0 rgba(68, 73, 80, 70%),
+		stop: 0.95 rgba(68, 73, 80, 70%),
+		stop: 1 rgba(68, 73, 80, 70%) );
+	selection-color: rgba(240, 240, 240, 90%);
+	}
+
+
+
+*::up-arrow
+	{
+	image: url(tools:images/valve_base/arrow_up.png);
+	width: 7px;
+	height: 5px;
+	}
+
+*::up-arrow:disabled
+	{
+	image: url(tools:images/valve_base/arrow_up_disabled.png);
+	width: 7px;
+	height: 5px;
+	}
+
+*::down-arrow
+	{
+	image: url(tools:images/valve_base/arrow_down.png);
+	width: 7px;
+	height: 5px;
+	}
+
+*::down-arrow:disabled
+	{
+	image: url(tools:images/valve_base/arrow_down_disabled.png);
+	width: 7px;
+	height: 5px;
+	}
+
+
+*::left-arrow
+	{
+	image: url(tools:images/valve_base/arrow_left.png);
+	width: 7px;
+	height: 5px;
+	}
+
+*::right-arrow
+	{
+	image: url(tools:images/valve_base/arrow_right.png);
+	width: 7px;
+	height: 5px;
+	}
+
+
+
+
+
+QCheckBox
+	{
+	background-color: rgba(168, 168, 168, 0%);
+	spacing: 4px;
+	border-image: none;
+	background-color: rgb(0, 0,0, 0%);
+	padding: 0 px;
+	}
+
+
+QCheckBox::indicator,
+QTreeWidget::indicator,
+QTableView::indicator,
+QGroupBox::indicator
+	{
+	width: 17px;
+	height: 17px;
+	}
+
+QCheckBox::indicator:unchecked,
+QTreeWidget::indicator:unchecked,
+QTableView::indicator:unchecked,
+QGroupBox::indicator:unchecked
+	{
+	image: url(tools:images/valve_base/checkbox_unchecked.png);
+	}
+QCheckBox::indicator:unchecked:hover,
+QTreeWidget::indicator:unchecked:hover,
+QTableView::indicator:unchecked:hover,
+QGroupBox::indicator:unchecked:hover
+	{
+	image: url(tools:images/valve_base/checkbox_unchecked_hover.png);
+   color: white;
+	}
+QCheckBox::indicator:unchecked:focus,
+QTreeWidget::indicator:unchecked:focus,
+QTableView::indicator:unchecked:focus,
+QGroupBox::indicator:unchecked:focus
+	{
+	image: url(tools:images/valve_base/checkbox_unchecked_focus.png);
+	}
+QCheckBox::indicator:unchecked:pressed,
+QTreeWidget::indicator:unchecked:pressed,
+QTableView::indicator:unchecked:pressed,
+QGroupBox::indicator:unchecked:pressed
+	{
+	image: url(tools:images/valve_base/checkbox_unchecked_pressed.png);
+	}
+QCheckBox::indicator:unchecked:disabled,
+QTreeWidget::indicator:unchecked:disabled,
+QTableView::indicator:unchecked:disabled,
+QGroupBox::indicator:unchecked:disabled
+	{
+	 image: url(tools:images/valve_base/checkbox_unchecked_disabled.png);
+	}
+
+
+QCheckBox::indicator:checked,
+QTreeWidget::indicator:checked,
+QTableView::indicator:checked,
+QGroupBox::indicator:checked
+	{
+	image: url(tools:images/valve_base/checkbox_checked.png);
+	}
+QCheckBox::indicator:checked:hover,
+QTreeWidget::indicator:checked:hover,
+QTableView::indicator:checked:hover,
+QGroupBox::indicator:checked:hover
+	{
+	image: url(tools:images/valve_base/checkbox_checked_hover.png);
+   color: white;
+	}
+QCheckBox::indicator:checked:focus,
+QTreeWidget::indicator:checked:focus,
+QTableView::indicator:checked:focus,
+QGroupBox::indicator:checked:focus
+	{
+	image: url(tools:images/valve_base/checkbox_checked_focus.png);
+	}
+QCheckBox::indicator:checked:pressed,
+QTreeWidget::indicator:checked:pressed,
+QTableView::indicator:checked:pressed,
+QGroupBox::indicator:checked:pressed
+	{
+	image: url(tools:images/valve_base/checkbox_checked_pressed.png);
+	}
+QCheckBox::indicator:checked:disabled,
+QTreeWidget::indicator:checked:pressed,
+QTableView::indicator:checked:disabled,
+QGroupBox::indicator:checked:disabled
+	{
+	image: url(tools:images/valve_base/checkbox_checked_disabled.png);
+	}
+
+QCheckBox::indicator:indeterminate
+	{
+	image: url(tools:images/valve_base/checkbox_indeterminate.png);
+	}
+QCheckBox::indicator:indeterminate:hover
+	{
+	image: url(tools:images/valve_base/checkbox_indeterminate_hover.png);
+	}
+ QCheckBox::indicator:indeterminate:focus
+	{
+	image: url(tools:images/valve_base/checkbox_indeterminate_focus.png);
+	}
+ QCheckBox::indicator:indeterminate:pressed
+	{
+	image: url(tools:images/valve_base/checkbox_pressed.png);
+	}
+QCheckBox::indicator:indeterminate:disabled
+	{
+	image: url(tools:images/valve_base/checkbox_indeterminate_disabled.png);
+	}
+
+
+
+QToolTip
+	{
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+		stop: 0 rgba(235, 234, 225, 15%),
+		stop: 0.2 rgba(235, 234, 225, 70%),
+		stop: 0.85 rgba(235, 234, 225,70%),
+		stop: 1 rgba(112, 109, 73, 25%) );
+	border-color: rgb(0,0,0, 25%);
+	border-width: 1px;
+	border-style: solid;
+	padding: 2px;
+	border-radius: 1px;
+	opacity: 220;
+	}
+
+
+
+QAbstractSpinBox
+	{
+	}
+
+QAbstractSpinBox::up-button
+	{
+	border-image: url(tools:images/valve_base/spinup.png) 1;
+	}
+
+QAbstractSpinBox::down-button
+	{
+	border-image: url(tools:images/valve_base/spindown.png) 1;
+	}
+
+
+
+QGroupBox
+	{
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+		stop: 0 ,
+		stop: 1 rgba(73, 71, 69, 25%) );
+	border: 1px solid rgba(146, 144, 142, 20%);
+	border-radius: 5px;
+	margin-top: 2ex;
+	}
+
+ QGroupBox::title
+	{
+	subcontrol-origin: margin;
+	subcontrol-position: top left;
+	margin-top: -2px;
+	padding: 0px 7px;
+/*
+	background-color: qradialgradient(cx: 0.3, cy: -0.4, fx: 0.3, fy: -0.4,
+		radius: 1.35,
+		stop: 0 rgba(63, 61, 59, 0%),
+		stop: 0 rgba(63, 61, 59, 100%) );
+*/
+		background-color: qradialgradient(cx: 0.5, cy: 0.5, fx: 0.5, fy: 0.5,
+		radius: 0.45,
+			stop: 0 rgba(54, 54, 54, 0%),
+			stop: 0.3 rgba(61, 60, 59, 100%),
+			stop: 0.5 rgba(61, 60, 59, 100%),
+			stop: 0.6 rgba(61, 60, 59, 100%),
+			stop: 1 rgba(61, 60, 59, 0%));
+	}
+
+QGroupBox::indicator
+	{
+	 margin-top: 0px;
+	 }
+
+
+QGroupBox:disabled
+	{
+	color: rgb(130, 130, 130, 38%);
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+		stop: 0 rgba(44, 44, 44, 0%),
+		stop: 1 rgba(44, 44, 44, 14%) );
+	border: 1px solid rgba(73, 71, 69, 20%);
+	}
+
+
+QProgressBar
+	{
+	border: 1px solid  rgba(99, 99, 99,50%);
+	border-radius: 4px;
+	text-align: center;
+	padding: 1px;
+	}
+
+QProgressBar::chunk
+	{
+	background-color: rgba(23, 23, 23, 100%);
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+		stop: 0 rgba(138, 136, 133, 60%),
+		stop: .35 rgba(116, 115, 112, 100%),
+		stop: .65 rgba(116, 115, 112, 100%),
+		stop: 1 rgba(114, 112, 110, 60%) );
+	width: 4px;
+	margin-left: 1px;
+	}
+
+
+
+QSlider::groove
+	{
+	border: 1px solid  rgba(32, 32, 32,50%);
+	border-radius: 2px;
+	margin: 0px 0px;
+	}
+QSlider::groove:focus
+	{
+	border: 2px solid  rgba(139, 155, 153, 40%);
+	border-radius: 4px;
+	}
+
+QSlider::groove:horizontal
+	{
+	height: 4px;
+	background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+		stop:0 rgba(23, 23, 23, 40%),
+		stop:1 rgba(23, 23, 23, 40%) );
+	}
+
+QSlider::groove:vertical
+	{
+	width: 4px;
+	background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+		stop:0 rgba(23, 23, 23, 40%),
+		stop:1 rgba(23, 23, 23, 40%) );
+	}
+QSlider::groove:disabled
+	{
+	border: 1px solid  rgba(32, 32, 32,30%);
+	background-color: rgba(53, 52, 51, 40%);
+	}
+
+
+
+
+
+QSlider::handle
+	{
+	background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+		stop:0 #8f8f8f,
+		stop:1 #5B5855 );
+	border: 1px solid #5c5c5c;
+	border-radius: 3px;
+	}
+
+QSlider::handle:horizontal
+	{
+	width: 5px;
+	margin: -9px 0;
+	}
+
+QSlider::handle:vertical
+	{
+	height: 5px;
+	margin: 0px -9px;
+	}
+
+QSlider::handle:disabled
+	{
+	background: #4A4A4A;
+	border: 1px solid #4B4845;
+	border-radius: 3px;
+	}
+
+
+
+QSplitter
+{
+	background-color: rgb( 24, 24, 25 );
+	margin: 0px;
+	border: 0px;
+	width: 6px;
+	height: 6px;
+}
+
+QSplitter::handle:horizontal {
+    width: 4px;
+   	image: url(tools:images/valve_base/handle_horizontal.png);
+ }
+
+QSplitter::handle:vertical {
+     height: 8px;
+	image: url(tools:images/valve_base/handle_vertical.png);
+ }
+ 
+
+QLineEdit,
+QComboBox[editable="true"],
+QAbstractSpinBox
+	{
+	background-color: rgb(255, 0, 0, 0%);
+
+	border-image: url(tools:images/valve_base/frame.png) 3;
+	border-width: 3px;
+	selection-background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+		stop: 0 #5D667D,
+		stop: 0.1 #5D667D,
+		stop: 1 #464D60 );
+	selection-color: white;
+	}
+
+QLineEdit:hover,
+QComboBox[editable="true"]:hover,
+QAbstractSpinBox:hover
+	{
+	border-image: url(tools:images/valve_base/frame_hover.png) 3;
+	color: rgb(202, 202, 202);
+	}
+
+QLineEdit:focus,
+QComboBox[editable="true"]:focus,
+QAbstractSpinBox:focus
+	{
+	border-image: url(tools:images/valve_base/frame_focus.png) 3;
+	color: rgb(212, 212, 212, 100%);
+	}
+
+QLineEdit:disabled,
+QComboBox[editable="true"]:disabled,
+QSpinBox:disabled,
+QAbstractSpinBox:disabled
+	{
+	border-image: url(tools:images/valve_base/frame_disabled.png) 3;
+	color: rgba(92, 92, 92);
+	selection-color: rgba(209, 209, 209, 20%);
+	}
+
+QLineEdit[frame="false"],
+QComboBox[editable="true"][frame="false"],
+QAbstractSpinBox[frame="false"]
+	{
+	border-image: url(tools:images/valve_base/frame_less.png) 2;
+	border-width:2;
+	}
+
+QLineEdit[echoMode="2"]
+	{
+	lineedit-password-character: 9679;
+	}
+
+

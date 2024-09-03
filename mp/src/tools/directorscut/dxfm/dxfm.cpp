@@ -1,4 +1,7 @@
+// qt needs to be included before source headers
 #include <QApplication>
+#include <QDir>
+#include <QFile>
 #include "ui.h"
 #include "matsyswindow.h"
 
@@ -61,6 +64,35 @@ bool DXFM::Init()
 
 bool DXFM::ClientInit(CreateInterfaceFn clientFactory)
 {
+    // qt!!!
+    // TODO: Does this NEED to be in ClientInit or can it be in Init?
+    
+    // initialize QApplication and set it to m_pApp
+    // this is required because qt will shut down if there is no QApplication instance
+    int argc = 0;
+    m_pApp = new QApplication(argc, nullptr);
+
+    // get tool assets directory
+    QString dir = QCoreApplication::applicationDirPath() + "/bin/tools/dxfm"; // steamapps\common\Source SDK Base 2013 Multiplayer\bin\tools\dxfm
+
+    // Msg the qstring
+    QByteArray ba = dir.toLocal8Bit();
+    const char* pDir = ba.data();
+    Msg("qt tools: %s\n", pDir);
+
+    // define qdir!
+    QDir::addSearchPath("tools", dir);
+
+    // load dxfm.qss as the stylesheet
+    QFile file("tools:stylesheets/dxfm.qss");
+    file.open(QFile::ReadOnly);
+    QString styleSheet = QLatin1String(file.readAll());
+    m_pApp->setStyleSheet(styleSheet);
+    
+    // window child of m_pApp
+    m_pMainWindow = new CMainWindow(nullptr);
+    m_pMainWindow->show();
+    m_pMainWindow->init();
     return true;
 }
 
@@ -77,20 +109,10 @@ void DXFM::OnToolActivate()
     // run vgui frame
     ivgui()->RunFrame();
 
+    // ask vgui editor to populate itself
     DXUIPanel* editor = DXUIPanel::GetEditor();
     if (editor)
         editor->PopulateEditor();
-    
-    // qt!!!
-    
-    // initialize QApplication and set it to m_pApp
-    int argc = 0;
-    m_pApp = new QApplication(argc, nullptr);
-    
-    // window child of m_pApp
-    m_pMainWindow = new CMainWindow(nullptr);
-    m_pMainWindow->show();
-    m_pMainWindow->init();
 }
 
 void DXFM::OnToolDeactivate()
@@ -108,6 +130,13 @@ void DXFM::ServerShutdown()
 
 void DXFM::ClientShutdown()
 {
+    // get rid of qt </3
+    delete m_pMainWindow;
+    delete m_pApp;
+    m_pMainWindow = nullptr;
+    m_pApp = nullptr;
+
+    // BUG: crashes, what didn't we shut down?
 }
 
 bool DXFM::CanQuit() {
@@ -120,8 +149,6 @@ void DXFM::PostMessage(HTOOLHANDLE hEntity, KeyValues* message)
 
 void DXFM::Think(bool finalTick)
 {
-    QCoreApplication::sendPostedEvents();
-    QCoreApplication::processEvents();
 }
 
 void DXFM::ServerLevelInitPreEntity()
@@ -183,6 +210,9 @@ void DXFM::ClientPreRender()
 
 void DXFM::ClientPostRender()
 {
+    // TODO: pre or post render? what's the difference?
+    QCoreApplication::sendPostedEvents();
+    QCoreApplication::processEvents();
 }
 
 void DXFM::AdjustEngineViewport(int &x, int &y, int &width, int &height)
