@@ -7,6 +7,8 @@
 $Macro SRCDIR "..\..\.."
 $Macro OUTBINNAME "dxfm"
 $Macro OUTBINDIR "$SRCDIR\..\game\bin\tools"
+$Macro QT_ROOT    "$SRCDIR\tools\directorscut\thirdparty\lgpl\qt"
+$Macro QT_MOC_DIR "$SRCDIR\tools\directorscut\dxfm\moc"
 
 $Include "$SRCDIR\vpc_scripts\source_dll_base.vpc"
 
@@ -35,13 +37,22 @@ $Configuration
 
     $Compiler
     {
-        $AdditionalIncludeDirectories "$BASE;$SRCDIR\tools\directorscut\dxfm,$SRCDIR\tools\directorscut\dxfm\ui;$SRCDIR\public;$SRCDIR\tools\directorscut\dx_vgui\include;$SRCDIR\tools\directorscut\dx_vgui;$SRCDIR\thirdparty,$SRCDIR\imgui;$TOOLSDIR"
+        $AdditionalIncludeDirectories "$BASE;$SRCDIR\tools\directorscut\dxfm;$SRCDIR\public"
+        $AdditionalIncludeDirectories "$BASE;$SRCDIR\tools\directorscut\dxfm\ui;$SRCDIR\tools\directorscut\dx_vgui\include;$SRCDIR\tools\directorscut\dx_vgui"
+
+        // qt stuff
+        $AdditionalIncludeDirectories "$BASE;$SRCDIR\tools\directorscut\dxfm\qt_ui"
+        $AdditionalIncludeDirectories	"$BASE;.\;$QT_ROOT\include;$QT_ROOT\include\QtCore;$QT_ROOT\include\QtGui;$QT_ROOT\include\QtWidgets;$QT_MOC_DIR"
+		$AdditionalIncludeDirectories	"$BASE;$QT_ROOT\include\QtGui\5.12.11\QtGui"
+        $AdditionalIncludeDirectories	"$BASE;$SRCDIR\public;$SRCDIR\public\mathlib;$SRCDIR\public\tier0;$SRCDIR\public\tier1"
+
         $PreprocessorDefinitions "$BASE;DIRECTORSCUT"
     }
 
     $Linker
     {
-        $AdditionalDependencies "$BASE"
+        $AdditionalDependencies "$BASE;comctl32.lib"
+        $AdditionalDependencies "$BASE;legacy_stdio_definitions.lib" [$VS2022]
     }
 }
 
@@ -68,9 +79,25 @@ $Project "dxfm"
             $File "ui\dx_ui_welcome.cpp"
         }
 
+        $Folder "qt_ui"
+        {
+            $File "qt_ui/ui.cpp"
+            $File "qt_ui/matsyswindow.cpp"
+        }
+
+		//$File "studiomodel.cpp"
+
         $File "dx_viewport.cpp"
         $File "dxfm.cpp"
         $File "tooldictionary.cpp"
+
+        $Folder	"Common Files"
+		{
+			$File "$SRCDIR\public\filesystem_init.cpp"
+			$File "$SRCDIR\public\studio.cpp"
+			$File "$SRCDIR\public\bone_setup.cpp"
+			$File "$SRCDIR\public\CollisionUtils.cpp"
+		}
     }
 
     $Folder "Public Header Files"
@@ -82,14 +109,27 @@ $Project "dxfm"
             $File "ui\dx_ui_viewport.h"
             $File "ui\dx_ui_welcome.h"
         }
+        
+        $Folder "qt_ui"
+        {
+            $File "qt_ui/ui.h"
+            $DynamicFile "$QT_MOC_DIR/ui.h.moc"
+            $File "qt_ui/matsyswindow.h"
+            $DynamicFile "$QT_MOC_DIR/matsyswindow.h.moc"
+        }
 
         $File "dx_viewport.h"
         $File "dxfm.h"
         $File "tooldictionary.h"
+		//$File "studiomodel.h"
     }
 
     $Folder "Link Libraries"
     {
+        $DynamicFile "$QT_ROOT/lib/qtmaind.lib"
+        $DynamicFile "$QT_ROOT/lib/Qt5Cored.lib"
+        $DynamicFile "$QT_ROOT/lib/Qt5Guid.lib"
+        $DynamicFile "$QT_ROOT/lib/Qt5Widgetsd.lib"
         $DynamicFile "$SRCDIR\lib\public\bitmap.lib"
         $DynamicFile "$SRCDIR\lib\public\choreoobjects.lib"
         $DynamicFile "$SRCDIR\lib\public\dmxloader.lib"

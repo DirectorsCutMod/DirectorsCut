@@ -62,10 +62,10 @@ Some parts of the code in Director's Cut is AI-assisted using [GitHub Copilot](h
       ```
 
   - Creating Visual Studio Solution:
-    - After cloning the repository, run `mp/src/creategameprojects.bat` to create the Visual Studio solution.
+    - After cloning the repository, run `mp/src/createtoolprojects.bat` to create the Visual Studio solution.
 
   - Building the Solution:
-    - Open `mp/src/games.sln` in Visual Studio and build the solution.
+    - Open `mp/src/tools.sln` in Visual Studio and build the solution.
 
 ## Contributors
 - [![KiwifruitDev](https://i.imgur.com/qLndRtf.png) KiwifruitDev](https://github.com/KiwifruitDev)
@@ -88,10 +88,12 @@ Check out [CONTRIBUTING.md](CONTRIBUTING.md) to learn how to contribute to Direc
 
 ## Attributions
 Director's Cut shares code from the following repositories:
+- [ashifolfi/source-sdk-2013](https://github.com/ashifolfi/source-sdk-2013/)
+- [Source-SDK-Resources/source-sdk-example-qt](https://github.com/Source-SDK-Resources/source-sdk-example-qt)
+- [Source-SDK-Resources/source-sdk-vs2022](https://github.com/Source-SDK-Resources/source-sdk-vs2022)
+- [Source Shader Editor](https://github.com/Biohazard90/source-shader-editor/)
 - [Mapbase](https://github.com/mapbase-source/source-sdk-2013)
 - [Source SDK 2013](https://github.com/ValveSoftware/source-sdk-2013)
-- [Source Shader Editor](https://github.com/Biohazard90/source-shader-editor/)
-- [ashifolfi/source-sdk-2013](https://github.com/ashifolfi/source-sdk-2013/)
 
 See [LEGAL.md](LEGAL.md) for licensing information.
 

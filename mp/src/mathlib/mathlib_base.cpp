@@ -918,9 +918,7 @@ void AngleVectors (const QAngle &angles, Vector *forward)
 //-----------------------------------------------------------------------------
 void AngleVectors( const QAngle &angles, Vector *forward, Vector *right, Vector *up )
 {
-#ifndef DX_SUPPRESS_ANNOYING_ASSERTS
 	Assert( s_bMathlibInitialized );
-#endif
 	
 	float sr, sp, sy, cr, cp, cy;
 

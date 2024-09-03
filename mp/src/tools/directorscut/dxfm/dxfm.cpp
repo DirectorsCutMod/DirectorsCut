@@ -1,4 +1,9 @@
+#include <QApplication>
+#include "ui.h"
+#include "matsyswindow.h"
+
 #include "dxfm.h"
+
 #include "tier0/icommandline.h"
 #include "tier1/tier1.h"
 #include "tier0/memdbgon.h"
@@ -33,6 +38,10 @@ using namespace vgui;
 
 #include "dx_ui_panel.h"
 
+// qt!!!!!! we love qt!!! <3
+QApplication* m_pApp;
+CMainWindow* m_pMainWindow;
+
 DXFM* g_pDXFM = NULL;
 
 DXFM::DXFM()
@@ -64,11 +73,24 @@ void DXFM::Shutdown()
 void DXFM::OnToolActivate()
 {
     DXUIPanel::SetEditorVisibility(true);
+
     // run vgui frame
     ivgui()->RunFrame();
+
     DXUIPanel* editor = DXUIPanel::GetEditor();
     if (editor)
         editor->PopulateEditor();
+    
+    // qt!!!
+    
+    // initialize QApplication and set it to m_pApp
+    int argc = 0;
+    m_pApp = new QApplication(argc, nullptr);
+    
+    // window child of m_pApp
+    m_pMainWindow = new CMainWindow(nullptr);
+    m_pMainWindow->show();
+    m_pMainWindow->init();
 }
 
 void DXFM::OnToolDeactivate()
@@ -98,6 +120,8 @@ void DXFM::PostMessage(HTOOLHANDLE hEntity, KeyValues* message)
 
 void DXFM::Think(bool finalTick)
 {
+    QCoreApplication::sendPostedEvents();
+    QCoreApplication::processEvents();
 }
 
 void DXFM::ServerLevelInitPreEntity()

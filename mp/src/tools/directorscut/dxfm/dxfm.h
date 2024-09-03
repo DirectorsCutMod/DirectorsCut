@@ -1,11 +1,21 @@
 #pragma once
 
-#include "dx_viewport.h"
 #include "toolframework/itoolsystem.h"
 #include "tooldictionary.h"
 #include "soundinfo.h"
 #include "keyvalues.h"
 #include "cdll_int.h"
+#include <materialsystem/imaterialproxyfactory.h>
+#include "dx_viewport.h"
+
+// Currently blank, but might be worth filling in if you need mat proxies
+class CMaterialProxyFactory : public IMaterialProxyFactory
+{
+public:
+	virtual IMaterialProxy* CreateProxy(const char* proxyName) { return nullptr; }
+	virtual void DeleteProxy(IMaterialProxy* pProxy) { }
+};
+static CMaterialProxyFactory s_materialProxyFactory;
 
 class DXFM : public IToolSystem
 {

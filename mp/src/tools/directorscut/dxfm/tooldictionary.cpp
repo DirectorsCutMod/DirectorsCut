@@ -49,9 +49,11 @@ IVRenderView* render = NULL;
 IVEngineClient* engine = NULL;
 IEngineTool* enginetools = NULL;
 IEngineVGui* enginevgui = NULL;
+IMDLCache* g_pMDLCache = NULL;
 
 bool CToolDictionary::Connect(CreateInterfaceFn factory)
 {
+    // Connect all interfaces
     ConnectTier1Libraries(&factory, 1);
     ConnectTier2Libraries(&factory, 1);
     ConnectTier3Libraries(&factory, 1);
@@ -66,6 +68,12 @@ bool CToolDictionary::Connect(CreateInterfaceFn factory)
         return false;
     modelinfo = (IVModelInfoClient*)factory(VMODELINFO_CLIENT_INTERFACE_VERSION, NULL);
     if (!modelinfo)
+        return false;
+    g_pMaterialSystem = (IMaterialSystem*)factory(MATERIAL_SYSTEM_INTERFACE_VERSION, NULL);
+    if (!g_pMaterialSystem)
+        return false;
+    g_pStudioRender = (IStudioRender*)factory(STUDIO_RENDER_INTERFACE_VERSION, NULL);
+    if (!g_pStudioRender)
         return false;
     enginesound = (IEngineSound*)factory(IENGINESOUND_CLIENT_INTERFACE_VERSION, NULL);
     if (!enginesound)
@@ -117,6 +125,13 @@ bool CToolDictionary::Connect(CreateInterfaceFn factory)
 void CToolDictionary::Disconnect()
 {
     // Disconnect all interfaces
+    DisconnectTier3Libraries();
+    DisconnectTier2Libraries();
+    DisconnectTier1Libraries();
+    g_pFullFileSystem = NULL;
+    g_pMaterialSystem = NULL;
+    g_pStudioRender = NULL;
+    g_pMDLCache = NULL;
     ConVar_Unregister();
     if (g_pVGui)
     {

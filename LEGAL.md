@@ -41,6 +41,25 @@ https://github.com/ashifolfi/source-sdk-2013
 
 *No license found.*
 
+### Source-SDK-Resources/source-sdk-example-qt
+https://github.com/Source-SDK-Resources/source-sdk-example-qt
+
+```text
+Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+```
+
+### Source-SDK-Resources/source-sdk-vs2022
+https://github.com/Source-SDK-Resources/source-sdk-vs2022
+
+*No license found.*
+
+### Source Shader Editor
+https://github.com/Biohazard90/source-shader-editor
+
+*No license found.*
+
 ### Mapbase
 https://github.com/mapbase-source/source-sdk-2013
 
@@ -301,11 +320,6 @@ copyright notice and the following:
 If you would like to use the SDK for a commercial purpose, please contact Valve at 
 sourceengine@valvesoftware.com.
 ```
-
-### Source Shader Editor
-https://github.com/Biohazard90/source-shader-editor
-
-*No license found.*
 
 ### Source 2013 SDK
 https://github.com/ValveSoftware/source-sdk-2013
