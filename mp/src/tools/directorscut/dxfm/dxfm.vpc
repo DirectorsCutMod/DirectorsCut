@@ -43,7 +43,7 @@ $Configuration
         // qt stuff
         $AdditionalIncludeDirectories "$BASE;$SRCDIR\tools\directorscut\dxfm\qt_ui"
         $AdditionalIncludeDirectories	"$BASE;.\;$QT_ROOT\include;$QT_ROOT\include\QtCore;$QT_ROOT\include\QtGui;$QT_ROOT\include\QtWidgets;$QT_MOC_DIR"
-		$AdditionalIncludeDirectories	"$BASE;$QT_ROOT\include\QtGui\5.12.11\QtGui"
+		$AdditionalIncludeDirectories	"$BASE;$QT_ROOT\include\QtGui\5.15.2\QtGui"
         $AdditionalIncludeDirectories	"$BASE;$SRCDIR\public;$SRCDIR\public\mathlib;$SRCDIR\public\tier0;$SRCDIR\public\tier1"
 
         $PreprocessorDefinitions "$BASE;DIRECTORSCUT"
@@ -82,7 +82,8 @@ $Project "dxfm"
         $Folder "qt_ui"
         {
             $File "qt_ui/ui.cpp"
-            $File "qt_ui/matsyswindow.cpp"
+            $File "qt_ui/viewportwindow.cpp"
+
         }
 
 		//$File "studiomodel.cpp"
@@ -114,8 +115,8 @@ $Project "dxfm"
         {
             $File "qt_ui/ui.h"
             $DynamicFile "$QT_MOC_DIR/ui.h.moc"
-            $File "qt_ui/matsyswindow.h"
-            $DynamicFile "$QT_MOC_DIR/matsyswindow.h.moc"
+            $File "qt_ui/viewportwindow.h"
+            $DynamicFile "$QT_MOC_DIR/viewportwindow.h.moc"
         }
 
         $File "dx_viewport.h"

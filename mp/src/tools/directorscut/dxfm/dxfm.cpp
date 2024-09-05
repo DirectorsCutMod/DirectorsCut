@@ -2,8 +2,8 @@
 #include <QApplication>
 #include <QDir>
 #include <QFile>
+
 #include "ui.h"
-#include "matsyswindow.h"
 
 #include "dxfm.h"
 
@@ -59,7 +59,7 @@ DXFM::DXFM()
 
 const char *DXFM::GetToolName()
 {
-    return "Director's Cut";
+    return DXFM_PRODUCT_NAME;
 }
 
 bool DXFM::Init()
@@ -293,6 +293,11 @@ void DXFM::VGui_PostSimulate()
     ft = Plat_FloatTime() - ft_cur;
 }
 
+const char* DXFM::GetVersionString()
+{
+    return DXFM_VERSION_STRING;
+}
+
 void DXFM::SetToolActive(bool active)
 {
     DXUIPanel::SetEditorVisibility(active);
@@ -323,6 +328,11 @@ void DXFM::SetToolActive(bool active)
 void DXFM::ToggleTool()
 {
     SetToolActive(!DXUIPanel::IsEditorVisible());
+}
+
+bool DXFM::IsToolActive()
+{
+    return DXUIPanel::IsEditorVisible();
 }
 
 bool DXFM::UpdateKeyState(ButtonCode_t key, bool down) {

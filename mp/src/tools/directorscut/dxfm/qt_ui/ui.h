@@ -18,7 +18,7 @@
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QWidget>
 
-#include "matsyswindow.h"
+#include "viewportwindow.h"
 
 class CMainWindow : public QMainWindow
 {
@@ -27,6 +27,7 @@ public:
 
 	CMainWindow(QWidget* pParent);
 
+    void closeEvent(QCloseEvent *event) override;
 	void positionUi();
     void actionsUi();
 	void setMetaObjects();
@@ -40,7 +41,7 @@ public:
 
     QWidget *animationSetEditor;
     QWidget *elementViewer;
-    QWidget *primaryViewport;
+    CViewportWindow *primaryViewport;
     QWidget *console;
     QWidget *timeline;
 
@@ -56,7 +57,10 @@ public:
 
     QStatusBar *statusbar;
 	
+    QAction *actionQuit;
     QAction *actionParticle_Editor_Tool;
     QAction *actionEnter_Game_Mode;
     QAction *actionAuto_Hide_Engine_Window;
+    QAction *actionAbout_Directors_Cut;
+    QAction *actionAbout_Qt;
 };

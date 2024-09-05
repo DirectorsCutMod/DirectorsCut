@@ -209,36 +209,8 @@ void DXUIViewport::OnThink()
 		if (!DXUIPanel::IsEditorVisible())
 			return;
 
-		// Get the viewport texture, this should also create it if it doesn't exist
-		ITexture* ref = m_pViewport->GetViewportTex();
-		Assert(ref != NULL);
-
-		CMatRenderContextPtr pRenderContext(g_pMaterialSystem);
-
-		int iViewportWidth = m_pViewport->GetViewportWidth();
-		int iViewportHeight = m_pViewport->GetViewportHeight();
-
-		// Render to texture
-		pRenderContext->PushRenderTargetAndViewport(ref, 0, 0, iViewportWidth, iViewportHeight);
-			// Set up player view
-			CViewSetup playerview;
-			enginetools->GetPlayerView(playerview, 0, 0, iViewportWidth, iViewportHeight);
-			playerview.origin = m_vecWorkCameraOrigin;
-			playerview.angles = m_angWorkCameraAngles;
-			// Convert vertical FOV to horizontal FOV
-			// FIXME: Turns out that SFM doesn't use this system, figure out how to properly calculate FOV
-			// Pragma uses predefined values with interpolation, could be useful
-			// See https://github.com/Silverlan/pfm/blob/b03ef04029a5be72a3a1db67ab92db4d6b659255/lua/sfm.lua#L89
-			float flVerticalFov = m_flWorkCameraFOV;
-			float flAspectRatio = (float)iViewportWidth / (float)iViewportHeight;
-			float flHorizontalFov = 2.0f * atan(tan(flVerticalFov * M_PI / 360.0f) * flAspectRatio) * 180.0f / M_PI;
-			// TEST: Multiply by 1.777 (16:9 aspect ratio) to match SFM's FOV
-			//flHorizontalFov *= flAspectRatio;
-			playerview.fov = flHorizontalFov;
-			playerview.m_bDoBloomAndToneMapping = false;
-			render->SetMainView(playerview.origin, playerview.angles);
-			enginetools->RenderView(playerview, VIEW_CLEAR_DEPTH | VIEW_CLEAR_COLOR, 0);
-		pRenderContext->PopRenderTargetAndViewport();
+		// Draw!
+		m_pViewport->DrawViewport();
 	}
 }
 

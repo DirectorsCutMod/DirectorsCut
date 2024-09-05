@@ -36,7 +36,7 @@ DXUIMenuBar::DXUIMenuBar(Panel* pParent) : BaseClass(pParent, "MenuBar")
     m_pMBut_Tools->SetMenu(pMenu_Tools);
     AddButton(m_pMBut_File);
     AddButton(m_pMBut_Tools);
-    m_pLabel = new Label(this, "label", "Director's Cut by KiwifruitDev");
+    m_pLabel = new Label(this, "label", DXFM_PRODUCT_NAME);
 }
 
 void DXUIMenuBar::OnThink()

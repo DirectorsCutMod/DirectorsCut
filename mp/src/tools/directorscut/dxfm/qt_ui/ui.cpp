@@ -43,14 +43,18 @@ CMainWindow::CMainWindow(QWidget* pParent) : QMainWindow(pParent)
 
 	animationSetEditor = new QWidget();
 	elementViewer = new QWidget();
-	primaryViewport = new QWidget();
+	primaryViewport = new CViewportWindow();
 	console = new QWidget();
 	timeline = new QWidget();
-	statusbar = new QStatusBar(this);
 
+	statusbar = new QStatusBar(this);
+	
+	actionQuit = new QAction(this);
 	actionParticle_Editor_Tool = new QAction(this);
 	actionEnter_Game_Mode = new QAction(this);
     actionAuto_Hide_Engine_Window = new QAction(this);
+	actionAbout_Directors_Cut = new QAction(this);
+	actionAbout_Qt = new QAction(this);
 
 	positionUi();
 	setMetaObjects();
@@ -62,7 +66,7 @@ CMainWindow::CMainWindow(QWidget* pParent) : QMainWindow(pParent)
 void CMainWindow::positionUi()
 {
 	resize(1344, 801);
-
+	
 	menubar->setGeometry(QRect(0, 0, 1344, 27));
 
 	tabWidget->setGeometry(QRect(0, 0, 323, 754));
@@ -74,9 +78,15 @@ void CMainWindow::positionUi()
 	
 	// center the window
 	QRect screenGeometry = QApplication::desktop()->screenGeometry();
-	int x = (screenGeometry.width() - width()) / 2;
-	int y = (screenGeometry.height() - height()) / 2;
-	move(x, y);
+	// FIXME: hardcoded values from Windows 11
+	int taskbarHeight = 48;
+	int borderWidth = 1;
+	int borderHeight = 31;
+	int desktopWidth = screenGeometry.width();
+	int desktopHeight = screenGeometry.height() - taskbarHeight;
+	int x = (desktopWidth - width()) / 2;
+	int y = (desktopHeight - height()) / 2;
+	move(x - borderWidth, y - borderHeight);
 }
 
 void CMainWindow::setMetaObjects()
@@ -108,9 +118,12 @@ void CMainWindow::setMetaObjects()
 
 	statusbar->setObjectName("statusbar");
 	
+	actionQuit->setObjectName("actionQuit");
 	actionParticle_Editor_Tool->setObjectName("actionParticle_Editor_Tool");
 	actionEnter_Game_Mode->setObjectName("actionEnter_Game_Mode");
     actionAuto_Hide_Engine_Window->setObjectName("actionAuto_Hide_Engine_Window");
+	actionAbout_Directors_Cut->setObjectName("actionAbout_Directors_Cut");
+	actionAbout_Qt->setObjectName("actionAbout_Qt");
 	
 	QMetaObject::connectSlotsByName(this);
 }
@@ -130,10 +143,19 @@ void CMainWindow::actionsUi()
 	menubar->addAction(menuScripts->menuAction());
 	menubar->addAction(menuHelp->menuAction());
 
+    menuFile->addAction(actionQuit);
 	menuWindows->addAction(actionParticle_Editor_Tool);
 	menuWindows->addAction(actionEnter_Game_Mode);
 	menuWindows->addAction(menuEngine_Window->menuAction());
 	menuEngine_Window->addAction(actionAuto_Hide_Engine_Window);
+	menuHelp->addAction(actionAbout_Directors_Cut);
+	menuHelp->addAction(actionAbout_Qt);
+
+	connect(actionQuit, &QAction::triggered, this, [this]() {
+		// TODO: ask user to save document
+		engine->ClientCmd_Unrestricted("quit prompt");
+		g_pDXFM->SetToolActive(false);
+	});
 
 	connect(actionParticle_Editor_Tool, &QAction::triggered, this, [this]() {
 		int toolCount = enginetools->GetToolCount();
@@ -156,6 +178,45 @@ void CMainWindow::actionsUi()
 		g_pDXFM->SetShouldHideEngineWindow(hide);
 		g_pDXFM->HideOrShowEngineWindow(hide);
 	});
+
+	connect(actionAbout_Directors_Cut, &QAction::triggered, this, [this]() {
+		QDialog* dialog = new QDialog(this);
+		// will be autosized on x later
+		dialog->setFixedSize(500, 115);
+		dialog->setWindowTitle("About " DXFM_PRODUCT_NAME_FULL);
+		// icon 64x64 at 11, 11
+		// tools:/images/dxfm/dxfm_app.png
+		QPixmap icon = QPixmap("tools:/images/dxfm/dxfm_app.png").scaled(64, 64, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+		QLabel* label = new QLabel(dialog);
+		label->setPixmap(icon);
+		label->setGeometry(11, 11, 64, 64);
+		// button 73x21 at (center horizontally), 82
+		QPushButton* button = new QPushButton("OK", dialog);
+		button->setGeometry(0, 82, 73, 21);
+		button->setDefault(true);
+		connect(button, &QPushButton::clicked, dialog, &QDialog::close);
+		// label (stretch to end with 11px padding)x64 at 89, 11
+		// <b>Version: DXFM_VERSION_STRING</b>
+		// <br><br>
+		// Copyright by DXFM_AUTHOR. All rights reserved.
+		QLabel* label2 = new QLabel(dialog);
+		label2->setText("<br><b>Version: " DXFM_VERSION_STRING "</b><br><br>Copyright by " DXFM_AUTHOR ". All rights reserved.");
+		// fit label width to content
+		int label2X = 92;
+		int label2Width = 500 - label2X - 11;
+		label2->setGeometry(label2X, 10, label2Width, 63);
+		label2->adjustSize();
+		label2->setFixedHeight(64);
+		// set new dialog width
+		dialog->setFixedSize(label2->x() + label2->width() + 11, dialog->height());
+		button->move((dialog->width() - button->width()) / 2, button->y());
+		// show dialog
+		dialog->show();
+	});
+
+	connect(actionAbout_Qt, &QAction::triggered, this, [this]() {
+		QApplication::aboutQt();
+	});
 	
     actionEnter_Game_Mode->setShortcut(QCoreApplication::translate("CMainWindow", "F11", nullptr));
 
@@ -167,13 +228,22 @@ void CMainWindow::actionsUi()
 	setStatusBar(statusbar);
 }
 
+void CMainWindow::closeEvent(QCloseEvent *event)
+{
+	// concommand "quit prompt"
+	engine->ClientCmd_Unrestricted("quit prompt");
+	g_pDXFM->SetToolActive(false);
+	// don't close the window
+	event->ignore();
+}
+
 void CMainWindow::retranslateUi()
 {
-	setWindowTitle("Director's Cut");
+	setWindowTitle(DXFM_PRODUCT_NAME_FULL);
 
 	tabWidget->setTabText(tabWidget->indexOf(animationSetEditor), "Animation Set Editor");
 	tabWidget->setTabText(tabWidget->indexOf(elementViewer), "Element Viewer");
-	tabWidget_2->setTabText(tabWidget_2->indexOf(primaryViewport), "Primary Viewport");
+	tabWidget_2->setTabText(tabWidget_2->indexOf(primaryViewport), primaryViewport->windowTitle());
 	tabWidget_2->setTabText(tabWidget_2->indexOf(console), "Console");
 	tabWidget_3->setTabText(tabWidget_3->indexOf(timeline), "Timeline");
 
@@ -185,9 +255,12 @@ void CMainWindow::retranslateUi()
 	menuHelp->setTitle("Help");
     menuEngine_Window->setTitle("Engine Window");
 
+    actionQuit->setText("Quit");
 	actionParticle_Editor_Tool->setText("Particle Editor Tool");
 	actionEnter_Game_Mode->setText("Enter Game Mode");
     actionAuto_Hide_Engine_Window->setText("Auto Hide Engine Window");
+	actionAbout_Directors_Cut->setText("About " DXFM_PRODUCT_NAME_FULL);
+	actionAbout_Qt->setText("About Qt");
 }
 
 #include "ui.h.moc"

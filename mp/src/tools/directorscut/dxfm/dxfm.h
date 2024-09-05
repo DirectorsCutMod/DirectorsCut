@@ -8,6 +8,21 @@
 #include <materialsystem/imaterialproxyfactory.h>
 #include "dx_viewport.h"
 
+#define DXFM_VERSION_0 "0"
+#define DXFM_VERSION_1 "0"
+#define DXFM_VERSION_2 "0"
+#define DXFM_VERSION_3 "1"
+#define DXFM_VERSION_STAGE "pre-alpha"
+#define DXFM_VERSION_STAGE_FORMAL "Pre-Alpha"
+
+#define DXFM_VERSION DXFM_VERSION_0 "." DXFM_VERSION_1 "." DXFM_VERSION_2 "." DXFM_VERSION_3
+#define DXFM_VERSION_STRING DXFM_VERSION " (" DXFM_VERSION_STAGE ")"
+
+#define DXFM_PRODUCT_NAME "Director's Cut"
+#define DXFM_PRODUCT_NAME_FULL DXFM_PRODUCT_NAME " [" DXFM_VERSION_STAGE_FORMAL "]"
+
+#define DXFM_AUTHOR DXFM_PRODUCT_NAME " Contributors"
+
 // Currently blank, but might be worth filling in if you need mat proxies
 class CMaterialProxyFactory : public IMaterialProxyFactory
 {
@@ -65,8 +80,10 @@ public:
     virtual void VGui_PostRender(int paintMode);
     virtual void VGui_PreSimulate();
     virtual void VGui_PostSimulate();
+    const char* GetVersionString();
     void SetToolActive(bool active);
     void ToggleTool();
+    bool IsToolActive();
     int AllocateViewport();
     bool AllocateViewport(int index);
     void FreeViewport(int index);
