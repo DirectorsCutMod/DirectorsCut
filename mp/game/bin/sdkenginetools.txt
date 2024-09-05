@@ -1,4 +1,4 @@
 "enginetools"
 {
-	"library"	"tools/dxfm.dll"
+	"library"	"tools/dxfm/dxfm.dll"
 }

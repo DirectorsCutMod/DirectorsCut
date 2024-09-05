@@ -7,6 +7,11 @@
 
 #include "dxfm.h"
 
+// windows headers
+#undef INVALID_HANDLE_VALUE
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+
 #include "tier0/icommandline.h"
 #include "tier1/tier1.h"
 #include "tier0/memdbgon.h"
@@ -75,10 +80,8 @@ bool DXFM::ClientInit(CreateInterfaceFn clientFactory)
     // get tool assets directory
     QString dir = QCoreApplication::applicationDirPath() + "/bin/tools/dxfm"; // steamapps\common\Source SDK Base 2013 Multiplayer\bin\tools\dxfm
 
-    // Msg the qstring
-    QByteArray ba = dir.toLocal8Bit();
-    const char* pDir = ba.data();
-    Msg("qt tools: %s\n", pDir);
+    // set library paths
+    QCoreApplication::addLibraryPath(dir + "/qt_plugins");
 
     // define qdir!
     QDir::addSearchPath("tools", dir);
@@ -91,8 +94,6 @@ bool DXFM::ClientInit(CreateInterfaceFn clientFactory)
     
     // window child of m_pApp
     m_pMainWindow = new CMainWindow(nullptr);
-    m_pMainWindow->show();
-    m_pMainWindow->init();
     return true;
 }
 
@@ -104,20 +105,18 @@ void DXFM::Shutdown()
 
 void DXFM::OnToolActivate()
 {
-    DXUIPanel::SetEditorVisibility(true);
+    // qt!
+    m_pMainWindow->show();
 
-    // run vgui frame
-    ivgui()->RunFrame();
-
-    // ask vgui editor to populate itself
-    DXUIPanel* editor = DXUIPanel::GetEditor();
-    if (editor)
-        editor->PopulateEditor();
+    SetToolActive(true);
 }
 
 void DXFM::OnToolDeactivate()
 {
-    DXUIPanel::SetEditorVisibility(false);
+    // hide qt
+    m_pMainWindow->hide();
+
+    SetToolActive(false);
 }
 
 bool DXFM::ServerInit(CreateInterfaceFn serverFactory) {
@@ -294,6 +293,38 @@ void DXFM::VGui_PostSimulate()
     ft = Plat_FloatTime() - ft_cur;
 }
 
+void DXFM::SetToolActive(bool active)
+{
+    DXUIPanel::SetEditorVisibility(active);
+
+    // show or hide game window
+    HideOrShowEngineWindow(active);
+
+    if(active)
+    {
+        // run vgui frame
+        ivgui()->RunFrame();
+
+        // ask vgui editor to populate itself
+        DXUIPanel* editor = DXUIPanel::GetEditor();
+        if (editor)
+            editor->PopulateEditor();
+            
+        // qt!
+        m_pMainWindow->activateWindow();
+    }
+
+    // mute or unmute audio
+    enginesound->StopAllSounds(true);
+    ConVarRef volume("volume");
+    volume.SetValue(active ? 0 : 1);
+}
+
+void DXFM::ToggleTool()
+{
+    SetToolActive(!DXUIPanel::IsEditorVisible());
+}
+
 bool DXFM::UpdateKeyState(ButtonCode_t key, bool down) {
     int keyBit = 1 << key;
     if (down)
@@ -317,10 +348,7 @@ bool DXFM::HandleKeyChange(ButtonCode_t key, bool isDown, bool wasDown) {
         // Pass through to global key handler
         if (key == KEY_F11 && isDown && !wasDown)
         {
-            if(DXUIPanel::IsEditorVisible())
-                OnToolDeactivate();
-            else
-                OnToolActivate();
+            ToggleTool();
             return true;
         }
     }
@@ -383,4 +411,28 @@ int DXFM::GetViewportCount()
 float DXFM::GetFrameTime()
 {
     return ft;
+}
+
+bool DXFM::GetShouldHideEngineWindow()
+{
+    return bShouldHideEngineWindow;
+}
+
+void DXFM::SetShouldHideEngineWindow(bool hide)
+{
+    bShouldHideEngineWindow = hide;
+}
+
+void DXFM::HideOrShowEngineWindow(bool hide)
+{
+    if(!bShouldHideEngineWindow)
+        hide = false;
+    HWND hwnd = FindWindowA("Valve001", NULL);
+    if (hwnd)
+    {
+        ShowWindow(hwnd, hide ? SW_HIDE : SW_SHOW);
+        // focus
+        if (!hide)
+            SetForegroundWindow(hwnd);
+    }
 }

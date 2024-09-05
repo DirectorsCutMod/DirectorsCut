@@ -65,15 +65,21 @@ public:
     virtual void VGui_PostRender(int paintMode);
     virtual void VGui_PreSimulate();
     virtual void VGui_PostSimulate();
+    void SetToolActive(bool active);
+    void ToggleTool();
     int AllocateViewport();
     bool AllocateViewport(int index);
     void FreeViewport(int index);
     DXViewport* GetViewport(int index, bool create = false);
     int GetViewportCount();
     float GetFrameTime();
+    bool GetShouldHideEngineWindow();
+    void SetShouldHideEngineWindow(bool hide);
+    void HideOrShowEngineWindow(bool hide);
 private:
     bool UpdateKeyState(ButtonCode_t key, bool down);
     bool HandleKeyChange(ButtonCode_t key, bool isDown, bool wasDown);
+    bool bShouldHideEngineWindow = true;
     int iKeyWasDownFlags = 0;
     int iKeyIsDownFlags = 0;
     CUtlVector<DXViewport*> m_vecViewports;

@@ -1,5 +1,3 @@
-#include <qpa/qplatformwindow.h>
-
 #include "matsyswindow.h"
 
 // Source tends to do funny stuff with defines. Let's just include it last just to be safe.
@@ -47,29 +45,11 @@ CMatSysWindow::CMatSysWindow(QWindow* pParent) : QWindow(pParent) {}
 
 bool CMatSysWindow::init()
 {
-	if (!RegisterMatSysWindow((void*)handle()->winId())) return false;
-
-	// White out our cubemap and lightmap, as we don't have either
-	ITexture* whiteTexture = g_pMaterialSystem->FindTexture("white", NULL, true);
-	whiteTexture->AddRef();
-	g_pMaterialSystem->GetRenderContext()->BindLocalCubemap(whiteTexture);
-	g_pMaterialSystem->GetRenderContext()->BindLightmapTexture(whiteTexture);
-
-	// Request an update to kick off our paint cycle
-	requestUpdate();
-
 	return true;
 }
 
 void CMatSysWindow::redraw()
 {
-	// No handle, no service
-	QPlatformWindow* hnd = handle();
-	if (!hnd)
-		return;
-
-	// Tell matsys we want to draw to this window
-	g_pMaterialSystem->SetView((void*)hnd->winId());
 	paint();
 }
 

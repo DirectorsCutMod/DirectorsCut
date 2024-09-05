@@ -101,10 +101,10 @@ server.dylib
 server.dylib.dSYM/
 
 # Tools
-mp/game/bin/tools/*.dll
-sp/game/bin/tools/*.dll
-mp/game/bin/tools/*.pdb
-sp/game/bin/tools/*.pdb
+mp/game/bin/tools/**/*.dll
+sp/game/bin/tools/**/*.dll
+mp/game/bin/tools/**/*.pdb
+sp/game/bin/tools/**/*.pdb
 
 mp/src/tools/**/*.dll
 sp/src/tools/**/*.dll

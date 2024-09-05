@@ -54,6 +54,7 @@ IMDLCache* g_pMDLCache = NULL;
 bool CToolDictionary::Connect(CreateInterfaceFn factory)
 {
     // Connect all interfaces
+    MathLib_Init();
     ConnectTier1Libraries(&factory, 1);
     ConnectTier2Libraries(&factory, 1);
     ConnectTier3Libraries(&factory, 1);
