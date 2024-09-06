@@ -23,6 +23,8 @@
 
 #define DXFM_AUTHOR DXFM_PRODUCT_NAME " Contributors"
 
+#define DXFM_INVALID_POINTER 0xFFEEFFEE
+
 // Currently blank, but might be worth filling in if you need mat proxies
 class CMaterialProxyFactory : public IMaterialProxyFactory
 {
@@ -93,6 +95,7 @@ public:
     bool GetShouldHideEngineWindow();
     void SetShouldHideEngineWindow(bool hide);
     void HideOrShowEngineWindow(bool hide);
+    void* GetEngineWindowHandle();
 private:
     bool UpdateKeyState(ButtonCode_t key, bool down);
     bool HandleKeyChange(ButtonCode_t key, bool isDown, bool wasDown);
@@ -102,6 +105,11 @@ private:
     CUtlVector<DXViewport*> m_vecViewports;
     float ft; // how much time has passed since the last frame
     float ft_cur;
+    void* pHWND = (void*)0xFFEEFFEE; // HWND, windows.h isn't included here
+    bool bIsWindowHidden = false;
+    bool bIsToolActive = false;
+    bool bUseVGUI = false;
+    bool bQtPort = true;
 };
 
 extern DXFM* g_pDXFM;

@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "*.vxml": "xml",
+        "*.vjs": "javascript",
+        "*.vcss": "css",
+        "*.vrman": "vdf",
+        "*.vsndevts": "vdf",
+        "*.lua": "glua",
+        "*.meta": "json",
+        "qmenubar": "cpp",
+        "qmenu": "cpp",
+        "*.moc": "cpp"
+    }
+}

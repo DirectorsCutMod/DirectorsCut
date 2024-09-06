@@ -81,9 +81,9 @@ $Project "dxfm"
 
         $Folder "qt_ui"
         {
+            $File "qt_ui/matsyswindow.cpp"
             $File "qt_ui/ui.cpp"
             $File "qt_ui/viewportwindow.cpp"
-
         }
 
 		//$File "studiomodel.cpp"
@@ -113,6 +113,8 @@ $Project "dxfm"
         
         $Folder "qt_ui"
         {
+            $File "qt_ui/matsyswindow.h"
+            $DynamicFile "$QT_MOC_DIR/matsyswindow.h.moc"
             $File "qt_ui/ui.h"
             $DynamicFile "$QT_MOC_DIR/ui.h.moc"
             $File "qt_ui/viewportwindow.h"

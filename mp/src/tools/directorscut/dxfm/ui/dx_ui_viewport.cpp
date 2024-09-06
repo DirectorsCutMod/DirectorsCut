@@ -210,7 +210,7 @@ void DXUIViewport::OnThink()
 			return;
 
 		// Draw!
-		m_pViewport->DrawViewport();
+		m_pViewport->DrawViewport(m_vecWorkCameraOrigin, m_angWorkCameraAngles, m_flWorkCameraFOV);
 	}
 }
 
@@ -598,7 +598,7 @@ void DXUIViewport::SetViewport(int index)
 bool DXUIViewport::CreateContextMenu()
 {	
 	// Recreate context menu if it's NULL or invalid
-	bool isNull = (m_pContextMenu == NULL || m_pContextMenu == (Menu*)0xFFEEFFEE);
+	bool isNull = (m_pContextMenu == NULL || m_pContextMenu == (Menu*)DXFM_INVALID_POINTER);
 	if (!isNull)
 	{
 		m_pContextMenu->DeleteAllItems();
@@ -610,7 +610,7 @@ bool DXUIViewport::CreateContextMenu()
 	m_pContextMenu = new Menu(this, "ContextMenu");
 
 	// Stop if the context menu is still NULL
-	if (m_pContextMenu == NULL || m_pContextMenu == (Menu*)0xFFEEFFEE)
+	if (m_pContextMenu == NULL || m_pContextMenu == (Menu*)DXFM_INVALID_POINTER)
 		return false;
 
 	// Add menu items

@@ -116,7 +116,7 @@ int DXViewport::GetViewportHeight()
 	return iViewportHeight;
 }
 
-void DXViewport::DrawViewport()
+void DXViewport::DrawViewport(Vector vecOrigin, QAngle angAngles, float flFOV)
 {
 	// If the editor isn't visible, don't render the viewport
 	if (!g_pDXFM->IsToolActive())

@@ -17,7 +17,7 @@ public:
     int GetViewportTexID();
     int GetViewportWidth();
     int GetViewportHeight();
-    void DrawViewport();
+    void DrawViewport(Vector vecOrigin, QAngle angAngles, float flFOV);
 private:
     int iIndex;
     IMaterial* pScreenMaterial;
@@ -26,9 +26,6 @@ private:
     int iScreenTextureID;
     int iViewportWidth;
     int iViewportHeight;
-    Vector vecOrigin = Vector(0, 0, 0);
-    QAngle angAngles = QAngle(0, 0, 0);
-    float flFOV = 90.0f;
 };
 
 extern int g_iAllocatedViewportFlags;

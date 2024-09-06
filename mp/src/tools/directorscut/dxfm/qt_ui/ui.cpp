@@ -43,7 +43,10 @@ CMainWindow::CMainWindow(QWidget* pParent) : QMainWindow(pParent)
 
 	animationSetEditor = new QWidget();
 	elementViewer = new QWidget();
-	primaryViewport = new CViewportWindow();
+
+	primaryViewport = new CViewportWindow(0);
+	container = QWidget::createWindowContainer(primaryViewport, this);
+
 	console = new QWidget();
 	timeline = new QWidget();
 
@@ -61,6 +64,12 @@ CMainWindow::CMainWindow(QWidget* pParent) : QMainWindow(pParent)
 	actionsUi();
 	retranslateUi();
 
+}
+
+void CMainWindow::redraw()
+{
+	// Draw frames
+	primaryViewport->redraw();
 }
 
 void CMainWindow::positionUi()
@@ -112,7 +121,10 @@ void CMainWindow::setMetaObjects()
 	
 	animationSetEditor->setObjectName("animationSetEditor");
 	elementViewer->setObjectName("elementViewer");
+
 	primaryViewport->setObjectName("primaryViewport");
+	container->setObjectName("container");
+
 	console->setObjectName("console");
 	timeline->setObjectName("timeline");
 
@@ -132,7 +144,11 @@ void CMainWindow::actionsUi()
 {
 	tabWidget->addTab(animationSetEditor, "");
 	tabWidget->addTab(elementViewer, "");
-	tabWidget_2->addTab(primaryViewport, "");
+
+	container->setMinimumSize(256, 256);
+	container->setFocusPolicy(Qt::TabFocus);
+	tabWidget_2->addTab(container, "");
+
 	tabWidget_2->addTab(console, "");
 	tabWidget_3->addTab(timeline, "");
 
@@ -210,8 +226,12 @@ void CMainWindow::actionsUi()
 		// set new dialog width
 		dialog->setFixedSize(label2->x() + label2->width() + 11, dialog->height());
 		button->move((dialog->width() - button->width()) / 2, button->y());
+		// don't allow user to interact with main window
+		dialog->setModal(true);
 		// show dialog
 		dialog->show();
+		// focus
+		dialog->activateWindow();
 	});
 
 	connect(actionAbout_Qt, &QAction::triggered, this, [this]() {
@@ -243,7 +263,7 @@ void CMainWindow::retranslateUi()
 
 	tabWidget->setTabText(tabWidget->indexOf(animationSetEditor), "Animation Set Editor");
 	tabWidget->setTabText(tabWidget->indexOf(elementViewer), "Element Viewer");
-	tabWidget_2->setTabText(tabWidget_2->indexOf(primaryViewport), primaryViewport->windowTitle());
+	tabWidget_2->setTabText(tabWidget_2->indexOf(container), "Primary Viewport");
 	tabWidget_2->setTabText(tabWidget_2->indexOf(console), "Console");
 	tabWidget_3->setTabText(tabWidget_3->indexOf(timeline), "Timeline");
 

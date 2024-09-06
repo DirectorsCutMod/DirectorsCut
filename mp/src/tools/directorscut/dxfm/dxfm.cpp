@@ -69,44 +69,56 @@ bool DXFM::Init()
 
 bool DXFM::ClientInit(CreateInterfaceFn clientFactory)
 {
-    // qt!!!
     // TODO: Does this NEED to be in ClientInit or can it be in Init?
     
-    // initialize QApplication and set it to m_pApp
-    // this is required because qt will shut down if there is no QApplication instance
-    int argc = 0;
-    m_pApp = new QApplication(argc, nullptr);
-
-    // get tool assets directory
-    QString dir = QCoreApplication::applicationDirPath() + "/bin/tools/dxfm"; // steamapps\common\Source SDK Base 2013 Multiplayer\bin\tools\dxfm
-
-    // set library paths
-    QCoreApplication::addLibraryPath(dir + "/qt_plugins");
-
-    // define qdir!
-    QDir::addSearchPath("tools", dir);
-
-    // load dxfm.qss as the stylesheet
-    QFile file("tools:stylesheets/dxfm.qss");
-    file.open(QFile::ReadOnly);
-    QString styleSheet = QLatin1String(file.readAll());
-    m_pApp->setStyleSheet(styleSheet);
+    // get launch options
+    bUseVGUI = !CommandLine()->CheckParm("-novgui"); // sfm uses -usevgui but we want to default to using vgui
+    bQtPort = !CommandLine()->CheckParm("-noqt"); // sfm uses -useqtport but we can't set default launch options
     
-    // window child of m_pApp
-    m_pMainWindow = new CMainWindow(nullptr);
+    // qt!!!
+    if(bQtPort)
+    {
+        // initialize QApplication and set it to m_pApp
+        // this is required because qt will shut down if there is no QApplication instance
+        int argc = 0;
+        m_pApp = new QApplication(argc, nullptr);
+
+        // get tool assets directory
+        QString dir = QCoreApplication::applicationDirPath() + "/bin/tools/dxfm"; // steamapps\common\Source SDK Base 2013 Multiplayer\bin\tools\dxfm
+
+        // set library paths
+        QCoreApplication::addLibraryPath(dir + "/qt_plugins");
+
+        // define qdir!
+        QDir::addSearchPath("tools", dir);
+
+        // load dxfm.qss as the stylesheet
+        QFile file("tools:stylesheets/dxfm.qss");
+        file.open(QFile::ReadOnly);
+        QString styleSheet = QLatin1String(file.readAll());
+        m_pApp->setStyleSheet(styleSheet);
+    }
     return true;
 }
 
 void DXFM::Shutdown()
 {
-    // run vgui frame
-    ivgui()->RunFrame();
+    if(bUseVGUI)
+    {
+        // run vgui frame
+        ivgui()->RunFrame();
+    }
 }
 
 void DXFM::OnToolActivate()
 {
     // qt!
-    m_pMainWindow->show();
+    if(bQtPort)
+    {
+        if(!m_pMainWindow)
+            m_pMainWindow = new CMainWindow(nullptr);
+        m_pMainWindow->show();
+    }
 
     SetToolActive(true);
 }
@@ -114,7 +126,10 @@ void DXFM::OnToolActivate()
 void DXFM::OnToolDeactivate()
 {
     // hide qt
-    m_pMainWindow->hide();
+    if(bQtPort)
+    {
+        m_pMainWindow->hide();
+    }
 
     SetToolActive(false);
 }
@@ -209,9 +224,12 @@ void DXFM::ClientPreRender()
 
 void DXFM::ClientPostRender()
 {
-    // TODO: pre or post render? what's the difference?
-    QCoreApplication::sendPostedEvents();
-    QCoreApplication::processEvents();
+    if (bQtPort && bIsToolActive)
+    {
+        // run qt events
+        QCoreApplication::sendPostedEvents();
+        QCoreApplication::processEvents();
+    }
 }
 
 void DXFM::AdjustEngineViewport(int &x, int &y, int &width, int &height)
@@ -249,7 +267,8 @@ IMaterialProxy* DXFM::LookupProxy(const char *proxyName)
 }
 
 bool DXFM::TrapKey(ButtonCode_t key, bool down) {
-    return UpdateKeyState(key, down);
+    //return UpdateKeyState(key, down);
+    return HandleKeyChange(key, down, false); // temporary fix
 }
 
 bool DXFM::GetSoundSpatialization(int iUserData, int guid, SpatializationInfo_t &info)
@@ -279,6 +298,14 @@ void DXFM::VGui_PreRender(int paintMode)
 
 void DXFM::VGui_PostRender(int paintMode)
 {
+    if (bQtPort && bIsToolActive)
+    {
+        // draw qt window
+        m_pMainWindow->redraw();
+        // ensure engine has control of the window after drawing
+        if (!bIsWindowHidden)
+            g_pMaterialSystem->SetView(GetEngineWindowHandle());
+    }
 }
 
 void DXFM::VGui_PreSimulate()
@@ -300,39 +327,63 @@ const char* DXFM::GetVersionString()
 
 void DXFM::SetToolActive(bool active)
 {
-    DXUIPanel::SetEditorVisibility(active);
+    bIsToolActive = active;
+    
+    if(bUseVGUI)
+        DXUIPanel::SetEditorVisibility(active);
 
     // show or hide game window
-    HideOrShowEngineWindow(active);
+    if(bQtPort)
+    {
+        HideOrShowEngineWindow(active);
+        // set view to engine window
+        if(active)
+        {
+            // set material system to draw to the qt window
+            m_pMainWindow->activateWindow();
+        }
+        else
+        {
+            // ensure engine has control of the window
+            g_pMaterialSystem->SetView(GetEngineWindowHandle());
+        }
+    }
 
     if(active)
     {
-        // run vgui frame
-        ivgui()->RunFrame();
+        if(bUseVGUI)
+        {
+            // run vgui frame
+            ivgui()->RunFrame();
 
-        // ask vgui editor to populate itself
-        DXUIPanel* editor = DXUIPanel::GetEditor();
-        if (editor)
-            editor->PopulateEditor();
+            // ask vgui editor to populate itself
+            DXUIPanel* editor = DXUIPanel::GetEditor();
+            if (editor)
+                editor->PopulateEditor();
+        }
             
         // qt!
-        m_pMainWindow->activateWindow();
+        if(bQtPort)
+            m_pMainWindow->activateWindow();
     }
 
-    // mute or unmute audio
-    enginesound->StopAllSounds(true);
-    ConVarRef volume("volume");
-    volume.SetValue(active ? 0 : 1);
+    if(bQtPort)
+    {
+        // mute or unmute audio
+        enginesound->StopAllSounds(true);
+        ConVarRef volume("volume");
+        volume.SetValue(active ? 0 : 1);
+    }
 }
 
 void DXFM::ToggleTool()
 {
-    SetToolActive(!DXUIPanel::IsEditorVisible());
+    SetToolActive(!bIsToolActive);
 }
 
 bool DXFM::IsToolActive()
 {
-    return DXUIPanel::IsEditorVisible();
+    return bIsToolActive;
 }
 
 bool DXFM::UpdateKeyState(ButtonCode_t key, bool down) {
@@ -352,8 +403,10 @@ bool DXFM::UpdateKeyState(ButtonCode_t key, bool down) {
 
 bool DXFM::HandleKeyChange(ButtonCode_t key, bool isDown, bool wasDown) {
     // Allow UI to trap key presses
-    bool trap = DXUIPanel::HandleKeyChange(key, isDown, wasDown);
-    if(trap == false)
+    bool trap = false;
+    if(bUseVGUI)
+        trap = DXUIPanel::HandleKeyChange(key, isDown, wasDown);
+    if(!trap)
     {
         // Pass through to global key handler
         if (key == KEY_F11 && isDown && !wasDown)
@@ -435,14 +488,28 @@ void DXFM::SetShouldHideEngineWindow(bool hide)
 
 void DXFM::HideOrShowEngineWindow(bool hide)
 {
-    if(!bShouldHideEngineWindow)
-        hide = false;
-    HWND hwnd = FindWindowA("Valve001", NULL);
-    if (hwnd)
+    if(bQtPort)
     {
+        if(!bShouldHideEngineWindow)
+            hide = false;
+        HWND hwnd = (HWND)GetEngineWindowHandle();
         ShowWindow(hwnd, hide ? SW_HIDE : SW_SHOW);
+        bIsWindowHidden = hide;
         // focus
         if (!hide)
             SetForegroundWindow(hwnd);
     }
+}
+
+void* DXFM::GetEngineWindowHandle()
+{
+    // set hwnd to the engine window handle
+    if (pHWND == (void*)DXFM_INVALID_POINTER)
+    {
+        HWND hwnd = FindWindowA("Valve001", NULL);
+        pHWND = (void*)hwnd;
+    }
+    // feefee check
+	Assert(pHWND != (void*)DXFM_INVALID_POINTER);
+    return pHWND;
 }

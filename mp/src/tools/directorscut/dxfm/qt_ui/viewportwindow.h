@@ -1,26 +1,30 @@
 #pragma once
 
-#include <QWidget>
-#include <QWindow>
-#include <QMouseEvent>
-#include <QWheelEvent>
-#include <QComboBox>
+#include "matsyswindow.h"
+#include "dx_viewport.h"
 
-#include <QtCore/QVariant>
-#include <QtGui/QIcon>
-#include <QtWidgets/QAction>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QMenuBar>
-#include <QtWidgets/QStatusBar>
-#include <QtWidgets/QTabWidget>
-#include <QtWidgets/QWidget>
-
-class CViewportWindow : public QWidget
+class CViewportWindow : public CMatSysWindow
 {
 	Q_OBJECT;
 public:
 
-	CViewportWindow(QWidget* pParent = nullptr);
+	CViewportWindow(QWindow* pParent, int index = 0);
+	~CViewportWindow();
+
+	virtual void paint();
+	virtual bool event(QEvent* ev);
+
+    void SetViewport(int index);
+protected:
+    bool m_bViewportIsDirty = true;
+
+    // Viewport pointer
+    int m_iIndex = 0;
+    DXViewport* m_pViewport = NULL;
+
+    // Work camera
+    bool m_bWorkCameraActive =  true;
+    Vector m_vecWorkCameraOrigin = Vector(0, 0, 0);
+    QAngle m_angWorkCameraAngles = QAngle(0, 0, 0);
+    float m_flWorkCameraFOV = 90.0f;
 };

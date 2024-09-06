@@ -27,6 +27,8 @@ public:
 
 	CMainWindow(QWidget* pParent);
 
+    void redraw();
+
     void closeEvent(QCloseEvent *event) override;
 	void positionUi();
     void actionsUi();
@@ -42,6 +44,7 @@ public:
     QWidget *animationSetEditor;
     QWidget *elementViewer;
     CViewportWindow *primaryViewport;
+    QWidget *container;
     QWidget *console;
     QWidget *timeline;
 
