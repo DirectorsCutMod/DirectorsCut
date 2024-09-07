@@ -21,18 +21,14 @@ class CMatSysWindow : public QWindow
 {
 	Q_OBJECT;
 public:
-
 	CMatSysWindow(QWindow* pParent = nullptr);
 
-	// Sets everything up for painting and then paints
+	virtual void paint();
+	
+	// qt overrides
 	virtual void redraw();
 
-	// Paints to the window
-	virtual void paint();
-
-	// Dumps the window contents to a QImage
 	QImage screenshot();
-
 protected:
 	virtual void resizeEvent(QResizeEvent* ev);
 };

@@ -82,7 +82,6 @@ public:
     virtual void VGui_PostRender(int paintMode);
     virtual void VGui_PreSimulate();
     virtual void VGui_PostSimulate();
-    const char* GetVersionString();
     void SetToolActive(bool active);
     void ToggleTool();
     bool IsToolActive();

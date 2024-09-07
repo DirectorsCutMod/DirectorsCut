@@ -8,7 +8,6 @@ $Macro SRCDIR "..\..\.."
 $Macro OUTBINNAME "dxfm"
 $Macro OUTBINDIR "$SRCDIR\..\game\bin\tools\dxfm"
 $Macro QT_ROOT    "$SRCDIR\tools\directorscut\thirdparty\lgpl\qt"
-$Macro QT_MOC_DIR "$SRCDIR\tools\directorscut\dxfm\moc"
 
 $Include "$SRCDIR\vpc_scripts\source_dll_base.vpc"
 
@@ -42,7 +41,7 @@ $Configuration
 
         // qt stuff
         $AdditionalIncludeDirectories "$BASE;$SRCDIR\tools\directorscut\dxfm\qt_ui"
-        $AdditionalIncludeDirectories	"$BASE;.\;$QT_ROOT\include;$QT_ROOT\include\QtCore;$QT_ROOT\include\QtGui;$QT_ROOT\include\QtWidgets;$QT_MOC_DIR"
+        $AdditionalIncludeDirectories	"$BASE;.\;$QT_ROOT\include;$QT_ROOT\include\QtCore;$QT_ROOT\include\QtGui;$QT_ROOT\include\QtWidgets"
 		$AdditionalIncludeDirectories	"$BASE;$QT_ROOT\include\QtGui\5.15.2\QtGui"
         $AdditionalIncludeDirectories	"$BASE;$SRCDIR\public;$SRCDIR\public\mathlib;$SRCDIR\public\tier0;$SRCDIR\public\tier1"
 
@@ -75,18 +74,19 @@ $Project "dxfm"
         {
             $File "ui\dx_ui_menubar.cpp"
             $File "ui\dx_ui_panel.cpp"
-            $File "ui\dx_ui_viewport.cpp"
-            $File "ui\dx_ui_welcome.cpp"
+            //$File "ui\dx_ui_viewport.cpp"
+            //$File "ui\dx_ui_welcome.cpp"
         }
 
         $Folder "qt_ui"
         {
+            $File "qt_ui/aboutdialog.cpp"
+            $File "qt_ui/keyboardshortcutsdialog.cpp"
             $File "qt_ui/matsyswindow.cpp"
             $File "qt_ui/ui.cpp"
             $File "qt_ui/viewportwindow.cpp"
+            $File "qt_ui/welcomewizarddialog.cpp"
         }
-
-		//$File "studiomodel.cpp"
 
         $File "dx_viewport.cpp"
         $File "dxfm.cpp"
@@ -107,24 +107,29 @@ $Project "dxfm"
         {
             $File "ui\dx_ui_menubar.h"
             $File "ui\dx_ui_panel.h"
-            $File "ui\dx_ui_viewport.h"
-            $File "ui\dx_ui_welcome.h"
+            //$File "ui\dx_ui_viewport.h"
+            //$File "ui\dx_ui_welcome.h"
         }
         
         $Folder "qt_ui"
         {
+            $File "qt_ui/aboutdialog.h"
+            $DynamicFile "qt_ui/aboutdialog.h.moc"
+            $File "qt_ui/keyboardshortcutsdialog.h"
+            $DynamicFile "qt_ui/keyboardshortcutsdialog.h.moc"
             $File "qt_ui/matsyswindow.h"
-            $DynamicFile "$QT_MOC_DIR/matsyswindow.h.moc"
+            $DynamicFile "qt_ui/matsyswindow.h.moc"
             $File "qt_ui/ui.h"
-            $DynamicFile "$QT_MOC_DIR/ui.h.moc"
+            $DynamicFile "qt_ui/ui.h.moc"
             $File "qt_ui/viewportwindow.h"
-            $DynamicFile "$QT_MOC_DIR/viewportwindow.h.moc"
+            $DynamicFile "qt_ui/viewportwindow.h.moc"
+            $File "qt_ui/welcomewizarddialog.h"
+            $DynamicFile "qt_ui/welcomewizarddialog.h.moc"
         }
 
         $File "dx_viewport.h"
         $File "dxfm.h"
         $File "tooldictionary.h"
-		//$File "studiomodel.h"
     }
 
     $Folder "Link Libraries"

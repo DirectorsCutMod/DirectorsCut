@@ -126,7 +126,7 @@ void DXFM::OnToolActivate()
 void DXFM::OnToolDeactivate()
 {
     // hide qt
-    if(bQtPort)
+    if(bQtPort && m_pMainWindow != NULL)
     {
         m_pMainWindow->hide();
     }
@@ -154,6 +154,7 @@ void DXFM::ClientShutdown()
 }
 
 bool DXFM::CanQuit() {
+    OnToolDeactivate(); // as a safety measure
     return true;
 }
 
@@ -318,11 +319,6 @@ void DXFM::VGui_PostSimulate()
 {
     // Calculate time passed
     ft = Plat_FloatTime() - ft_cur;
-}
-
-const char* DXFM::GetVersionString()
-{
-    return DXFM_VERSION_STRING;
 }
 
 void DXFM::SetToolActive(bool active)

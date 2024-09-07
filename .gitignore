@@ -126,6 +126,7 @@ textwindow_temp.html
 *.ain
 commedit.txt
 *.lst
+ServerConfig.vdf
 
 # shader files
 *.tmp
@@ -136,3 +137,4 @@ commedit.txt
 [Rr]elease*/
 *.pdb
 .vs/
+.vscode/

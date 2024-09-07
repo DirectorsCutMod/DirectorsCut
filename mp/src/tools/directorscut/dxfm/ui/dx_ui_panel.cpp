@@ -1,6 +1,6 @@
 #include "dx_ui_panel.h"
-#include "dx_ui_viewport.h"
-#include "dx_ui_welcome.h"
+//#include "dx_ui_viewport.h"
+//#include "dx_ui_welcome.h"
 #include "tier1/KeyValues.h"
 #include "ienginevgui.h"
 #include "collisionutils.h"
@@ -8,6 +8,7 @@
 #include "vgui/IInput.h"
 #include "vgui/ISurface.h"
 #include "dx_vgui_controls/Panel.h"
+#include "dx_vgui_controls/Frame.h"
 #include "dx_vgui_controls/ToolWindow.h"
 #include "dx_vgui_controls/PropertySheet.h"
 #include "tier0/memdbgon.h"
@@ -147,6 +148,7 @@ void DXUIPanel::PopulateEditor()
 			toolWindows.AddToTail(m_pToolWindow);
 		}
 		// Set sizes of tool windows
+		/*
 		int padding = 4; // Padding between tool windows
 		int w, h;
 		GetSize(w, h);
@@ -155,18 +157,14 @@ void DXUIPanel::PopulateEditor()
 		{
 			ToolWindow* pToolWindow = toolWindows[i];
 			Panel* page = pToolWindow->GetActivePage();
-			/*
 			if (page == m_vecPanels[0] || page == m_vecPanels[1]) // Animation set editor + element viewer
 			{
 				pToolWindow->SetBounds(0, 24, w / 3, (h / 2) + (h / 8) - 24);
 			}
-			else
-			*/
-			if(page == m_vecPanels[0] || page == m_vecPanels[1]) // welcome + viewport
+			else if(page == m_vecPanels[3] || page == m_vecPanels[4]) // welcome + viewport
 			{
 				pToolWindow->SetBounds((w / 3) - padding, 24, w - (w / 3) + padding, (h / 2) + (h / 8) - 24);
 			}
-			/*
 			else if(page == m_vecPanels[4] || page == m_vecPanels[5]) // timeline + asset browser
 			{
 				pToolWindow->SetBounds((w / 3) - padding, (h / 2) + (h / 8) - (24 / 2) + (padding*2), w - (w / 3) + padding, (h / 2) - (h / 8) + padding);
@@ -175,12 +173,12 @@ void DXUIPanel::PopulateEditor()
 			{
 				pToolWindow->SetBounds(0, (h / 2) + (h / 8) - (24/2) + (padding * 2), w / 3, (h / 2) - (h / 8) + padding);
 			}
-			*/
 			// Apply padding to all sides
 			int x, y, wide, tall;
 			pToolWindow->GetBounds(x, y, wide, tall);
 			pToolWindow->SetBounds(x + padding, y + padding, wide - (padding * 2), tall - (padding * 2));
 		}
+		*/
 		// Tab groups
 		for (int i = 0; i < toolWindows.Count(); i++)
 		{
@@ -234,8 +232,8 @@ DXUIPanel::DXUIPanel(VPANEL pParent) : BaseClass(NULL, "DXFM", false)
 	SetScheme(scheme);
 
 	// Create window tabs
-	m_vecPanels.AddToTail(new DXUIWelcome(this));
-    m_vecPanels.AddToTail(new DXUIViewport(this));
+	//m_vecPanels.AddToTail(new DXUIWelcome(this));
+    //m_vecPanels.AddToTail(new DXUIViewport(this));
 
 	// Set properties
 	int w, h;

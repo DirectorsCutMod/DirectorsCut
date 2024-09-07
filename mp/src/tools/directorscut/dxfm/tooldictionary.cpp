@@ -126,19 +126,19 @@ bool CToolDictionary::Connect(CreateInterfaceFn factory)
 void CToolDictionary::Disconnect()
 {
     // Disconnect all interfaces
-    DisconnectTier3Libraries();
-    DisconnectTier2Libraries();
-    DisconnectTier1Libraries();
     g_pFullFileSystem = NULL;
     g_pMaterialSystem = NULL;
     g_pStudioRender = NULL;
     g_pMDLCache = NULL;
-    ConVar_Unregister();
     if (g_pVGui)
     {
-		g_pVGui->Shutdown();
-		g_pVGui = NULL;
-	}
+        g_pVGui->Shutdown();
+        g_pVGui = NULL;
+    }
+    ConVar_Unregister();
+    DisconnectTier3Libraries();
+    DisconnectTier2Libraries();
+    DisconnectTier1Libraries();
 }
 
 void* CToolDictionary::QueryInterface(const char* pInterfaceName)
