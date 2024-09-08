@@ -16,7 +16,7 @@ If you meet these requirements, it may still be useful to read the following ins
 ### Git Installation
 If you don't have **Git for Windows** installed, follow these steps to install it:
 - Download the **64-bit Git for Windows Setup** installer from the Git website linked above and run it.
-- Click **Next** on the **Information** screen.
+- Read the license agreement and **ONLY** click **Next** if **YOU** agree to the terms and conditions.
 - For each of these screens, set the following options and click **Next**:
   - Select components:
     - [ ] Additional icons
@@ -73,7 +73,7 @@ If you don't have **Git for Windows** installed, follow these steps to install i
 If you don't have **Open Source Qt 5.15.2** installed, follow these steps to install it:
 - Download the **Qt Online Installer** from the Qt website linked above and run it.
 - Log in or create a Qt account through the installer.
-- Select the following checkboxes and click **Next**:
+- Please read the terms and conditions and **ONLY** select the following options if they apply to **YOU**, then click **Next**:
   - *I have read and agree to the terms and conditions of using Open Source Qt*
   - *I'm an individual and do not use Qt for any company*
 - Click **Next**, select one of the following usage data options, and click **Next**:
@@ -90,7 +90,8 @@ If you don't have **Open Source Qt 5.15.2** installed, follow these steps to ins
   - [ ] *Preview*
 - Click on the *Select* dropdown and select *Deselect All*.
 - Navigate through *Qt* > *Qt 5.15.2* and select *MSVC 2019 32-bit* and click **Next**.
-- Select *I have read and agree to the terms contained in the license agreements* and click **Next**.
+- Read the license agreements and **ONLY** select the following option if it applies to **YOU**, then click **Next**:
+  - *I have read and agree to the terms contained in the license agreements*
 - Click **Next** and then **Install** to begin the installation.
 - Once the installation is complete, follow [Configuring the Qt Environment](#configuring-the-qt-environment) once the repository is cloned.
 
