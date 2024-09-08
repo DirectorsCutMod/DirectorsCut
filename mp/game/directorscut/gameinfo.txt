@@ -16,7 +16,7 @@
     }
     "Developer" "KiwifruitDev"
     "Developer_URL" "http://github.com/KiwifruitDev"
-    "Manual" "http://github.com/KiwifruitDev/DirectorsCut"
+    "Manual" "http://github.com/DirectorsCutMod/DirectorsCut"
     "Icon" "resource/icon"
     "Nodegraph" "0"
     "SupportsDX8" "0"

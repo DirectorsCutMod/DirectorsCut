@@ -5,10 +5,10 @@ Thank you for your interest in contributing to Director's Cut!
 This guide is provided to help you get started with contributing to the project.
 
 ## GitHub Repository
-The following information is relevant to the [GitHub repository](https://github.com/KiwifruitDev/DirectorsCut) for Director's Cut.
+The following information is relevant to the [GitHub repository](https://github.com/DirectorsCutMod/DirectorsCut) for Director's Cut.
 
 ### Issues
-[Issues](https://github.com/KiwifruitDev/DirectorsCut/issues) are used to track bugs, feature requests, and other tasks related to the project.
+[Issues](https://github.com/DirectorsCutMod/DirectorsCut/issues) are used to track bugs, feature requests, and other tasks related to the project.
 
 Generally any issues are appreciated, but please try to follow these guidelines when creating a new issue:
 - Ensure the issue is unique and is not a duplicate.
@@ -17,7 +17,7 @@ Generally any issues are appreciated, but please try to follow these guidelines 
 - Provide screenshots or references to help explain the issue.
 
 ### Pull Requests
-All [pull requests](https://github.com/KiwifruitDev/DirectorsCut/pulls) are welcome, whether they are bug fixes, new features, or improvements to the project.
+All [pull requests](https://github.com/DirectorsCutMod/DirectorsCut/pulls) are welcome, whether they are bug fixes, new features, or improvements to the project.
 
 Please consider the following when creating a pull request:
 - No pull requests to `legacy`-prefixed branches will be accepted.

@@ -49,7 +49,7 @@ DXUIWelcome::DXUIWelcome(Panel* pParent) : BaseClass(pParent, "Welcome")
 {
     pBannerContainer = new ScalableImagePanel(this, "banner" );
     pBannerContainer->SetImage( "directorscut/banner" );
-    m_vecLinks.AddToTail(LinkButton("github", "GitHub", "https://github.com/KiwifruitDev/DirectorsCut"));
+    m_vecLinks.AddToTail(LinkButton("github", "GitHub", "https://github.com/DirectorsCutMod/DirectorsCut"));
     m_vecLinks.AddToTail(LinkButton("discord", "Discord", "https://discord.gg/3X3teNecWs"));
     m_vecLinks.AddToTail(LinkButton("youtube", "YouTube", "https://youtube.com/@DirectorsCutMod"));
     m_vecLinks.AddToTail(LinkButton("twitter", "X (Twitter)", "https://x.com/DirectorsCutMod"));

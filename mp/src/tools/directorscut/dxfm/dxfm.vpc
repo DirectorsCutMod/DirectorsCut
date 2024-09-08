@@ -7,7 +7,7 @@
 $Macro SRCDIR "..\..\.."
 $Macro OUTBINNAME "dxfm"
 $Macro OUTBINDIR "$SRCDIR\..\game\bin\tools\dxfm"
-$Macro QT_ROOT    "$SRCDIR\tools\directorscut\thirdparty\lgpl\qt"
+$Macro QT_ROOT    "$SRCDIR\tools\directorscut\qt"
 
 $Include "$SRCDIR\vpc_scripts\source_dll_base.vpc"
 
