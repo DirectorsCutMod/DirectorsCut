@@ -121,8 +121,8 @@ The following batch files are available in the `mp/src` folder in order to confi
     - At the moment, only the Debug variant is supported.
   - Without copying the DLLs, Director's Cut will not run.
 - `qt_moc.bat`
-  - This batch file is used to run the Qt Meta-Object Compiler (moc) on Director's Cut-specific Qt header files.
-  - This is only required to be run if you are making changes to the header files.
+  - This batch file is used to run the Qt Meta-Object Compiler (`.moc`) on Director's Cut-specific Qt header files.
+  - This is required because the `.moc` files are not included in the repository.
   - This batch file is automatically run from `createtoolprojects.bat` if the Qt junction is set up.
 
 For first-time setup, run these required batch files in the following order:

@@ -1,5 +1,8 @@
 # Files to ignore when considering what GIT should commit.
 
+# Qt
+*.moc
+
 # Visual Studio 
 *.suo
 *.user
