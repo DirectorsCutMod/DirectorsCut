@@ -11,8 +11,8 @@ set sdk_s=%s_notdetected%
 set qt_s=%s_notdetected%
 if exist %sdk_path% set sdk_found=1
 if exist %qt_path% set qt_found=1
-if %sdk_found% equ 1 set qt_s=%s_detected%
-if %qt_found% equ 1 set sdk_s=%s_detected%
+if %sdk_found% equ 1 set sdk_s=%s_detected%
+if %qt_found% equ 1 set qt_s=%s_detected%
 echo Source SDK: %sdk_s% (looking for %sdk_path%)
 echo Qt: %qt_s% (looking for %qt_path%)
 if %sdk_found% equ 0 echo [43;30mWarning:[0m [33mSource SDK was not detected, run "git submodule update --init" in the repository root.[0m

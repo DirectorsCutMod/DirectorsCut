@@ -35,7 +35,7 @@ goto :next
 echo Creating the Director's Cut Junction...
 mklink /j "C:\Program Files (x86)\Steam\steamapps\common\Source SDK Base 2013 Multiplayer\bin\directorscut" ..\game\bin\directorscut
 if errorlevel 1 (
-    echo [7;31mError:[0m [31mCould not create junction. Missing permissions or invalid path?[0m
+    echo [7;31mError:[0m [31mCould not create junction. Missing permissions or invalid path? Did you install it?[0m
     goto :errored
 )
 echo Junction creation completed successfully.
@@ -48,17 +48,32 @@ goto :next2
 echo Copying the x64 sdkenginetools.txt...
 copy ..\game\bin\x64\sdkenginetools.txt "C:\Program Files (x86)\Steam\steamapps\common\Source SDK Base 2013 Multiplayer\bin\x64\sdkenginetools.txt"
 if errorlevel 1 (
-    echo [7;31mError:[0m [31mCould not copy sdkenginetools.txt. Missing permissions or invalid path?[0m
+    echo [7;31mError:[0m [31mCould not copy sdkenginetools.txt. Missing permissions or invalid path? Did you install it?[0m
     goto :errored
 )
 echo x64 sdkenginetools.txt copied successfully.
 :next2
-if %game_client_found% equ 1 if %game_server_found% equ 1 goto :finished
+if %game_client_found% equ 1 if %game_server_found% equ 1 goto :link_tf_bin
 echo [7;31mError:[0m [31mCould not find binaries to Frog Fortress 2 (mod_tf). You must build the Client and Server projects.[0m
 goto :errored
+:link_tf_bin
+set link_src_path=..\sdk\game\mod_tf\bin
+set link_dst_path=..\game\directorscut\bin
+set link_test_path=%link_dst_path%\x64\client.dll
+if exist %link_test_path% goto :finished
+set /p should_create_tf_bin=[43;30mWarning:[0m [33mWould you like to create a "bin" junction from mod_tf? This is required to run Director's Cut. (y/n) [0m
+if %should_create_tf_bin% equ y goto :link_tf_bin_create
+goto :finished
+:link_tf_bin_create
+echo Creating the Director's Cut "bin" folder junction...
+mklink /j "%link_dst_path%" "%link_src_path%"
+if errorlevel 1 (
+    echo [7;31mError:[0m [31mCould not create junction for the mod_tf "bin" folder. Missing permissions or invalid path?[0m
+    goto :errored
+)
 :errored
 pause
 :finished
 echo Starting the game...
-echo hl2_win64.exe -game "%cd%\..\sdk\game\mod_tf" -novid -console -dev -allowdebug -sw -w 1280 -h 720 -windowed -tools -nop4
-start "" "C:\Program Files (x86)\Steam\steamapps\common\Source SDK Base 2013 Multiplayer\hl2_win64.exe" -game "%cd%\..\sdk\game\mod_tf" -novid -console -dev -allowdebug -sw -w 1280 -h 720 -windowed -tools -nop4
+echo hl2_win64.exe -game "%cd%\..\game\directorscut" -novid -console -dev -allowdebug -sw -w 1280 -h 720 -windowed -tools -nop4
+start "" "C:\Program Files (x86)\Steam\steamapps\common\Source SDK Base 2013 Multiplayer\hl2_win64.exe" -game "%cd%\..\game\directorscut" -novid -console -dev -allowdebug -sw -w 1280 -h 720 -windowed -tools -nop4
